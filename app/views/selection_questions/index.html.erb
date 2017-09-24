@@ -1,0 +1,71 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Selection Questions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Title attr</th>
+      <th>Answer</th>
+      <th>Analysis</th>
+      <th>Analysis att</th>
+      <th>Analysis url</th>
+      <th>Question type</th>
+      <th>Active</th>
+      <th>Optioncount</th>
+      <th>Answer count</th>
+      <th>First correct count</th>
+      <th>Questiona</th>
+      <th>Questiona attr</th>
+      <th>Questionb</th>
+      <th>Questionb attr</th>
+      <th>Questionc</th>
+      <th>Questionc attr</th>
+      <th>Questiond</th>
+      <th>Questiond attr</th>
+      <th>Questione</th>
+      <th>Questione attr</th>
+      <th>Questionf</th>
+      <th>Questionf attr</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @selection_questions.each do |selection_question| %>
+      <tr>
+        <td><%= selection_question.title %></td>
+        <td><%= selection_question.title_attr %></td>
+        <td><%= selection_question.answer %></td>
+        <td><%= selection_question.analysis %></td>
+        <td><%= selection_question.analysis_att %></td>
+        <td><%= selection_question.analysis_url %></td>
+        <td><%= selection_question.question_type %></td>
+        <td><%= selection_question.active %></td>
+        <td><%= selection_question.optionCount %></td>
+        <td><%= selection_question.answer_count %></td>
+        <td><%= selection_question.first_correct_count %></td>
+        <td><%= selection_question.questionA %></td>
+        <td><%= selection_question.questionA_attr %></td>
+        <td><%= selection_question.questionB %></td>
+        <td><%= selection_question.questionB_attr %></td>
+        <td><%= selection_question.questionC %></td>
+        <td><%= selection_question.questionC_attr %></td>
+        <td><%= selection_question.questionD %></td>
+        <td><%= selection_question.questionD_attr %></td>
+        <td><%= selection_question.questionE %></td>
+        <td><%= selection_question.questionE_attr %></td>
+        <td><%= selection_question.questionF %></td>
+        <td><%= selection_question.questionF_attr %></td>
+        <td><%= link_to 'Show', selection_question %></td>
+        <td><%= link_to 'Edit', edit_selection_question_path(selection_question) %></td>
+        <td><%= link_to 'Destroy', selection_question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Selection Question', new_selection_question_path %>

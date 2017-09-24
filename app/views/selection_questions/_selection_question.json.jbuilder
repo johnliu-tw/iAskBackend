@@ -1,0 +1,2 @@
+json.extract! selection_question, :id, :title, :title_attr, :answer, :analysis, :analysis_att, :analysis_url, :question_type, :active, :optionCount, :answer_count, :first_correct_count, :questionA, :questionA_attr, :questionB, :questionB_attr, :questionC, :questionC_attr, :questionD, :questionD_attr, :questionE, :questionE_attr, :questionF, :questionF_attr, :created_at, :updated_at
+json.url selection_question_url(selection_question, format: :json)

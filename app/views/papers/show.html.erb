@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @paper.title %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @paper.active %>
+</p>
+
+<p>
+  <strong>Visible:</strong>
+  <%= @paper.visible %>
+</p>
+
+<p>
+  <strong>Public date:</strong>
+  <%= @paper.public_date %>
+</p>
+
+<p>
+  <strong>Note:</strong>
+  <%= @paper.note %>
+</p>
+
+<p>
+  <strong>Grade:</strong>
+  <%= @paper.grade %>
+</p>
+
+<p>
+  <strong>Open count:</strong>
+  <%= @paper.open_count %>
+</p>
+
+<p>
+  <strong>Correct count:</strong>
+  <%= @paper.correct_count %>
+</p>
+
+<%= link_to 'Edit', edit_paper_path(@paper) %> |
+<%= link_to 'Back', papers_path %>

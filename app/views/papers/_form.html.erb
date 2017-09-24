@@ -1,0 +1,57 @@
+<%= form_for(paper) do |f| %>
+  <% if paper.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(paper.errors.count, "error") %> prohibited this paper from being saved:</h2>
+
+      <ul>
+      <% paper.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :active %>
+    <%= f.text_field :active %>
+  </div>
+
+  <div class="field">
+    <%= f.label :visible %>
+    <%= f.number_field :visible %>
+  </div>
+
+  <div class="field">
+    <%= f.label :public_date %>
+    <%= f.text_field :public_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :note %>
+    <%= f.text_field :note %>
+  </div>
+
+  <div class="field">
+    <%= f.label :grade %>
+    <%= f.number_field :grade %>
+  </div>
+
+  <div class="field">
+    <%= f.label :open_count %>
+    <%= f.number_field :open_count %>
+  </div>
+
+  <div class="field">
+    <%= f.label :correct_count %>
+    <%= f.number_field :correct_count %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

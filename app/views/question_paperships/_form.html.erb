@@ -1,0 +1,22 @@
+<%= form_for(question_papership) do |f| %>
+  <% if question_papership.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(question_papership.errors.count, "error") %> prohibited this question_papership from being saved:</h2>
+
+      <ul>
+      <% question_papership.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :order %>
+    <%= f.number_field :order %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>試卷管理</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Active</th>
+      <th>Visible</th>
+      <th>Public date</th>
+      <th>Note</th>
+      <th>Grade</th>
+      <th>Open count</th>
+      <th>Correct count</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @papers.each do |paper| %>
+      <tr>
+        <td><%= paper.title %></td>
+        <td><%= paper.active %></td>
+        <td><%= paper.visible %></td>
+        <td><%= paper.public_date %></td>
+        <td><%= paper.note %></td>
+        <td><%= paper.grade %></td>
+        <td><%= paper.open_count %></td>
+        <td><%= paper.correct_count %></td>
+        <td><%= link_to 'Show', paper %></td>
+        <td><%= link_to 'Edit', edit_paper_path(paper) %></td>
+        <td><%= link_to 'Destroy', paper, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Paper', new_paper_path %>

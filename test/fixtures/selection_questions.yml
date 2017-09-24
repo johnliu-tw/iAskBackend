@@ -1,0 +1,51 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  title_attr: MyString
+  answer: MyString
+  analysis: MyString
+  analysis_att: MyString
+  analysis_url: MyString
+  question_type: MyString
+  active: 
+  optionCount: 1
+  answer_count: 1
+  first_correct_count: 1
+  questionA: MyString
+  questionA_attr: MyString
+  questionB: MyString
+  questionB_attr: MyString
+  questionC: MyString
+  questionC_attr: MyString
+  questionD: MyString
+  questionD_attr: MyString
+  questionE: MyString
+  questionE_attr: MyString
+  questionF: MyString
+  questionF_attr: MyString
+
+two:
+  title: MyString
+  title_attr: MyString
+  answer: MyString
+  analysis: MyString
+  analysis_att: MyString
+  analysis_url: MyString
+  question_type: MyString
+  active: 
+  optionCount: 1
+  answer_count: 1
+  first_correct_count: 1
+  questionA: MyString
+  questionA_attr: MyString
+  questionB: MyString
+  questionB_attr: MyString
+  questionC: MyString
+  questionC_attr: MyString
+  questionD: MyString
+  questionD_attr: MyString
+  questionE: MyString
+  questionE_attr: MyString
+  questionF: MyString
+  questionF_attr: MyString

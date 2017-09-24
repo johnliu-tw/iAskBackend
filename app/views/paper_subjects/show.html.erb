@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @paper_subject.title %>
+</p>
+
+<p>
+  <strong>Title view:</strong>
+  <%= @paper_subject.title_view %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @paper_subject.active %>
+</p>
+
+<%= link_to 'Edit', edit_paper_subject_path(@paper_subject) %> |
+<%= link_to 'Back', paper_subjects_path %>

@@ -1,0 +1,2 @@
+module PaperSubjectsHelper
+end

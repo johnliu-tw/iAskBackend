@@ -1,0 +1,32 @@
+<%= simple_form_for(paper_subject) do |f| %>
+  <% if paper_subject.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(paper_subject.errors.count, "error") %> prohibited this paper_subject from being saved:</h2>
+
+      <ul>
+      <% paper_subject.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.input :title, label: '試卷科目名稱' %>
+  <%= f.input :title_view, label: '顯示名稱' %>
+  <%= f.input :active, label: '啟用' %>
+  <%= f.simple_fields_for :subjects do |subject| %>
+  <%= subject.input :name, label: subject.name %>  
+  <% end %>  
+  <div class="form-group string optional paper_subjects_subjects">
+    <label class="control-label string optional" for="paper_subjects_subjects">對應科目</label>
+    <br>
+    <% @subjects.each do |s| %>  
+      <input class="boolean optional" type="checkbox" value=<%= s.id %>> <%= s.name %> </input>
+    <% end %>   
+  </div>
+  <% if @edit%>
+  <%= f.button :submit , "編輯此試卷科目", class: "btn btn-primary" %> 
+  <% else %>
+  <%= f.button :submit , "建立新試卷科目", class: "btn btn-primary" %>
+  <% end %>
+<% end %>
