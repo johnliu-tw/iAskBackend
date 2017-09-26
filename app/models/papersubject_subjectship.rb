@@ -1,4 +1,4 @@
 class PapersubjectSubjectship < ApplicationRecord
-    belongs_to :subjects
-    belongs_to :paper_subjects
+    belongs_to :subject , required: false
+    belongs_to :paper_subject , required: false
 end

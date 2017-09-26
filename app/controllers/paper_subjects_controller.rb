@@ -15,7 +15,6 @@ class PaperSubjectsController < ApplicationController
   # GET /paper_subjects/new
   def new
     @paper_subject = PaperSubject.new
-    @subjects = Subject.all
   end
 
   # GET /paper_subjects/1/edit
@@ -27,7 +26,6 @@ class PaperSubjectsController < ApplicationController
   # POST /paper_subjects.json
   def create
     @paper_subject = PaperSubject.new(paper_subject_params)
-
     respond_to do |format|
       if @paper_subject.save
         format.html { redirect_to @paper_subject, notice: '成功建立科目' }
@@ -71,6 +69,6 @@ class PaperSubjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_subject_params
-      params.require(:paper_subject).permit(:title, :title_view, :active)
+      params.require(:paper_subject).permit(:title, :title_view, :active, subject_ids: [])
     end
 end

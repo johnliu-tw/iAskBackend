@@ -18,10 +18,20 @@
       <tr class="warning">
         <td><span class="column-name"><%= paper_subject.title %></span></td>
         <td><span class="column-name"><%= paper_subject.title_view %></span></td>
-        <td><span class="column-name"><%= paper_subject.subject.name %></span></td>
-        <td><%= paper_subject.active %></td>
-        <td><%= link_to 'Edit', edit_paper_subject_path(paper_subject) %></td>
-        <td><%= link_to 'Destroy', paper_subject, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><span class="column-name">
+        <% paper_subject.subjects.each do |ps| %>
+          <%= ps.name %>,
+        <% end %>
+        </span></td>
+        <td>
+        <% if paper_subject.active == true%>
+        已啟用
+        <% else %>
+        未啟用
+        <% end %>
+        </td>
+        <td><%= link_to '編輯', edit_paper_subject_path(paper_subject) %></td>
+        <td><%= link_to '刪除', paper_subject, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -29,4 +39,4 @@
 
 <br>
 
-<%= link_to 'New Paper Subject', new_paper_subject_path %>
+<%= link_to '新增試卷科目', new_paper_subject_path %>

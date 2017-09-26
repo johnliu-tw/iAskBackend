@@ -14,16 +14,12 @@
   <%= f.input :title, label: '試卷科目名稱' %>
   <%= f.input :title_view, label: '顯示名稱' %>
   <%= f.input :active, label: '啟用' %>
-  <%= f.simple_fields_for :subjects do |subject| %>
-  <%= subject.input :name, label: subject.name %>  
-  <% end %>  
-  <div class="form-group string optional paper_subjects_subjects">
-    <label class="control-label string optional" for="paper_subjects_subjects">對應科目</label>
-    <br>
-    <% @subjects.each do |s| %>  
-      <input class="boolean optional" type="checkbox" value=<%= s.id %>> <%= s.name %> </input>
-    <% end %>   
-  </div>
+    <div>
+      <% Subject.all.each do |s| %>
+        <%= check_box_tag :subject_ids,s.id, f.object.subjects.include?(s), :name => "paper_subject[subject_ids][]" %>
+        <%= s.name %>
+      <% end %>
+    </div>
   <% if @edit%>
   <%= f.button :submit , "編輯此試卷科目", class: "btn btn-primary" %> 
   <% else %>

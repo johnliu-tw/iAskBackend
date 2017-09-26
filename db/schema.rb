@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170924144757) do
+ActiveRecord::Schema.define(version: 20170926170134) do
 
   create_table "paper_subjects", force: :cascade do |t|
     t.string   "title"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20170924144757) do
     t.string   "questionF_attr"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.integer  "paper_id"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -91,6 +92,7 @@ ActiveRecord::Schema.define(version: 20170924144757) do
     t.boolean  "active"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.integer  "paper_id"
   end
 
 end
