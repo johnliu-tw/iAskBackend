@@ -20,3 +20,15 @@
     font-weight: bold;
     font-size: 20px;
 }
+span.active{
+    color: red;
+}
+span.inactive{
+    color: green;
+}
+.btn > a:visited{
+    color: white;
+}
+.btn > a{
+    color: white;
+}

@@ -15,12 +15,10 @@ class SubjectsController < ApplicationController
   # GET /subjects/new
   def new
     @subject = Subject.new
-    @edit = false
   end
 
   # GET /subjects/1/edit
   def edit
-    @edit = true
   end
 
   # POST /subjects

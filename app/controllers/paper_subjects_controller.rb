@@ -4,7 +4,7 @@ class PaperSubjectsController < ApplicationController
   # GET /paper_subjects
   # GET /paper_subjects.json
   def index
-    @paper_subjects = PaperSubject.all
+    @paper_subjects = PaperSubject.paginate(:page => params[:page], :per_page => 5)
   end
 
   # GET /paper_subjects/1

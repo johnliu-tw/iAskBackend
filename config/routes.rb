@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :paper_gradeships
+  resources :grades
   resources :papersubject_subjectships
   resources :question_paperships
   resources :writing_questions
@@ -9,4 +11,5 @@ Rails.application.routes.draw do
   resources :home
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root "home#index"
+  post 'paper_subjects/:id', :to => 'paper_subjects#update'
 end

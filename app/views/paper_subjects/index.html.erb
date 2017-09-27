@@ -1,21 +1,73 @@
+<script>
+
+$(function(){
+  $("#batch-active").click(function(){
+    var paper_subject_ids = []
+    $(".paper_subject_id:checked").each(function(){
+      paper_subject_ids.push($(this).val());
+    });
+    for(var i=0; i < paper_subject_ids.length;i++){
+      $.ajax({
+      type: "POST",
+      url: "/paper_subjects/"+paper_subject_ids[i],
+      dataType: "script",
+      contentType: 'application/json',
+      data: JSON.stringify({ active:true, _method:'put' })
+      }).success(function(data){
+      })
+    }
+  });
+  $("#batch-inactive").click(function(){
+    var paper_subject_ids = []
+    $(".paper_subject_id:checked").each(function(){
+      paper_subject_ids.push($(this).val());
+    });
+    for(var i=0; i < paper_subject_ids.length;i++){
+      $.ajax({
+      type: "POST",
+      url: "/paper_subjects/"+paper_subject_ids[i],
+      dataType: "script",
+      contentType: 'application/json',
+      data: JSON.stringify({ active:false, _method:'put' })
+      }).success(function(data){
+      })
+    }
+  });
+  $("#check-all").click(function(){
+    $(".paper_subject_id").each(function(){
+      $(this).attr("checked","checked")
+    });
+  })
+
+})
+
+</script> 
+
+
+
 <p id="notice"><%= notice %></p>
 
 <h1>試卷科目管理</h1>
-
+<button class="btn btn-primary"><%= link_to '新增試卷科目', new_paper_subject_path %></button>
+<button class="btn btn-success" id="batch-active">批次有效</button>
+<button class="btn btn-danger" id="batch-inactive">批次無效</button>
 <table class="table">
   <thead>
     <tr>
+      <th><button class="btn btn-info" id="check-all">全選</button></th>
       <th>試卷科目</th>
       <th>顯示科目</th>
       <th>對應科目</th>
       <th></th>
-      <th colspan="2"></th>
+      <th colspan="2">
+      </th>
     </tr>
   </thead>
 
   <tbody>
     <% @paper_subjects.each do |paper_subject| %>
       <tr class="warning">
+        <td><input type="checkbox" class="paper_subject_id" value=<%= paper_subject.id %>></td>
         <td><span class="column-name"><%= paper_subject.title %></span></td>
         <td><span class="column-name"><%= paper_subject.title_view %></span></td>
         <td><span class="column-name">
@@ -25,9 +77,9 @@
         </span></td>
         <td>
         <% if paper_subject.active == true%>
-        已啟用
+        <span class="active">已啟用</span>
         <% else %>
-        未啟用
+        <span class="inactive">未啟用</span>
         <% end %>
         </td>
         <td><%= link_to '編輯', edit_paper_subject_path(paper_subject) %></td>
@@ -39,4 +91,4 @@
 
 <br>
 
-<%= link_to '新增試卷科目', new_paper_subject_path %>
+<%= will_paginate @paper_subjects, :previous_label => '上一頁', :next_label => '下一頁' %>

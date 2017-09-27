@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Paper Gradeships</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @paper_gradeships.each do |paper_gradeship| %>
+      <tr>
+        <td><%= link_to 'Show', paper_gradeship %></td>
+        <td><%= link_to 'Edit', edit_paper_gradeship_path(paper_gradeship) %></td>
+        <td><%= link_to 'Destroy', paper_gradeship, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Paper Gradeship', new_paper_gradeship_path %>

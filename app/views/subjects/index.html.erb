@@ -16,7 +16,6 @@
     <% @subjects.each do |subject| %>
       <tr class="warning">
         <td><span class="column-data"><%= subject.name %></span></td>
-        <td><%= link_to '顯示', subject %></td>
         <td><%= link_to '編輯', edit_subject_path(subject) %></td>
         <td><%= link_to '刪除', subject, method: :delete, data: { confirm: '你確定嗎?' } %></td>
       </tr>

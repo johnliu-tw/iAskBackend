@@ -1,36 +1,90 @@
+<script>
+
+$(function(){
+  $("#batch-active").click(function(){
+    var paper_ids = []
+    $(".paper_id:checked").each(function(){
+      paper_ids.push($(this).val());
+    });
+    for(var i=0; i < paper_ids.length;i++){
+      $.ajax({
+      type: "POST",
+      url: "/papers/"+paper_ids[i],
+      dataType: "script",
+      contentType: 'application/json',
+      data: JSON.stringify({ active:true, _method:'put' })
+      }).success(function(data){
+      })
+    }
+  });
+  $("#batch-inactive").click(function(){
+    var paper_ids = []
+    $(".paper_id:checked").each(function(){
+      paper_ids.push($(this).val());
+    });
+    for(var i=0; i < paper_ids.length;i++){
+      $.ajax({
+      type: "POST",
+      url: "/papers/"+paper_ids[i],
+      dataType: "script",
+      contentType: 'application/json',
+      data: JSON.stringify({ active:false, _method:'put' })
+      }).success(function(data){
+      })
+    }
+  });
+  $("#check-all").click(function(){
+    $(".paper_id").each(function(){
+      $(this).attr("checked","checked")
+    });
+  })
+
+})
+
+</script> 
+
 <p id="notice"><%= notice %></p>
 
 <h1>試卷管理</h1>
 
-<table>
+<table class="warning">
   <thead>
     <tr>
-      <th>Title</th>
-      <th>Active</th>
-      <th>Visible</th>
-      <th>Public date</th>
-      <th>Note</th>
-      <th>Grade</th>
-      <th>Open count</th>
-      <th>Correct count</th>
-      <th colspan="3"></th>
+      <th><button class="btn btn-info" id="check-all">全選</button></th>
+      <th>試卷科目</th>
+      <th>年級</th>      
+      <th>試卷名稱</th>
+      <th>可見性設定</th>
+      <th>上架日期</th>
+      <th>備註</th>
+      <th>有效性</th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @papers.each do |paper| %>
       <tr>
-        <td><%= paper.title %></td>
-        <td><%= paper.active %></td>
-        <td><%= paper.visible %></td>
-        <td><%= paper.public_date %></td>
-        <td><%= paper.note %></td>
-        <td><%= paper.grade %></td>
-        <td><%= paper.open_count %></td>
-        <td><%= paper.correct_count %></td>
-        <td><%= link_to 'Show', paper %></td>
-        <td><%= link_to 'Edit', edit_paper_path(paper) %></td>
-        <td><%= link_to 'Destroy', paper, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><input type="checkbox" class="paper_subject_id" value=<%= paper.id %>></td>
+        <td class="column-name"><%= paper.paper_subject.name %></td>
+        <td><span class="column-name">
+        <% paper.grades.each do |g| %>
+          <%= g.name %>,
+        <% end %>
+        </span></td>
+        <td class="column-name"><%= paper.title %></td>
+        <td class="column-name"><%= paper.visible %></td>
+        <td class="column-name"><%= paper.public_date %></td>
+        <td class="column-name"><%= paper.note %></td>
+        <td>
+        <% if paper.active == true%>
+        <span class="active">已啟用</span>
+        <% else %>
+        <span class="inactive">未啟用</span>
+        <% end %>
+        </td>
+        <td><%= link_to '編輯', edit_paper_path(paper) %></td>
+        <td><%= link_to '刪除', paper, method: :delete, data: { confirm: '你確定?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -38,4 +92,4 @@
 
 <br>
 
-<%= link_to 'New Paper', new_paper_path %>
+<%= link_to '新增試卷', new_paper_path %>

@@ -1,0 +1,2 @@
+module PaperGradeshipsHelper
+end
