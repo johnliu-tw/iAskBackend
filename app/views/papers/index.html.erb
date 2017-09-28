@@ -46,8 +46,10 @@ $(function(){
 <p id="notice"><%= notice %></p>
 
 <h1>試卷管理</h1>
-
-<table class="warning">
+<button class="btn btn-primary"><%= link_to '新增試卷', new_paper_path %></button>
+<button class="btn btn-success" id="batch-active">批次有效</button>
+<button class="btn btn-danger" id="batch-inactive">批次無效</button>
+<table class="table">
   <thead>
     <tr>
       <th><button class="btn btn-info" id="check-all">全選</button></th>
@@ -64,9 +66,9 @@ $(function(){
 
   <tbody>
     <% @papers.each do |paper| %>
-      <tr>
-        <td><input type="checkbox" class="paper_subject_id" value=<%= paper.id %>></td>
-        <td class="column-name"><%= paper.paper_subject.name %></td>
+      <tr class="warning">
+        <td><input type="checkbox" class="paper_id" value=<%= paper.id %>></td>
+        <td class="column-name"><%= paper.paper_subject.title %></td>
         <td><span class="column-name">
         <% paper.grades.each do |g| %>
           <%= g.name %>,
@@ -92,4 +94,3 @@ $(function(){
 
 <br>
 
-<%= link_to '新增試卷', new_paper_path %>

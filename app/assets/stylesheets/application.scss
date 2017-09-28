@@ -21,14 +21,17 @@
     font-size: 20px;
 }
 span.active{
-    color: red;
+    color: green;
 }
 span.inactive{
-    color: green;
+    color: red;
 }
 .btn > a:visited{
     color: white;
 }
 .btn > a{
     color: white;
+}
+.inline{
+    display: inline;
 }

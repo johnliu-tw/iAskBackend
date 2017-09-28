@@ -15,6 +15,7 @@ class PapersController < ApplicationController
   # GET /papers/new
   def new
     @paper = Paper.new
+    @visibles = [{name: "免費可見"},{name: "購點後可見"},{name: "付費可見"}]
   end
 
   # GET /papers/1/edit
@@ -69,6 +70,6 @@ class PapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_params
-      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count)
+      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id, grade_ids:[])
     end
 end
