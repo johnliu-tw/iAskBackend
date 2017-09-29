@@ -87,6 +87,7 @@ $(function(){
         </td>
         <td><%= link_to '編輯', edit_paper_path(paper) %></td>
         <td><%= link_to '刪除', paper, method: :delete, data: { confirm: '你確定?' } %></td>
+        <td><%= link_to "Ad details", paper_questions_path(paper) %></td>
       </tr>
     <% end %>
   </tbody>
