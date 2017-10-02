@@ -1,4 +1,5 @@
-<%= form_for(question) do |f| %>
+
+<%= simple_form_for @question, url: paper_questions_path do |f| %>
   <% if question.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(question.errors.count, "error") %> prohibited this question from being saved:</h2>
@@ -10,123 +11,30 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title %>
+  <%= f.input :order, label: '題號' %>
+  <%= f.input :title, label: '題幹' %>
+  <%= f.input :title_attr,as: :file, label: '附檔' %>
+  <%= f.input :question_type, collection: [ "單選", "複選", "非選"], :label => "題型", :include_blank => false %>
+  <div id="option-board">
+    <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
+    <%= f.input :questionA_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
+    <%= f.input :questionB_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionC, :input_html => { :class => "question_option" }, label: '選項C' %>
+    <%= f.input :questionC_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionD, :input_html => { :class => "question_option" }, label: '選項D' %>
+    <%= f.input :questionD_attr,as: :file, label: '附檔' %>
   </div>
-
-  <div class="field">
-    <%= f.label :title_attr %>
-    <%= f.text_field :title_attr %>
+  <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
+  <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
+  <div id="answer-board">
+    <%= f.input :answer, collection: [ "A", "B", "C","D"],:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 答案 ' %>
   </div>
-
-  <div class="field">
-    <%= f.label :answer %>
-    <%= f.text_field :answer %>
-  </div>
-
-  <div class="field">
-    <%= f.label :analysis %>
-    <%= f.text_field :analysis %>
-  </div>
-
-  <div class="field">
-    <%= f.label :analysis_att %>
-    <%= f.text_field :analysis_att %>
-  </div>
-
-  <div class="field">
-    <%= f.label :analysis_url %>
-    <%= f.text_field :analysis_url %>
-  </div>
-
-  <div class="field">
-    <%= f.label :question_type %>
-    <%= f.text_field :question_type %>
-  </div>
-
-  <div class="field">
-    <%= f.label :active %>
-    <%= f.text_field :active %>
-  </div>
-
-  <div class="field">
-    <%= f.label :optionCount %>
-    <%= f.number_field :optionCount %>
-  </div>
-
-  <div class="field">
-    <%= f.label :answer_count %>
-    <%= f.number_field :answer_count %>
-  </div>
-
-  <div class="field">
-    <%= f.label :first_correct_count %>
-    <%= f.number_field :first_correct_count %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionA %>
-    <%= f.text_field :questionA %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionA_attr %>
-    <%= f.text_field :questionA_attr %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionB %>
-    <%= f.text_field :questionB %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionB_attr %>
-    <%= f.text_field :questionB_attr %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionC %>
-    <%= f.text_field :questionC %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionC_attr %>
-    <%= f.text_field :questionC_attr %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionD %>
-    <%= f.text_field :questionD %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionD_attr %>
-    <%= f.text_field :questionD_attr %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionE %>
-    <%= f.text_field :questionE %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionE_attr %>
-    <%= f.text_field :questionE_attr %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionF %>
-    <%= f.text_field :questionF %>
-  </div>
-
-  <div class="field">
-    <%= f.label :questionF_attr %>
-    <%= f.text_field :questionF_attr %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <%= f.input :analysis, label: '詳解' %>  
+  <%= f.input :analysis_att,as: :file, label: '附檔' %>  
+  <%= f.input :analysis_url, label: '影片URL' %>  
+  <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 有效性 ' %>
+  <%= f.input :paper_id,as: :hidden,input_html: {value: @paper.id} %>  
+  <%= f.input :optionCount,as: :hidden,input_html: {value: 4} %>  
+  <%= f.button :submit , "送出", class: "btn btn-primary" %>
 <% end %>

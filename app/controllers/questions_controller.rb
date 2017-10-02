@@ -4,7 +4,8 @@ class QuestionsController < ApplicationController
   # GET /questions
   # GET /questions.json
   def index
-    @questions = Question.all
+    @questions = Question.paginate(:page => params[:page], :per_page => 5)
+    @paper = Paper.find(params[:paper_id])
   end
 
   # GET /questions/1
@@ -15,10 +16,12 @@ class QuestionsController < ApplicationController
   # GET /questions/new
   def new
     @question = Question.new
+    @paper = Paper.find(params[:paper_id])
   end
 
   # GET /questions/1/edit
   def edit
+    @paper = Paper.find(params[:paper_id])
   end
 
   # POST /questions
@@ -28,7 +31,7 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       if @question.save
-        format.html { redirect_to @question, notice: 'Selection question was successfully created.' }
+        format.html { redirect_to paper_questions_path, notice: 'Selection question was successfully created.' }
         format.json { render :show, status: :created, location: @question }
       else
         format.html { render :new }
@@ -42,11 +45,11 @@ class QuestionsController < ApplicationController
   def update
     respond_to do |format|
       if @question.update(question_params)
-        format.html { redirect_to @question, notice: 'Selection question was successfully updated.' }
+        format.html { redirect_to paper_questions_path(question_params[:paper_id],question_params[:id]), notice: 'Selection question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
         format.html { render :edit }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
+        format.json { render json: paper_questions_path.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -56,7 +59,7 @@ class QuestionsController < ApplicationController
   def destroy
     @question.destroy
     respond_to do |format|
-      format.html { redirect_to questions_url, notice: 'Selection question was successfully destroyed.' }
+      format.html { redirect_to paper_questions_path, notice: 'Selection question was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -69,6 +72,7 @@ class QuestionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
-      params.require(:question).permit(:title, :title_attr, :answer, :analysis, :analysis_att, :analysis_url, :question_type, :active, :optionCount, :answer_count, :first_correct_count, :questionA, :questionA_attr, :questionB, :questionB_attr, :questionC, :questionC_attr, :questionD, :questionD_attr, :questionE, :questionE_attr, :questionF, :questionF_attr)
+      params.require(:question).permit(:title, :title_attr, :answer, :analysis, :analysis_att, :analysis_url, :question_type, :active, :optionCount, :answer_count, :first_correct_count, :questionA, :questionA_attr, :questionB, :questionB_attr, :questionC, :questionC_attr, :questionD, :questionD_attr, :questionE, :questionE_attr, :questionF, :questionF_attr, :order,
+      :paper_id)
     end
 end

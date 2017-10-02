@@ -15,4 +15,5 @@ Rails.application.routes.draw do
   root "home#index"
   post 'paper_subjects/:id', :to => 'paper_subjects#update'
   post 'papers/:id', :to => 'papers#update'
+  post 'papers/:id/questions/:id', :to => 'questions#update'
 end

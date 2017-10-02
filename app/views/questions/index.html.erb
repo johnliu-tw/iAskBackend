@@ -1,20 +1,69 @@
+<script>
+$(function(){
+
+  var paperId = $("#paper_id").val();
+
+  $("#batch-active").click(function(){
+    var question_ids = []
+    var active = true
+    var count = 0;
+    $(".question_id:checked").each(function(){
+      question_ids.push($(this).val());
+    });
+    ajaxBatchUpdate(question_ids,active,count)
+  });
+  $("#batch-inactive").click(function(){
+    var question_ids = [];
+    var active = false;
+    var count = 0;
+    $(".question_id:checked").each(function(){
+      question_ids.push($(this).val());
+    });
+    ajaxBatchUpdate(question_ids,active,count)
+  });
+  $("#check-all").click(function(){
+    $(".question_id").each(function(){
+      $(this).attr("checked","checked")
+    });
+  })
+
+  function ajaxBatchUpdate(question_ids,active,count){
+    $.ajax({
+        type: "POST",
+        url: "/papers/"+paperId+"/questions/"+question_ids[count],
+        dataType: "script",
+        contentType: 'application/json',
+        data: JSON.stringify({ active:active,paper_id:parseInt(paperId), _method:'put',id:question_ids[count] })
+        })
+        .complete(function(data){
+          console.log(count)
+          if(count< question_ids.length-1){
+            count += 1;
+            ajaxBatchUpdate(question_ids,active,count);
+          }
+        })
+  }
+
+})
+</script> 
+
 <p id="notice"><%= notice %></p>
 
-<h1>Questions</h1>
-
-<table>
+<h1>題目列表</h1>
+<button class="btn btn-primary"><%= link_to '新增題目', new_paper_question_path %></button>
+<button class="btn btn-success" id="batch-active">批次有效</button>
+<button class="btn btn-danger" id="batch-inactive">批次無效</button>
+<table class="table">
   <thead>
     <tr>
+      <th><button class="btn btn-info" id="check-all">全選</button></th>
       <th>題號</th>
       <th>題幹</th>
       <th>題型</th>
-      <th>Answer</th>
-      <th>Analysis</th>
-      <th>Analysis att</th>
-      <th>Analysis url</th>
-      <th>Question type</th>
-      <th>Active</th>
-      <th>Optioncount</th>
+      <th>選項</th>
+      <th>答案</th>
+      <th>詳解</th>
+      <th>有效性</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -22,24 +71,51 @@
   <tbody>
     <% @questions.each do |question| %>
       <tr>
+        <td><input type="checkbox" class="question_id" value=<%= question.id %> orderdata=<%= question.order %>></td>
         <td><%= question.order %></td>     
         <td><%= question.title %></td>
         <td><%= question.question_type %></td>
+        <td>
+        <%if(question.optionCount == 3)%>
+        A:<%= question.questionA %><br>
+        B:<%= question.questionB %><br>
+        C:<%= question.questionC %>
+        <% elsif(question.optionCount == 4)%>
+        A:<%= question.questionA %><br>
+        B:<%= question.questionB %><br>
+        C:<%= question.questionC %><br>
+        D:<%= question.questionD %>
+        <% elsif(question.optionCount == 5)%>
+        A:<%= question.questionA %><br>
+        B:<%= question.questionB %><br>
+        C:<%= question.questionC %><br>
+        D:<%= question.questionD %><br>
+        E:<%= question.questionE %>
+        <% elsif(question.optionCount == 6)%>
+        A:<%= question.questionA %><br>
+        B:<%= question.questionB %><br>
+        C:<%= question.questionC %><br>
+        D:<%= question.questionD %><br>
+        E:<%= question.questionE %><br>
+        F:<%= question.questionF %>
+        <% end %>
+        </td>
         <td><%= question.answer %></td>
         <td><%= question.analysis %></td>
-        <td><%= question.analysis_att %></td>
-        <td><%= question.analysis_url %></td>
-        <td><%= question.question_type %></td>
-        <td><%= question.active %></td>
-        <td><%= question.optionCount %></td>
-        <td><%= link_to 'Show', question %></td>
-        <td><%= link_to 'Edit', edit_question_path(question) %></td>
-        <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+        <% if question.active == true%>
+        <span class="active">已啟用</span>
+        <% else %>
+        <span class="inactive">未啟用</span>
+        <% end %>
+        </td>
+        <td><%= link_to '檢視題目與附圖', paper_question_path(@paper,question) %></td>
+        <td><%= link_to '編輯題目', edit_paper_question_path(@paper,question) %></td>
+        <td><%= link_to '刪除題目', paper_question_path(@paper,question), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
+<input type="hidden" id="paper_id" value=<%= @paper.id %>>
 <br>
-
-<%= link_to 'New Selection Question', new_paper_question_path %>
+<%= will_paginate @questions, :previous_label => '上一頁', :next_label => '下一頁' %>

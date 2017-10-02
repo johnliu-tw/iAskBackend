@@ -1,119 +1,97 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Title:</strong>
+  <strong>題幹:</strong>
   <%= @question.title %>
 </p>
 
 <p>
-  <strong>Title attr:</strong>
-  <%= @question.title_attr %>
+  <strong>題幹附圖:</strong>
+  <%= image_tag @question.title_attr.url %>
 </p>
 
 <p>
-  <strong>Answer:</strong>
-  <%= @question.answer %>
-</p>
-
-<p>
-  <strong>Analysis:</strong>
+  <strong>解析:</strong>
   <%= @question.analysis %>
 </p>
 
 <p>
-  <strong>Analysis att:</strong>
-  <%= @question.analysis_att %>
+  <strong>解析附圖:</strong>
+  <% if @question.analysis_att.url != nil %>
+  <%= image_tag @question.analysis_att.url %>
+  <% end %>
 </p>
 
 <p>
-  <strong>Analysis url:</strong>
-  <%= @question.analysis_url %>
-</p>
-
-<p>
-  <strong>Question type:</strong>
-  <%= @question.question_type %>
-</p>
-
-<p>
-  <strong>Active:</strong>
-  <%= @question.active %>
-</p>
-
-<p>
-  <strong>Optioncount:</strong>
-  <%= @question.optionCount %>
-</p>
-
-<p>
-  <strong>Answer count:</strong>
-  <%= @question.answer_count %>
-</p>
-
-<p>
-  <strong>First correct count:</strong>
-  <%= @question.first_correct_count %>
-</p>
-
-<p>
-  <strong>Questiona:</strong>
+  <strong>選項Ａ:</strong>
   <%= @question.questionA %>
 </p>
 
 <p>
-  <strong>Questiona attr:</strong>
-  <%= @question.questionA_attr %>
+  <strong>選項Ａ附圖:</strong>
+  <% if @question.questionA_attr.url != nil %>
+  <%= image_tag @question.questionA_attr.url %>
+  <% end %>
 </p>
 
 <p>
-  <strong>Questionb:</strong>
+  <strong>選項Ｂ:</strong>
   <%= @question.questionB %>
 </p>
 
 <p>
-  <strong>Questionb attr:</strong>
-  <%= @question.questionB_attr %>
+  <strong>選項Ｂ附圖:</strong>
+  <% if @question.questionB_attr.url != nil %>
+  <%= image_tag @question.questionB_attr.url %>
+  <% end %>
 </p>
 
 <p>
-  <strong>Questionc:</strong>
+  <strong>選項Ｃ:</strong>
   <%= @question.questionC %>
 </p>
 
 <p>
-  <strong>Questionc attr:</strong>
-  <%= @question.questionC_attr %>
+  <strong>選項Ｃ附圖:</strong>
+  <% if @question.questionC_attr.url != nil %>
+  <%= image_tag @question.questionC_attr.url %>
+  <% end %>
 </p>
 
 <p>
-  <strong>Questiond:</strong>
+  <strong>選項Ｄ:</strong>
   <%= @question.questionD %>
 </p>
 
 <p>
-  <strong>Questiond attr:</strong>
-  <%= @question.questionD_attr %>
+  <strong>選項Ｄ附圖::</strong>
+  <% if @question.questionD_attr.url != nil %>
+  <%= image_tag @question.questionD_attr.url %>
+  <% end %>
 </p>
 
 <p>
-  <strong>Questione:</strong>
+  <strong>選項Ｅ:</strong>
   <%= @question.questionE %>
 </p>
 
 <p>
-  <strong>Questione attr:</strong>
-  <%= @question.questionE_attr %>
+  <strong>選項Ｅ附圖::</strong>
+  <% if @question.questionE_attr.url != nil %>
+  <%= image_tag @question.questionE_attr.url %>
+  <% end %>
 </p>
 
 <p>
-  <strong>Questionf:</strong>
+  <strong>選項Ｆ:</strong>
   <%= @question.questionF %>
 </p>
 
 <p>
-  <strong>Questionf attr:</strong>
-  <%= @question.questionF_attr %>
+  <strong>選項Ｆ附圖::</strong>
+  <% if @question.questionF_attr.url != nil %>
+  <%= image_tag @question.questionF_attr.url %>
+  <% end %>
 </p>
 
-<%= link_to 'Edit', edit_question_path(@question) %> |
-<%= link_to 'Back', questions_path %>
+<%= link_to '編輯題目', edit_paper_question_path(@question) %> 

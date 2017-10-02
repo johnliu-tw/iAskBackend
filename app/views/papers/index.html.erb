@@ -1,43 +1,42 @@
 <script>
-
 $(function(){
   $("#batch-active").click(function(){
-    var paper_ids = []
+    var paper_ids = [];
+    var active = true;
+    var count = 0;
     $(".paper_id:checked").each(function(){
       paper_ids.push($(this).val());
     });
-    for(var i=0; i < paper_ids.length;i++){
-      $.ajax({
-      type: "POST",
-      url: "/papers/"+paper_ids[i],
-      dataType: "script",
-      contentType: 'application/json',
-      data: JSON.stringify({ active:true, _method:'put' })
-      }).success(function(data){
-      })
-    }
+    ajaxBatchUpdate(paper_ids,active,count)
   });
   $("#batch-inactive").click(function(){
-    var paper_ids = []
+    var paper_ids = [];
+    var active = false;
+    var count = 0;
     $(".paper_id:checked").each(function(){
       paper_ids.push($(this).val());
     });
-    for(var i=0; i < paper_ids.length;i++){
-      $.ajax({
-      type: "POST",
-      url: "/papers/"+paper_ids[i],
-      dataType: "script",
-      contentType: 'application/json',
-      data: JSON.stringify({ active:false, _method:'put' })
-      }).success(function(data){
-      })
-    }
+    ajaxBatchUpdate(paper_ids,active,count)
   });
   $("#check-all").click(function(){
     $(".paper_id").each(function(){
       $(this).attr("checked","checked")
     });
   })
+  function ajaxBatchUpdate(paper_ids,active,count){
+    $.ajax({
+        type: "POST",
+        url: "/papers/"+paper_ids[count],
+        dataType: "script",
+        contentType: 'application/json',
+        data: JSON.stringify({ active:active, _method:'put' })
+        })
+        .complete(function(data){
+          if(count< paper_ids.length-1){
+            count += 1;
+            ajaxBatchUpdate(paper_ids,active,count);
+          }
+        })
 
 })
 
@@ -87,11 +86,11 @@ $(function(){
         </td>
         <td><%= link_to '編輯', edit_paper_path(paper) %></td>
         <td><%= link_to '刪除', paper, method: :delete, data: { confirm: '你確定?' } %></td>
-        <td><%= link_to "Ad details", paper_questions_path(paper) %></td>
+        <td><%= link_to "題目管理", paper_questions_path(paper,:paper_id => paper.id) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
+<%= will_paginate @papers, :previous_label => '上一頁', :next_label => '下一頁' %>

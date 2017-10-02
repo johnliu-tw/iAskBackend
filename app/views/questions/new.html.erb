@@ -1,5 +1,43 @@
-<h1>New Selection Question</h1>
+<h1>建立題目</h1>
 
-<%= render 'form', question: @question %>
+<%= simple_form_for @question, url: paper_questions_path do |f| %>
+  <% if @question.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@question.errors.count, "error") %> prohibited this question from being saved:</h2>
 
-<%= link_to 'Back', questions_path %>
+      <ul>
+      <% @question.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= f.input :order, label: '題號' %>
+  <%= f.input :title, label: '題幹' %>
+  <%= f.input :title_attr,as: :file, label: '附檔' %>
+  <%= f.input :question_type, collection: [ "單選", "複選", "非選"], :label => "題型", :include_blank => false %>
+  <div id="option-board">
+    <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
+    <%= f.input :questionA_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
+    <%= f.input :questionB_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionC, :input_html => { :class => "question_option" }, label: '選項C' %>
+    <%= f.input :questionC_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionD, :input_html => { :class => "question_option" }, label: '選項D' %>
+    <%= f.input :questionD_attr,as: :file, label: '附檔' %>
+  </div>
+  <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
+  <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
+  <div id="answer-board">
+    <%= f.input :answer, collection: [ "A", "B", "C","D"],:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 答案 ' %>
+  </div>
+  <%= f.input :analysis, label: '詳解' %>  
+  <%= f.input :analysis_att,as: :file, label: '附檔' %>  
+  <%= f.input :analysis_url, label: '影片URL' %>  
+  <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 有效性 ' %>
+  <%= f.input :paper_id,as: :hidden,input_html: {value: @paper.id} %>  
+  <%= f.input :optionCount,as: :hidden,input_html: {value: 4} %>  
+  <%= f.button :submit , "送出", class: "btn btn-primary" %>
+<% end %>
+
+<%= link_to 'Back', paper_questions_path %>
