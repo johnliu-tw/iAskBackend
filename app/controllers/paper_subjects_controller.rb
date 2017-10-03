@@ -69,6 +69,6 @@ class PaperSubjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_subject_params
-      params.require(:paper_subject).permit(:title, :title_view, :active, subject_ids: [],:platform_type)
+      params.require(:paper_subject).permit(:title, :title_view, :active,:platform_type, subject_ids: [])
     end
 end
