@@ -1,3 +1,5 @@
+<script type="text/javascript" src="/js/updateQuestionOptions.js"></script>
+
 <h1>編輯題目</h1>
 
 <%= simple_form_for @question, url:paper_question_path(@paper,@question)  do |f| %>
@@ -17,6 +19,7 @@
   <%= f.input :title_attr,as: :file, label: '附檔' %>
   <%= f.input :question_type, collection: [ "單選", "複選", "非選"], :label => "題型", :include_blank => false %>
   <div id="option-board">
+    <% if  @question.optionCount==4%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :file, label: '附檔' %>
     <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
@@ -25,14 +28,48 @@
     <%= f.input :questionC_attr,as: :file, label: '附檔' %>
     <%= f.input :questionD, :input_html => { :class => "question_option" }, label: '選項D' %>
     <%= f.input :questionD_attr,as: :file, label: '附檔' %>
+    <% elsif @question.optionCount == 5%>
+    <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
+    <%= f.input :questionA_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
+    <%= f.input :questionB_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionC, :input_html => { :class => "question_option" }, label: '選項C' %>
+    <%= f.input :questionC_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionD, :input_html => { :class => "question_option" }, label: '選項D' %>
+    <%= f.input :questionD_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionE, :input_html => { :class => "question_option" }, label: '選項E' %>
+    <%= f.input :questionE_attr,as: :file, label: '附檔' %>
+    <% elsif @question.optionCount == 6%>
+    <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
+    <%= f.input :questionA_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
+    <%= f.input :questionB_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionC, :input_html => { :class => "question_option" }, label: '選項C' %>
+    <%= f.input :questionC_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionD, :input_html => { :class => "question_option" }, label: '選項D' %>
+    <%= f.input :questionD_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionE, :input_html => { :class => "question_option" }, label: '選項E' %>
+    <%= f.input :questionE_attr,as: :file, label: '附檔' %> 
+    <%= f.input :questionF, :input_html => { :class => "question_option" }, label: '選項F' %>
+    <%= f.input :questionF_attr,as: :file, label: '附檔' %> 
+    <% end %>
   </div>
+
   <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
   <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
   <div id="answer-board">
-    <% if  @question.question_type=="複選"%>
-    <%= f.input :answer, collection: [ "A", "B", "C","D","E"],:item_wrapper_class => 'inline', as: :check_boxes, label: ' 答案 ' %>
-    <% else %>
-    <%= f.input :answer, collection: [ "A", "B", "C","D","E"],:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 答案 ' %>
+    <% if  @question.question_type=="複選" && @question.optionCount == 4%>
+    <%= f.input :answer, collection: [ "A", "B", "C","D"],:item_wrapper_class => 'inline', as: :check_boxes,input_html:{class: "question_answer_checkbox"}, label: ' 答案 ' %>
+    <% elsif @question.question_type=="複選" && @question.optionCount == 5%>
+    <%= f.input :answer, collection: [ "A", "B", "C","D","E"],:item_wrapper_class => 'inline', as: :check_boxes,input_html:{class: "question_answer_checkbox"}, label: ' 答案 ' %>
+    <% elsif @question.question_type=="複選" && @question.optionCount == 6%>
+    <%= f.input :answer, collection: [ "A", "B", "C","D","E","F"],:item_wrapper_class => 'inline', as: :check_boxes,input_html:{class: "question_answer_checkbox"}, label: ' 答案 ' %>
+    <% elsif  @question.question_type=="單選" && @question.optionCount == 4%>
+    <%= f.input :answer, collection: [ "A", "B", "C","D"],:item_wrapper_class => 'inline', as: :radio_buttons,input_html:{class: "question_answer_radio"}, label: ' 答案 ' %>
+    <% elsif  @question.question_type=="單選" && @question.optionCount == 5%>
+    <%= f.input :answer, collection: [ "A", "B", "C","D","E"],:item_wrapper_class => 'inline', as: :radio_buttons,input_html:{class: "question_answer_radio"}, label: ' 答案 ' %>
+    <% elsif  @question.question_type=="單選" && @question.optionCount == 6%>
+    <%= f.input :answer, collection: [ "A", "B", "C","D","E","F"],:item_wrapper_class => 'inline', as: :radio_buttons,input_html:{class: "question_answer_radio"}, label: ' 答案 ' %>    
     <% end %>
   </div>
   <%= f.input :analysis, label: '詳解' %>  
@@ -40,7 +77,8 @@
   <%= f.input :analysis_url, label: '影片URL' %>  
   <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 有效性 ' %>
   <%= f.input :paper_id,as: :hidden,input_html: {value: @paper.id} %>  
-  <%= f.input :optionCount,as: :hidden,input_html: {value: 4} %>  
+  <%= f.input :optionCount,as: :hidden %>  
+  <%= f.input :answer,as: :hidden%>  
   <%= f.button :submit , "送出", class: "btn btn-primary" %>
 <% end %>
 
