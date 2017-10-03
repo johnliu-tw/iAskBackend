@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :paper_gradeships
   resources :grades
   resources :papersubject_subjectships

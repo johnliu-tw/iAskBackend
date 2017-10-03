@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+
   before_action :set_question, only: [:show, :edit, :update, :destroy]
 
   # GET /questions
@@ -73,6 +74,6 @@ class QuestionsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
       params.require(:question).permit(:title, :title_attr, :answer, :analysis, :analysis_att, :analysis_url, :question_type, :active, :optionCount, :answer_count, :first_correct_count, :questionA, :questionA_attr, :questionB, :questionB_attr, :questionC, :questionC_attr, :questionD, :questionD_attr, :questionE, :questionE_attr, :questionF, :questionF_attr, :order,
-      :paper_id)
+      :paper_id,:platform_type)
     end
 end

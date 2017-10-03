@@ -1,4 +1,5 @@
 class PapersController < ApplicationController
+  
   before_action :set_paper, only: [:show, :edit, :update, :destroy]
 
   # GET /papers
@@ -71,6 +72,6 @@ class PapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_params
-      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id, grade_ids:[])
+      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,grade_ids:[])
     end
 end
