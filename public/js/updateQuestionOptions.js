@@ -117,7 +117,9 @@ $(function(){
     }
     function activeMutipleAnswer(){
         $("#question_answer").val()
-        var answers=$("#question_answer").val().split("")
+        if($("#question_answer").val()){
+            var answers=$("#question_answer").val().split("")
+        }
         if($("#question_question_type").val()=="複選"){
             var checkboxs = $(".question_answer_checkbox")
             for(var i=0;i<checkboxs.length;i++){

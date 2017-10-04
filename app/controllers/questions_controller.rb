@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   # GET /questions
   # GET /questions.json
   def index
-    @questions = Question.paginate(:page => params[:page], :per_page => 5)
+    @questions = Question.where(paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)
     @paper = Paper.find(params[:paper_id])
   end
 
@@ -22,6 +22,7 @@ class QuestionsController < ApplicationController
 
   # GET /questions/1/edit
   def edit
+    Rails.logger.debug(params.to_json)
     @paper = Paper.find(params[:paper_id])
   end
 
@@ -32,7 +33,7 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       if @question.save
-        format.html { redirect_to paper_questions_path, notice: 'Selection question was successfully created.' }
+        format.html { redirect_to paper_questions_path, notice: '題目已被成功建立' }
         format.json { render :show, status: :created, location: @question }
       else
         format.html { render :new }
@@ -46,7 +47,7 @@ class QuestionsController < ApplicationController
   def update
     respond_to do |format|
       if @question.update(question_params)
-        format.html { redirect_to paper_questions_path(question_params[:paper_id],question_params[:id]), notice: 'Selection question was successfully updated.' }
+        format.html { redirect_to paper_questions_path(question_params[:paper_id],question_params[:id]), notice: '題目已被成功編輯' }
         format.json { render :show, status: :ok, location: @question }
       else
         format.html { render :edit }
@@ -60,7 +61,7 @@ class QuestionsController < ApplicationController
   def destroy
     @question.destroy
     respond_to do |format|
-      format.html { redirect_to paper_questions_path, notice: 'Selection question was successfully destroyed.' }
+      format.html { redirect_to paper_questions_path, notice: '題目已被成功刪除' }
       format.json { head :no_content }
     end
   end

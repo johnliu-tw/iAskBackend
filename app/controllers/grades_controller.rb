@@ -28,7 +28,7 @@ class GradesController < ApplicationController
 
     respond_to do |format|
       if @grade.save
-        format.html { redirect_to @grade, notice: 'Grade was successfully created.' }
+        format.html { redirect_to grades_path, notice: '成功建立新的年級' }
         format.json { render :show, status: :created, location: @grade }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class GradesController < ApplicationController
   def update
     respond_to do |format|
       if @grade.update(grade_params)
-        format.html { redirect_to @grade, notice: 'Grade was successfully updated.' }
+        format.html { redirect_to grades_path, notice: '成功編輯新的年級' }
         format.json { render :show, status: :ok, location: @grade }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class GradesController < ApplicationController
   def destroy
     @grade.destroy
     respond_to do |format|
-      format.html { redirect_to grades_url, notice: 'Grade was successfully destroyed.' }
+      format.html { redirect_to grades_url, notice: '成功刪除以選擇的年級' }
       format.json { head :no_content }
     end
   end

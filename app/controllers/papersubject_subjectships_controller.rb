@@ -28,7 +28,7 @@ class PapersubjectSubjectshipsController < ApplicationController
 
     respond_to do |format|
       if @papersubject_subjectship.save
-        format.html { redirect_to @papersubject_subjectship, notice: 'Papersubject subjectship was successfully created.' }
+        format.html { redirect_to @papersubject_subjectship, notice: '試卷科目以成功建立' }
         format.json { render :show, status: :created, location: @papersubject_subjectship }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class PapersubjectSubjectshipsController < ApplicationController
   def update
     respond_to do |format|
       if @papersubject_subjectship.update(papersubject_subjectship_params)
-        format.html { redirect_to @papersubject_subjectship, notice: 'Papersubject subjectship was successfully updated.' }
+        format.html { redirect_to @papersubject_subjectship, notice: '試卷科目以成功更新' }
         format.json { render :show, status: :ok, location: @papersubject_subjectship }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class PapersubjectSubjectshipsController < ApplicationController
   def destroy
     @papersubject_subjectship.destroy
     respond_to do |format|
-      format.html { redirect_to papersubject_subjectships_url, notice: 'Papersubject subjectship was successfully destroyed.' }
+      format.html { redirect_to papersubject_subjectships_url, notice: '試卷科目以成功刪除' }
       format.json { head :no_content }
     end
   end

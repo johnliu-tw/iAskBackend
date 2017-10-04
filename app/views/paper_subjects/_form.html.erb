@@ -13,8 +13,9 @@
 
   <%= f.input :title, label: '試卷科目名稱' %>
   <%= f.input :title_view, label: '顯示名稱' %>
-  <%= f.input :active, label: '啟用' %>
-    <div>
+  <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: '有效性' %>
+    <div class="form-group string optional subjects">
+      <label class="control-label string optional" for="subjects">配對科目</label>
       <% Subject.all.each do |s| %>
         <%= check_box_tag :subject_ids,s.id, f.object.subjects.include?(s), :name => "paper_subject[subject_ids][]" %>
         <%= s.name %>

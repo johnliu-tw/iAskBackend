@@ -29,7 +29,7 @@ class SubjectsController < ApplicationController
 
     respond_to do |format|
       if @subject.save
-        format.html { redirect_to @subject, notice: '建立成功' }
+        format.html { redirect_to subjects_path, notice: '科目建立成功' }
         format.json { render :show, status: :created, location: @subject }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class SubjectsController < ApplicationController
   def update
     respond_to do |format|
       if @subject.update(subject_params)
-        format.html { redirect_to @subject, notice: '編輯成功' }
+        format.html { redirect_to subjects_path, notice: '科目編輯成功' }
         format.json { render :show, status: :ok, location: @subject }
       else
         format.html { render :edit }
@@ -57,7 +57,7 @@ class SubjectsController < ApplicationController
   def destroy
     @subject.destroy
     respond_to do |format|
-      format.html { redirect_to subjects_url, notice: '刪除成功' }
+      format.html { redirect_to subjects_path, notice: '科目刪除成功' }
       format.json { head :no_content }
     end
   end

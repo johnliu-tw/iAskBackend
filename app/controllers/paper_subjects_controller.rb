@@ -28,7 +28,7 @@ class PaperSubjectsController < ApplicationController
     @paper_subject = PaperSubject.new(paper_subject_params)
     respond_to do |format|
       if @paper_subject.save
-        format.html { redirect_to @paper_subject, notice: '成功建立科目' }
+        format.html { redirect_to paper_subjects_path, notice: '成功建立試卷科目' }
         format.json { render :show, status: :created, location: @paper_subject }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class PaperSubjectsController < ApplicationController
   def update
     respond_to do |format|
       if @paper_subject.update(paper_subject_params)
-        format.html { redirect_to @paper_subject, notice: 'Paper subject was successfully updated.' }
+        format.html { redirect_to paper_subjects_path, notice: '成功編輯試卷科目' }
         format.json { render :show, status: :ok, location: @paper_subject }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class PaperSubjectsController < ApplicationController
   def destroy
     @paper_subject.destroy
     respond_to do |format|
-      format.html { redirect_to paper_subjects_url, notice: 'Paper subject was successfully destroyed.' }
+      format.html { redirect_to paper_subjects_path, notice: '成功刪除試卷科目' }
       format.json { head :no_content }
     end
   end
