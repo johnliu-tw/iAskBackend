@@ -14,12 +14,12 @@
    <%= f.input :title, label: '試卷名稱' %>
   <div class="form-group string optional grade">
     <label class="control-label string optional" for="grade">年級</label><br>
-      <% Grade.all.each do |g| %>
+      <% @grades.each do |g| %>
         <%= check_box_tag :grade_ids,g.id, f.object.grades.include?(g), :name => "paper[grade_ids][]",class:"boolean optional" %>
         <%= g.name %>
       <% end %>
   </div>
-  <%= f.input :paper_subject_id, :collection => PaperSubject.all,:value_method => :id,:label_method => :title,:label => "試卷科目", :include_blank => false %>
+  <%= f.input :paper_subject_id, :collection => @paper_subjects,:value_method => :id,:label_method => :title,:label => "試卷科目", :include_blank => false %>
   <%= f.input :visible, collection: [ "免費可見", "購點後可見", "付費可見"], :label => "可見性設定", :include_blank => false %>
   <%= f.input :public_date,as: :date, html5: true, label: '上架日期' %>
   <%= f.input :note, label: '備註' %>

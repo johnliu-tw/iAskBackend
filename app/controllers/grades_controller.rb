@@ -1,10 +1,19 @@
 class GradesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_grade, only: [:show, :edit, :update, :destroy]
 
   # GET /grades
   # GET /grades.json
   def index
-    @grades = Grade.all
+    if current_user.has_role? :iAsk
+      @grades = Grade.where(platform_type: 0).paginate(:page => params[:page], :per_page => 5)
+    elsif current_user.has_role? :udn
+      @grades = Grade.where(platform_type: 1).paginate(:page => params[:page], :per_page => 5)    
+    elsif current_user.has_role? :reader
+      @grades = Grade.where(platform_type: 2).paginate(:page => params[:page], :per_page => 5)
+    elsif current_user.has_role? :admin
+      @grades = Grade.paginate(:page => params[:page], :per_page => 5)
+    end
   end
 
   # GET /grades/1
@@ -25,6 +34,13 @@ class GradesController < ApplicationController
   # POST /grades.json
   def create
     @grade = Grade.new(grade_params)
+    if current_user.has_role? :iAsk
+      @grade.platform_type = 0
+    elsif current_user.has_role? :udn
+      @grade.platform_type = 1  
+    elsif current_user.has_role? :reader
+      @grade.platform_type = 2
+    end
 
     respond_to do |format|
       if @grade.save

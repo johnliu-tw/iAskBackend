@@ -3,42 +3,42 @@
 $(function(){
   $("#batch-active").click(function(){
     var paper_subject_ids = []
+    var count = 0
+    var active = true
     $(".paper_subject_id:checked").each(function(){
       paper_subject_ids.push($(this).val());
     });
-    for(var i=0; i < paper_subject_ids.length;i++){
-      $.ajax({
-      type: "POST",
-      url: "/paper_subjects/"+paper_subject_ids[i],
-      dataType: "script",
-      contentType: 'application/json',
-      data: JSON.stringify({ active:true, _method:'put' })
-      }).success(function(data){
-      })
-    }
+    ajaxBatchUpdate(paper_subject_ids,active,count)
   });
   $("#batch-inactive").click(function(){
     var paper_subject_ids = []
+    var count = 0
+    var active = false
     $(".paper_subject_id:checked").each(function(){
       paper_subject_ids.push($(this).val());
     });
-    for(var i=0; i < paper_subject_ids.length;i++){
-      $.ajax({
-      type: "POST",
-      url: "/paper_subjects/"+paper_subject_ids[i],
-      dataType: "script",
-      contentType: 'application/json',
-      data: JSON.stringify({ active:false, _method:'put' })
-      }).success(function(data){
-      })
-    }
+    ajaxBatchUpdate(paper_subject_ids,active,count)
   });
   $("#check-all").click(function(){
     $(".paper_subject_id").each(function(){
       $(this).attr("checked","checked")
     });
   })
-
+  function ajaxBatchUpdate(paper_subject_ids,active,count){
+    $.ajax({
+        type: "POST",
+        url: "/paper_subjects/"+paper_subject_ids[count],
+        dataType: "script",
+        contentType: 'application/json',
+        data: JSON.stringify({ active:active, _method:'put' })
+        })
+        .complete(function(data){
+          if(count< paper_subject_ids.length-1){
+            count += 1;
+            ajaxBatchUpdate(paper_subject_ids,active,count);
+          }
+        })
+        }
 })
 
 </script> 

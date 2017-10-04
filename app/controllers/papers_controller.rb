@@ -1,11 +1,19 @@
 class PapersController < ApplicationController
-  
+  before_action :authenticate_user!
   before_action :set_paper, only: [:show, :edit, :update, :destroy]
 
   # GET /papers
   # GET /papers.json
   def index
-    @papers = Paper.paginate(:page => params[:page], :per_page => 5)
+    if current_user.has_role? :iAsk
+      @papers = Paper.where(platform_type: 0).paginate(:page => params[:page], :per_page => 5)
+    elsif current_user.has_role? :udn
+      @papers = Paper.where(platform_type: 1).paginate(:page => params[:page], :per_page => 5)    
+    elsif current_user.has_role? :reader
+      @papers = Paper.where(platform_type: 2).paginate(:page => params[:page], :per_page => 5)
+    elsif current_user.has_role? :admin
+      @papers = Paper.all.paginate(:page => params[:page], :per_page => 5)
+    end
     @question = Question.new
   end
 
@@ -17,18 +25,53 @@ class PapersController < ApplicationController
   # GET /papers/new
   def new
     @paper = Paper.new
+    if current_user.has_role? :iAsk
+      @grades = Grade.where(platform_type: 0)
+    elsif current_user.has_role? :udn
+      @grades = Grade.where(platform_type: 1) 
+    elsif current_user.has_role? :reader
+      @grades = Grade.where(platform_type: 2)
+    end
+    if current_user.has_role? :iAsk
+      @paper_subjects = PaperSubject.where(platform_type: 0)
+    elsif current_user.has_role? :udn
+      @paper_subjects = PaperSubject.where(platform_type: 1) 
+    elsif current_user.has_role? :reader
+      @paper_subjects = PaperSubject.where(platform_type: 2)
+    end
+
     @visibles = [{name: "免費可見"},{name: "購點後可見"},{name: "付費可見"}]
   end
 
   # GET /papers/1/edit
   def edit
+    if current_user.has_role? :iAsk
+      @grades = Grade.where(platform_type: 0)
+    elsif current_user.has_role? :udn
+      @grades = Grade.where(platform_type: 1) 
+    elsif current_user.has_role? :reader
+      @grades = Grade.where(platform_type: 2)
+    end
+    if current_user.has_role? :iAsk
+      @paper_subjects = PaperSubject.where(platform_type: 0)
+    elsif current_user.has_role? :udn
+      @paper_subjects = PaperSubject.where(platform_type: 1) 
+    elsif current_user.has_role? :reader
+      @paper_subjects = PaperSubject.where(platform_type: 2)
+    end
   end
 
   # POST /papers
   # POST /papers.json
   def create
     @paper = Paper.new(paper_params)
-
+    if current_user.has_role? :iAsk
+      @paper.platform_type = 0
+    elsif current_user.has_role? :udn
+      @paper.platform_type = 1  
+    elsif current_user.has_role? :reader
+      @paper.platform_type = 2
+    end
     respond_to do |format|
       if @paper.save
         format.html { redirect_to papers_path, notice: '試卷以成功建立' }

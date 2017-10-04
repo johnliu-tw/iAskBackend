@@ -5,10 +5,17 @@
     </div>
     <ul class="nav navbar-nav">
       <li><a href="/">首頁</a></li>
+      <% if current_user %>
       <li><a href="/papers">試卷管理</a></li>
       <li><a href="/paper_subjects">試卷科目管理</a></li>
       <li><a href="/subjects">科目管理</a></li>
       <li><a href="/grades">年級管理</a></li>
+      <% if current_user.has_role? :admin %>
+      <li><a href="/">題目分析</a></li>
+      <% end %>
+      <li><%= link_to('登出', destroy_user_session_path, :method => :delete) %></li>
+      <li><%= link_to('修改密碼', edit_registration_path(:user)) %></li>
+      <% end %>
     </ul>
   </div>
 </nav>

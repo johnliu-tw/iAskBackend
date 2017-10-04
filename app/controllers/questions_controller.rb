@@ -1,11 +1,20 @@
 class QuestionsController < ApplicationController
-
+  before_action :authenticate_user!
   before_action :set_question, only: [:show, :edit, :update, :destroy]
 
   # GET /questions
   # GET /questions.json
   def index
-    @questions = Question.where(paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)
+    if current_user.has_role? :iAsk
+      @questions = Question.where(platform_type: 0, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)
+    elsif current_user.has_role? :udn
+      @questions = Question.where(platform_type: 1, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)    
+    elsif current_user.has_role? :reader
+      @questions = Question.where(platform_type: 2, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)
+    elsif current_user.has_role? :admin
+      @questions = Question.where(paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)
+    end
+    
     @paper = Paper.find(params[:paper_id])
   end
 
@@ -22,7 +31,6 @@ class QuestionsController < ApplicationController
 
   # GET /questions/1/edit
   def edit
-    Rails.logger.debug(params.to_json)
     @paper = Paper.find(params[:paper_id])
   end
 
@@ -30,7 +38,13 @@ class QuestionsController < ApplicationController
   # POST /questions.json
   def create
     @question = Question.new(question_params)
-
+    if current_user.has_role? :iAsk
+      @question.platform_type = 0
+    elsif current_user.has_role? :udn
+      @question.platform_type = 1  
+    elsif current_user.has_role? :reader
+      @question.platform_type = 2
+    end
     respond_to do |format|
       if @question.save
         format.html { redirect_to paper_questions_path, notice: '題目已被成功建立' }

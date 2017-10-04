@@ -1,10 +1,19 @@
 class PaperSubjectsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_paper_subject, only: [:show, :edit, :update, :destroy]
 
   # GET /paper_subjects
   # GET /paper_subjects.json
   def index
-    @paper_subjects = PaperSubject.paginate(:page => params[:page], :per_page => 5)
+    if current_user.has_role? :iAsk
+      @paper_subjects = PaperSubject.where(platform_type: 0).paginate(:page => params[:page], :per_page => 5)
+    elsif current_user.has_role? :udn
+      @paper_subjects = PaperSubject.where(platform_type: 1).paginate(:page => params[:page], :per_page => 5)    
+    elsif current_user.has_role? :reader
+      @paper_subjects = PaperSubject.where(platform_type: 2).paginate(:page => params[:page], :per_page => 5)
+    elsif current_user.has_role? :admin
+      @paper_subjects = PaperSubject.paginate(:page => params[:page], :per_page => 5)
+    end
   end
 
   # GET /paper_subjects/1
@@ -15,17 +24,37 @@ class PaperSubjectsController < ApplicationController
   # GET /paper_subjects/new
   def new
     @paper_subject = PaperSubject.new
+    if current_user.has_role? :iAsk
+      @subjects = Subject.where(platform_type: 0)
+    elsif current_user.has_role? :udn
+      @subjects = Subject.where(platform_type: 1) 
+    elsif current_user.has_role? :reader
+      @subjects = Subject.where(platform_type: 2)
+    end
   end
 
   # GET /paper_subjects/1/edit
   def edit
-    @subjects = Subject.all
+    if current_user.has_role? :iAsk
+      @subjects = Subject.where(platform_type: 0)
+    elsif current_user.has_role? :udn
+      @subjects = Subject.where(platform_type: 1) 
+    elsif current_user.has_role? :reader
+      @subjects = Subject.where(platform_type: 2)
+    end
   end
 
   # POST /paper_subjects
   # POST /paper_subjects.json
   def create
     @paper_subject = PaperSubject.new(paper_subject_params)
+    if current_user.has_role? :iAsk
+      @paper_subject.platform_type = 0
+    elsif current_user.has_role? :udn
+      @paper_subject.platform_type = 1  
+    elsif current_user.has_role? :reader
+      @paper_subject.platform_type = 2
+    end
     respond_to do |format|
       if @paper_subject.save
         format.html { redirect_to paper_subjects_path, notice: '成功建立試卷科目' }

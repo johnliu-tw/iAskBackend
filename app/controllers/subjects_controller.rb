@@ -1,11 +1,19 @@
 class SubjectsController < ApplicationController
-
+  before_action :authenticate_user!
   before_action :set_subject, only: [:show, :edit, :update, :destroy]
 
   # GET /subjects
   # GET /subjects.json
   def index
-    @subjects = Subject.paginate(:page => params[:page], :per_page => 5)
+    if current_user.has_role? :iAsk
+      @subjects = Subject.where(platform_type: 0).paginate(:page => params[:page], :per_page => 5)
+    elsif current_user.has_role? :udn
+      @subjects = Subject.where(platform_type: 1).paginate(:page => params[:page], :per_page => 5)    
+    elsif current_user.has_role? :reader
+      @subjects = Subject.where(platform_type: 2).paginate(:page => params[:page], :per_page => 5)
+    elsif current_user.has_role? :admin
+      @subjects = Subject.paginate(:page => params[:page], :per_page => 5)
+    end
   end
 
   # GET /subjects/1
@@ -26,7 +34,13 @@ class SubjectsController < ApplicationController
   # POST /subjects.json
   def create
     @subject = Subject.new(subject_params)
-
+    if current_user.has_role? :iAsk
+      @subject.platform_type = 0
+    elsif current_user.has_role? :udn
+      @subject.platform_type = 1  
+    elsif current_user.has_role? :reader
+      @subject.platform_type = 2
+    end
     respond_to do |format|
       if @subject.save
         format.html { redirect_to subjects_path, notice: '科目建立成功' }
