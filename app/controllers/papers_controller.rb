@@ -12,7 +12,7 @@ class PapersController < ApplicationController
     elsif current_user.has_role? :reader
       @papers = Paper.where(platform_type: 2).paginate(:page => params[:page], :per_page => 5)
     elsif current_user.has_role? :admin
-      @papers = Paper.all.paginate(:page => params[:page], :per_page => 5)
+      @papers = Paper.where(platform_type: $platform_id).paginate(:page => params[:page], :per_page => 5)
     end
     @question = Question.new
   end
@@ -25,19 +25,25 @@ class PapersController < ApplicationController
   # GET /papers/new
   def new
     @paper = Paper.new
+
     if current_user.has_role? :iAsk
       @grades = Grade.where(platform_type: 0)
     elsif current_user.has_role? :udn
       @grades = Grade.where(platform_type: 1) 
     elsif current_user.has_role? :reader
       @grades = Grade.where(platform_type: 2)
+    elsif current_user.has_role? :admin
+      @grades = Grade.where(platform_type: $platform_id)
     end
+
     if current_user.has_role? :iAsk
       @paper_subjects = PaperSubject.where(platform_type: 0)
     elsif current_user.has_role? :udn
       @paper_subjects = PaperSubject.where(platform_type: 1) 
     elsif current_user.has_role? :reader
       @paper_subjects = PaperSubject.where(platform_type: 2)
+    elsif current_user.has_role? :admin
+      @paper_subjects = PaperSubject.where(platform_type: $platform_id)
     end
 
     @visibles = [{name: "免費可見"},{name: "購點後可見"},{name: "付費可見"}]
@@ -51,13 +57,18 @@ class PapersController < ApplicationController
       @grades = Grade.where(platform_type: 1) 
     elsif current_user.has_role? :reader
       @grades = Grade.where(platform_type: 2)
+    elsif current_user.has_role? :admin
+      @grades = Grade.where(platform_type: $platform_id)
     end
+
     if current_user.has_role? :iAsk
       @paper_subjects = PaperSubject.where(platform_type: 0)
     elsif current_user.has_role? :udn
       @paper_subjects = PaperSubject.where(platform_type: 1) 
     elsif current_user.has_role? :reader
       @paper_subjects = PaperSubject.where(platform_type: 2)
+    elsif current_user.has_role? :admin
+      @paper_subjects = PaperSubject.where(platform_type: $platform_id)
     end
   end
 
@@ -71,6 +82,8 @@ class PapersController < ApplicationController
       @paper.platform_type = 1  
     elsif current_user.has_role? :reader
       @paper.platform_type = 2
+    elsif current_user.has_role? :admin
+      @paper.platform_type = $platform_id
     end
     respond_to do |format|
       if @paper.save

@@ -12,7 +12,7 @@ class QuestionsController < ApplicationController
     elsif current_user.has_role? :reader
       @questions = Question.where(platform_type: 2, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)
     elsif current_user.has_role? :admin
-      @questions = Question.where(paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)
+      @questions = Question.where(paper_id: params[:paper_id],platform_type: $platform_id).paginate(:page => params[:page], :per_page => 5)
     end
     
     @paper = Paper.find(params[:paper_id])
@@ -44,6 +44,8 @@ class QuestionsController < ApplicationController
       @question.platform_type = 1  
     elsif current_user.has_role? :reader
       @question.platform_type = 2
+    elsif current_user.has_role? :admin
+      @question.platform_type = $platform_id
     end
     respond_to do |format|
       if @question.save

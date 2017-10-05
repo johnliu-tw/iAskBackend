@@ -12,10 +12,9 @@ class PaperSubjectsController < ApplicationController
     elsif current_user.has_role? :reader
       @paper_subjects = PaperSubject.where(platform_type: 2).paginate(:page => params[:page], :per_page => 5)
     elsif current_user.has_role? :admin
-      @paper_subjects = PaperSubject.paginate(:page => params[:page], :per_page => 5)
+      @paper_subjects = PaperSubject.where(platform_type: $platform_id).paginate(:page => params[:page], :per_page => 5)
     end
   end
-
   # GET /paper_subjects/1
   # GET /paper_subjects/1.json
   def show
@@ -30,6 +29,8 @@ class PaperSubjectsController < ApplicationController
       @subjects = Subject.where(platform_type: 1) 
     elsif current_user.has_role? :reader
       @subjects = Subject.where(platform_type: 2)
+    elsif current_user.has_role? :admin
+      @subjects = Subject.where(platform_type: $platform_id)      
     end
   end
 
@@ -41,6 +42,8 @@ class PaperSubjectsController < ApplicationController
       @subjects = Subject.where(platform_type: 1) 
     elsif current_user.has_role? :reader
       @subjects = Subject.where(platform_type: 2)
+    elsif current_user.has_role? :admin
+      @subjects = Subject.where(platform_type: $platform_id)   
     end
   end
 
@@ -54,6 +57,8 @@ class PaperSubjectsController < ApplicationController
       @paper_subject.platform_type = 1  
     elsif current_user.has_role? :reader
       @paper_subject.platform_type = 2
+    elsif current_user.has_role? :admin
+      @paper_subject.platform_type = $platform_id
     end
     respond_to do |format|
       if @paper_subject.save

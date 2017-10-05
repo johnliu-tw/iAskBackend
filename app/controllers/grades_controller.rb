@@ -12,7 +12,7 @@ class GradesController < ApplicationController
     elsif current_user.has_role? :reader
       @grades = Grade.where(platform_type: 2).paginate(:page => params[:page], :per_page => 5)
     elsif current_user.has_role? :admin
-      @grades = Grade.paginate(:page => params[:page], :per_page => 5)
+      @grades = Grade.where(platform_type: $platform_id).paginate(:page => params[:page], :per_page => 5)
     end
   end
 
@@ -40,6 +40,8 @@ class GradesController < ApplicationController
       @grade.platform_type = 1  
     elsif current_user.has_role? :reader
       @grade.platform_type = 2
+    elsif current_user.has_role? :admin
+      @grade.platform_type = $platform_id
     end
 
     respond_to do |format|

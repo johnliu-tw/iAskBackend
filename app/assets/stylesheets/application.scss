@@ -16,7 +16,7 @@
  @import "bootstrap-sprockets";
  @import "bootstrap";
 
- span.column-data{
+span.column-data{
     font-weight: bold;
     font-size: 20px;
 }
@@ -43,4 +43,15 @@ span.radio{
 }
 input.question_answer_checkbox{
     margin-left: 10px;
+}
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 3px 1.5rem;
+    clear: both;
+    font-weight: 400;
+    text-align: inherit;
+    white-space: nowrap;
+    background: 0 0;
+    border: 0;
 }

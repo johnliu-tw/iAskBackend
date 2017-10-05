@@ -12,7 +12,7 @@ class SubjectsController < ApplicationController
     elsif current_user.has_role? :reader
       @subjects = Subject.where(platform_type: 2).paginate(:page => params[:page], :per_page => 5)
     elsif current_user.has_role? :admin
-      @subjects = Subject.paginate(:page => params[:page], :per_page => 5)
+      @subjects = Subject.where(platform_type: $platform_id).paginate(:page => params[:page], :per_page => 5)
     end
   end
 
@@ -40,6 +40,8 @@ class SubjectsController < ApplicationController
       @subject.platform_type = 1  
     elsif current_user.has_role? :reader
       @subject.platform_type = 2
+    elsif current_user.has_role? :admin
+      @subject.platform_type = $platform_id
     end
     respond_to do |format|
       if @subject.save
