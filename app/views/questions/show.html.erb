@@ -7,7 +7,9 @@
 
 <p>
   <strong>題幹附圖:</strong>
+  <% if @question.title_attr.url != nil%>
   <%= image_tag @question.title_attr.url %>
+  <% else %>
 </p>
 
 <p>

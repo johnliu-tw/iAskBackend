@@ -1,0 +1,24 @@
+<h2>建立使用者</h2>
+
+<%= simple_form_for @user, url: home_index_path do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :email, required: true, autofocus: true %>
+    <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
+    <%= f.input :password_confirmation, required: true %>
+    <div class="form-group string optional subjects">
+      <label class="control-label string optional" for="subjects">角色選擇</label>
+      <input type="checkbox" name="user[role_ids][]" value="iAsk" class="boolean optional">&nbsp;&nbsp;iAsk
+      <input type="checkbox" name="user[role_ids][]" value="reader" class="boolean optional">&nbsp;&nbsp;讀享
+      <input type="checkbox" name="user[role_ids][]" value="udn" class="boolean optional">&nbsp;&nbsp;udn
+      <input type="checkbox" name="user[role_ids][]" value="leader" class="boolean optional">&nbsp;&nbsp;admin
+      <input type="checkbox" name="user[role_ids][]" value="admin" class="boolean optional">&nbsp;&nbsp;super admin
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "送出" %>
+  </div>
+<% end %>
+

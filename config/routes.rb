@@ -17,4 +17,5 @@ Rails.application.routes.draw do
   post 'paper_subjects/:id', :to => 'paper_subjects#update'
   post 'papers/:id', :to => 'papers#update'
   post 'papers/:id/questions/:id', :to => 'questions#update'
+  get  'homes/management', :to => 'home#management'
 end

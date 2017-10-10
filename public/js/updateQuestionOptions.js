@@ -77,6 +77,8 @@ $(function(){
         $("#answer-board").text("")
         switch(questionType){
             case "單選":
+                $("div#option-board").show();
+                $("div#option-buttons").show();
                 content+="<div class='form-group radio_buttons optional question_answer'>"
                 content+="<label class='control-label radio_buttons optional'>答案</label>" 
                 for(var i=0;i<optionNum;i++){
@@ -94,6 +96,8 @@ $(function(){
                 content+="</div>"
                 break;
             case "複選": 
+            $("div#option-board").show()
+            $("div#option-buttons").show();
                 content+="<div class='form-group string optional question_answer'>"
                 content+="<label class='control-label string optional' for='question_answer'>答案</label>"
                 content+="<input type='hidden' name='question[answer]' id='question_answer'></input>"
@@ -111,6 +115,8 @@ $(function(){
                 content+="</div>"
                 break;
             case "非選": 
+            $("div#option-board").hide()
+            $("div#option-buttons").hide();
                 break;
         }
         $("#answer-board").html(content)        

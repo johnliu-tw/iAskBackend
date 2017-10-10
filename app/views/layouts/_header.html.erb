@@ -14,15 +14,17 @@ a.dropdown-item:hover{
       <li><a href="/">首頁</a></li>
       <% if current_user %>
       <li><a href="/papers">試卷管理</a></li>
+      <% if current_user.has_role? :leader%>
       <li><a href="/paper_subjects">試卷科目管理</a></li>
+      <% end %>
       <li><a href="/subjects">科目管理</a></li>
       <li><a href="/grades">年級管理</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right">
-      <% if current_user.has_role? :admin %>
-      <li><a href="/">題目分析</a></li>
-      <% end %>
       <% if current_user.has_role? :admin%>
+      <li><a href="/">題目分析</a></li>
+      <li><a href="/">試卷分析</a></li>
+      <li><a href="/homes/management">使用者管理</a></li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           目前平台: 
@@ -41,8 +43,8 @@ a.dropdown-item:hover{
         </div>
       </li>
       <% end %>
-      <li class="pull-right"><%= link_to('登出', destroy_user_session_path, :method => :delete) %></li>
-      <li class="pull-right"><%= link_to('修改密碼', edit_registration_path(:user)) %></li>
+      <li class="pull-right"><a href="/users/sign_out" data-method="delete"><img src="/logout.png"></a></li>
+      <li class="pull-right"><a href="/users/edit"><img src="/change_password.png"></a></li>
       <% end %>
     </ul>
     </div>

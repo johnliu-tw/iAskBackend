@@ -1,0 +1,29 @@
+<h1>使用者管理</h1>
+<button class="btn btn-primary"><a href="/home/new">建立新使用者</a></button>
+<table class="table">
+  <thead>
+    <tr class="thead">
+      <th>使用者名稱</th>
+      <th>使用者角色</th>
+      <th colspan="2">
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><span ><%= user.email %></span></td>
+        <td>
+        <% user.roles.each do |r| %>
+        <%= @role_array[r.id-1] %>,
+        <% end %>
+        </td>
+        <td><a href='/home/<%= user.id %>/edit'>編輯</a></td>
+        <td><a href='/home/<%= user.id %>' data-method="delete" data-confirm="你確定？">刪除</a></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

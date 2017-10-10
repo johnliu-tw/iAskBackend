@@ -76,22 +76,22 @@ $(function(){
         <td><%= question.title %></td>
         <td><%= question.question_type %></td>
         <td>
-        <%if(question.optionCount == 3)%>
+        <%if question.optionCount == 3 && question.question_type!="非選"%>
         A:<%= question.questionA %><br>
         B:<%= question.questionB %><br>
         C:<%= question.questionC %>
-        <% elsif(question.optionCount == 4)%>
+        <% elsif question.optionCount == 4 && question.question_type!="非選"%>
         A:<%= question.questionA %><br>
         B:<%= question.questionB %><br>
         C:<%= question.questionC %><br>
         D:<%= question.questionD %>
-        <% elsif(question.optionCount == 5)%>
+        <% elsif question.optionCount == 5 && question.question_type!="非選"%>
         A:<%= question.questionA %><br>
         B:<%= question.questionB %><br>
         C:<%= question.questionC %><br>
         D:<%= question.questionD %><br>
         E:<%= question.questionE %>
-        <% elsif(question.optionCount == 6)%>
+        <% elsif question.optionCount == 6 && question.question_type!="非選"%>
         A:<%= question.questionA %><br>
         B:<%= question.questionB %><br>
         C:<%= question.questionC %><br>

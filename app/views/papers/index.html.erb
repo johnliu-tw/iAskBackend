@@ -50,7 +50,7 @@ $(function(){
 <button class="btn btn-danger" id="batch-inactive">批次無效</button>
 <table class="table">
   <thead>
-    <tr>
+    <tr class="thead">
       <th><button class="btn btn-info" id="check-all">全選</button></th>
       <th>試卷科目</th>
       <th>年級</th>      
@@ -59,13 +59,13 @@ $(function(){
       <th>上架日期</th>
       <th>備註</th>
       <th>有效性</th>
-      <th colspan="2"></th>
+      <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @papers.each do |paper| %>
-      <tr class="warning">
+      <tr>
         <td><input type="checkbox" class="paper_id" value=<%= paper.id %>></td>
         <td class="column-name"><%= paper.paper_subject.title %></td>
         <td><span class="column-name">

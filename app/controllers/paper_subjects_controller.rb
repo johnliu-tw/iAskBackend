@@ -6,13 +6,13 @@ class PaperSubjectsController < ApplicationController
   # GET /paper_subjects.json
   def index
     if current_user.has_role? :iAsk
-      @paper_subjects = PaperSubject.where(platform_type: 0).paginate(:page => params[:page], :per_page => 5)
+      @paper_subjects = PaperSubject.where(platform_type: 0).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :udn
-      @paper_subjects = PaperSubject.where(platform_type: 1).paginate(:page => params[:page], :per_page => 5)    
+      @paper_subjects = PaperSubject.where(platform_type: 1).order(id: :desc).paginate(:page => params[:page], :per_page => 10)    
     elsif current_user.has_role? :reader
-      @paper_subjects = PaperSubject.where(platform_type: 2).paginate(:page => params[:page], :per_page => 5)
+      @paper_subjects = PaperSubject.where(platform_type: 2).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :admin
-      @paper_subjects = PaperSubject.where(platform_type: $platform_id).paginate(:page => params[:page], :per_page => 5)
+      @paper_subjects = PaperSubject.where(platform_type: $platform_id).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
     end
   end
   # GET /paper_subjects/1

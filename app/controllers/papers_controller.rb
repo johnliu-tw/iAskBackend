@@ -6,13 +6,13 @@ class PapersController < ApplicationController
   # GET /papers.json
   def index
     if current_user.has_role? :iAsk
-      @papers = Paper.where(platform_type: 0).paginate(:page => params[:page], :per_page => 5)
+      @papers = Paper.where(platform_type: 0).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :udn
-      @papers = Paper.where(platform_type: 1).paginate(:page => params[:page], :per_page => 5)    
+      @papers = Paper.where(platform_type: 1).order(id: :desc).paginate(:page => params[:page], :per_page => 10)    
     elsif current_user.has_role? :reader
-      @papers = Paper.where(platform_type: 2).paginate(:page => params[:page], :per_page => 5)
+      @papers = Paper.where(platform_type: 2).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :admin
-      @papers = Paper.where(platform_type: $platform_id).paginate(:page => params[:page], :per_page => 5)
+      @papers = Paper.where(platform_type: $platform_id).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
     end
     @question = Question.new
   end
@@ -87,7 +87,7 @@ class PapersController < ApplicationController
     end
     respond_to do |format|
       if @paper.save
-        format.html { redirect_to papers_path, notice: '試卷以成功建立' }
+        format.html { redirect_to papers_path, notice: '成功建立試卷' }
         format.json { render :show, status: :created, location: @paper }
       else
         format.html { render :new }
@@ -101,7 +101,7 @@ class PapersController < ApplicationController
   def update
     respond_to do |format|
       if @paper.update(paper_params)
-        format.html { redirect_to papers_path, notice: '試卷以成功編輯' }
+        format.html { redirect_to papers_path, notice: '成功編輯試卷' }
         format.json { render :show, status: :ok, location: @paper }
       else
         format.html { render :edit }
@@ -115,7 +115,7 @@ class PapersController < ApplicationController
   def destroy
     @paper.destroy
     respond_to do |format|
-      format.html { redirect_to papers_url, notice: '試卷以成功刪除' }
+      format.html { redirect_to papers_url, notice: '成功刪除試卷' }
       format.json { head :no_content }
     end
   end

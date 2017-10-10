@@ -6,13 +6,13 @@ class QuestionsController < ApplicationController
   # GET /questions.json
   def index
     if current_user.has_role? :iAsk
-      @questions = Question.where(platform_type: 0, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)
+      @questions = Question.where(platform_type: 0, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :udn
-      @questions = Question.where(platform_type: 1, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)    
+      @questions = Question.where(platform_type: 1, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 10)    
     elsif current_user.has_role? :reader
-      @questions = Question.where(platform_type: 2, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 5)
+      @questions = Question.where(platform_type: 2, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :admin
-      @questions = Question.where(paper_id: params[:paper_id],platform_type: $platform_id).paginate(:page => params[:page], :per_page => 5)
+      @questions = Question.where(paper_id: params[:paper_id],platform_type: $platform_id).paginate(:page => params[:page], :per_page => 10)
     end
     
     @paper = Paper.find(params[:paper_id])
@@ -26,6 +26,16 @@ class QuestionsController < ApplicationController
   # GET /questions/new
   def new
     @question = Question.new
+    if current_user.has_role? :iAsk
+      @auto_num = Question.where(platform_type: 2, paper_id: params[:paper_id]).size + 1 
+    elsif current_user.has_role? :udn
+      @auto_num = Question.where(platform_type: 2, paper_id: params[:paper_id]).size + 1 
+    elsif current_user.has_role? :reader
+      @auto_num = Question.where(platform_type: 2, paper_id: params[:paper_id]).size + 1 
+    elsif current_user.has_role? :admin
+      @auto_num = Question.where(paper_id: params[:paper_id],platform_type: $platform_id).size + 1 
+    end
+
     @paper = Paper.find(params[:paper_id])
   end
 

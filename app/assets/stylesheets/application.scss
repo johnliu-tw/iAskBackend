@@ -16,10 +16,6 @@
  @import "bootstrap-sprockets";
  @import "bootstrap";
 
-span.column-data{
-    font-weight: bold;
-    font-size: 20px;
-}
 span.active{
     color: green;
 }
@@ -40,6 +36,7 @@ span.inactive{
 }
 span.radio{
     margin-right:10px;
+    margin-left: 15px;
 }
 input.question_answer_checkbox{
     margin-left: 10px;
@@ -54,4 +51,8 @@ input.question_answer_checkbox{
     white-space: nowrap;
     background: 0 0;
     border: 0;
+}
+.thead{
+    background-color: orange;
+    color: white;
 }

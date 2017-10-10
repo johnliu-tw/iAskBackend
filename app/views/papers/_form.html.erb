@@ -21,8 +21,15 @@
   </div>
   <%= f.input :paper_subject_id, :collection => @paper_subjects,:value_method => :id,:label_method => :title,:label => "試卷科目", :include_blank => false %>
   <%= f.input :visible, collection: [ "免費可見", "購點後可見", "付費可見"], :label => "可見性設定", :include_blank => false %>
-  <%= f.input :public_date,as: :date, html5: true, label: '上架日期' %>
+  <%= f.input :public_date,as: :string, input_html: {type: :date}, label: '上架日期' %>
   <%= f.input :note, label: '備註' %>
+  <% if paper.active != nil %>
   <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: '有效性' %>
+  <% else %>
+  <%= f.input :active,:item_wrapper_class => 'inline',:checked => ['無效', false], as: :radio_buttons, label: '有效性' %>
+  <% end %>
   <%= f.button :submit , "送出", class: "btn btn-primary" %>
+  <% if paper.title != nil %> 
+  <button class="btn btn-success"><%= link_to "題目管理", paper_questions_path(paper,:paper_id => paper.id) %></button>
+  <% end %>
 <% end %>

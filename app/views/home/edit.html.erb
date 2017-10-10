@@ -1,0 +1,23 @@
+<h2>修改使用者資料</h2>
+
+<%= simple_form_for @user ,url: home_path, html: { method: :put } do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+
+    <%= f.input :email, required: false %>
+    <%= f.input :password, autocomplete: "off" %>
+    <%= f.input :password_confirmation %>
+    <div class="form-group string optional subjects">
+      <label class="control-label string optional" for="subjects">角色選擇</label>
+      <% Role.all.each do |r| %>
+        <%= check_box_tag :role_ids,r.name, f.object.roles.include?(r), :name => "user[role_ids][]" %>
+        <%= @role_array[r.id-1] %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "送出" %>
+  </div>
+<% end %>

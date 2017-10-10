@@ -15,11 +15,15 @@
     </div>
   <% end %>
   <%= f.input :order, label: '題號' %>
-  <%= f.input :title, label: '題幹' %>
-  <%= f.input :title_attr,as: :file, label: '附檔' %>
+  <%= f.input :title,as: :text,input_html:{rows: 5}, label: '題幹' %>
+  <%= f.input :title_attr,as: :string,label: '附檔'%>
+  <%= f.input :title_attr,as: :file,label: false %>
+  <label for="question_remove_title_attr_true" style="font-weight:normal;">
+    <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_title_attr][]" id="question_remove_title_attr_true">刪除
+  </label>
   <%= f.input :question_type, collection: [ "單選", "複選", "非選"], :label => "題型", :include_blank => false %>
   <div id="option-board">
-    <% if  @question.optionCount==4%>
+    <% if  @question.optionCount==4 && @question.question_type !="非選"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :file, label: '附檔' %>
     <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
@@ -28,7 +32,11 @@
     <%= f.input :questionC_attr,as: :file, label: '附檔' %>
     <%= f.input :questionD, :input_html => { :class => "question_option" }, label: '選項D' %>
     <%= f.input :questionD_attr,as: :file, label: '附檔' %>
-    <% elsif @question.optionCount == 5%>
+    <div id="option-buttons">
+      <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
+      <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
+    </div>
+    <% elsif @question.optionCount == 5 && @question.question_type !="非選"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :file, label: '附檔' %>
     <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
@@ -39,7 +47,11 @@
     <%= f.input :questionD_attr,as: :file, label: '附檔' %>
     <%= f.input :questionE, :input_html => { :class => "question_option" }, label: '選項E' %>
     <%= f.input :questionE_attr,as: :file, label: '附檔' %>
-    <% elsif @question.optionCount == 6%>
+    <div id="option-buttons">
+      <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
+      <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
+    </div>
+    <% elsif @question.optionCount == 6 && @question.question_type !="非選"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :file, label: '附檔' %>
     <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
@@ -52,11 +64,15 @@
     <%= f.input :questionE_attr,as: :file, label: '附檔' %> 
     <%= f.input :questionF, :input_html => { :class => "question_option" }, label: '選項F' %>
     <%= f.input :questionF_attr,as: :file, label: '附檔' %> 
+    <div id="option-buttons">
+      <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
+      <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
+    </div>
     <% end %>
   </div>
-
-  <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
-  <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
+  <br>
+  <br>
+  <br>
   <div id="answer-board">
     <% if  @question.question_type=="複選" && @question.optionCount == 4%>
     <%= f.input :answer, collection: [ "A", "B", "C","D"],:item_wrapper_class => 'inline', as: :check_boxes,input_html:{class: "question_answer_checkbox"}, label: ' 答案 ' %>
@@ -72,7 +88,7 @@
     <%= f.input :answer, collection: [ "A", "B", "C","D","E","F"],:item_wrapper_class => 'inline', as: :radio_buttons,input_html:{class: "question_answer_radio"}, label: ' 答案 ' %>    
     <% end %>
   </div>
-  <%= f.input :analysis, label: '詳解' %>  
+  <%= f.input :analysis,as: :text,input_html:{rows: 3}, label: '詳解' %>  
   <%= f.input :analysis_att,as: :file, label: '附檔' %>  
   <%= f.input :analysis_url, label: '影片URL' %>  
   <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 有效性 ' %>
