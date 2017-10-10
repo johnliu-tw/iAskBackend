@@ -20,7 +20,7 @@ class HomeController < ApplicationController
     end
 
     def management
-        @users = User.all
+        @users = User.all.order(:id)
         @role_array = ["SuperAdmin", "Admin", "iAsk", "讀享", "聯合改作文"]
     end
 
@@ -33,6 +33,10 @@ class HomeController < ApplicationController
 
         respond_to do |format|
             if @user.save
+                if params[:user][:role_ids].include?("admin")
+                    @user.add_role :admin
+                    break
+                end
                 if params[:user][:role_ids].include?("iAsk")
                     @user.add_role :iAsk
                 end
@@ -44,9 +48,6 @@ class HomeController < ApplicationController
                 end
                 if params[:user][:role_ids].include?("leader")
                     @user.add_role :leader
-                end
-                if params[:user][:role_ids].include?("admin")
-                    @user.add_role :admin
                 end
               format.html { redirect_to homes_management_path, notice: '成功建立使用者' }
               format.json { render :show, status: :created, location: @user }
@@ -65,8 +66,6 @@ class HomeController < ApplicationController
         @role_array = ["SuperAdmin", "Admin", "iAsk", "讀享", "聯合改作文"] 
         
         @user.roles.each do |role|
-            Rails.logger.debug("role remove")  
-            Rails.logger.debug(role)  
             if role.name == "iAsk"
                 @user.remove_role :iAsk
             end      
@@ -84,9 +83,11 @@ class HomeController < ApplicationController
             end    
         end    
 
-        params[:user][:role_ids].each do |role| 
-            Rails.logger.debug("role add")  
-            Rails.logger.debug(role)  
+        params[:user][:role_ids].each do |role|  
+            if role == "admin"
+                @user.add_role :admin
+                break
+            end   
             if role == "iAsk"
                 @user.add_role :iAsk
             end      
@@ -98,10 +99,7 @@ class HomeController < ApplicationController
             end      
             if role == "leader"
                 @user.add_role :leader
-            end      
-            if role == "admin"
-                @user.add_role :admin
-            end          
+            end             
         end
 
         respond_to do |format|

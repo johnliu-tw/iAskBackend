@@ -10,7 +10,7 @@
     <%= f.input :password_confirmation %>
     <div class="form-group string optional subjects">
       <label class="control-label string optional" for="subjects">角色選擇</label>
-      <% Role.all.each do |r| %>
+      <% Role.all.order(:id).each do |r| %>
         <%= check_box_tag :role_ids,r.name, f.object.roles.include?(r), :name => "user[role_ids][]" %>
         <%= @role_array[r.id-1] %>
       <% end %>
