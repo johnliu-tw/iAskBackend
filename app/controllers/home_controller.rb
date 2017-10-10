@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_user, only: [:show, :edit, :update, :destroy]
+    before_action :set_user, only: [:edit, :update, :destroy]
     def index
         $platform_id = 3
     end
@@ -65,6 +65,8 @@ class HomeController < ApplicationController
         @role_array = ["SuperAdmin", "Admin", "iAsk", "讀享", "聯合改作文"] 
         
         @user.roles.each do |role|
+            Rails.logger.debug("role remove")  
+            Rails.logger.debug(role)  
             if role.name == "iAsk"
                 @user.remove_role :iAsk
             end      
@@ -80,11 +82,11 @@ class HomeController < ApplicationController
             if role.name == "admin"
                 @user.remove_role :admin
             end    
-            Rails.logger.debug("role remove")  
-            Rails.logger.debug(role)  
         end    
 
         params[:user][:role_ids].each do |role| 
+            Rails.logger.debug("role add")  
+            Rails.logger.debug(role)  
             if role == "iAsk"
                 @user.add_role :iAsk
             end      
@@ -99,9 +101,7 @@ class HomeController < ApplicationController
             end      
             if role == "admin"
                 @user.add_role :admin
-            end   
-            Rails.logger.debug("role add")  
-            Rails.logger.debug(role)         
+            end          
         end
 
         respond_to do |format|
