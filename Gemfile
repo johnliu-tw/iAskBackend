@@ -18,7 +18,7 @@ group :test do
   gem 'pg'
 end
 
-gem 'mysql2'
+# gem 'mysql2'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
