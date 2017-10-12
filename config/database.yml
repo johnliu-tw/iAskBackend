@@ -21,9 +21,11 @@ test:
    encoding: unicode
 
 production:
-  adapter: mysql2
-  encoding: utf8mb4
-  database: daily_pratice
-  host: 127.0.0.1
-  username: iAsk
-  password: iAsk12345
+  adapter: postgresql
+  encoding: unicode
+  # adapter: mysql2
+  # encoding: utf8mb4
+  # database: daily_pratice
+  # host: 127.0.0.1
+  # username: iAsk
+  # password: iAsk12345
