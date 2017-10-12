@@ -14,9 +14,7 @@ group :development do
   gem 'sqlite3'
 end
 
-group :test do
-  gem 'pg'
-end
+gem 'pg'
 
 # gem 'mysql2'
 # Use Puma as the app server
