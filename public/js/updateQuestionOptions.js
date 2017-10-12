@@ -13,9 +13,15 @@ $(function(){
                 content+="<input class='form-control string optional question_option' type='text' name='question[question"+ optionList[newOptionNum-1] +"]' id='question_question"+ optionList[newOptionNum-1] +"'>"
                 content+="</div>"
                 content+="<div class='form-group string optional question_question"+ optionList[newOptionNum-1] +"_attr'>"
-                content+="<label class='control-label string optional' for='question_question"+ optionList[newOptionNum-1] +"_attr'>附檔</label>"
+                content+="<label class='control-label string optional' for='question_question"+ optionList[newOptionNum-1] +"_attr'>附檔"+ optionList[newOptionNum-1] +"</label>"
+                content+="<input class='form-control string optional' type='text' value='' name='question[question"+ optionList[newOptionNum-1] +"_attr]' id='question_question"+ optionList[newOptionNum-1] +"_attr'>"
+                content+="</div>"
+                content+="<div class='form-group string optional question_question"+ optionList[newOptionNum-1] +"_attr'>"
                 content+="<input class='file optional' type='file' name='question[question"+ optionList[newOptionNum-1] +"_attr]' id='question_question"+ optionList[newOptionNum-1] +"_attr'>"
                 content+="</div>"
+                content+="<label for='question_remove_title_attr_true' style='font-weight:normal;'>"
+                content+="<input class='check_boxes optional' type='checkbox' value='true' name='question[remove_question"+ optionList[newOptionNum-1] +"_attr]' id='question_remove_q"+ optionList[newOptionNum-1] +"_attr_true'>&nbsp;刪除"
+                content+="</label>"
             $("#option-board").append(content);
             updateAnswerOptions($("#question_question_type").val(),oldOptionNum,newOptionNum);
             $("#question_optionCount").val(newOptionNum)
@@ -25,6 +31,9 @@ $(function(){
         var oldOptionNum = $(".question_option").length;
         var newOptionNum = oldOptionNum -1;
         if(newOptionNum >= 0){
+            $("#option-board div").last().remove();
+            $("#option-board div").last().remove();
+            $("#option-board label").last().remove();
             $("#option-board div").last().remove();
             $("#option-board div").last().remove();
             updateAnswerOptions($("#question_question_type").val(),oldOptionNum,newOptionNum);

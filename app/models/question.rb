@@ -1,5 +1,6 @@
 class Question < ApplicationRecord
     belongs_to :papers
+
     mount_uploader :title_attr, ImageUploader
     mount_uploader :questionA_attr, ImageUploader
     mount_uploader :questionB_attr, ImageUploader

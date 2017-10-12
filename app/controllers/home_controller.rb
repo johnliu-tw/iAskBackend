@@ -117,7 +117,7 @@ class HomeController < ApplicationController
     def destroy
         @user.destroy
          respond_to do |format|
-           format.html { redirect_to "homes/management", notice: '成功刪除使用者' }
+           format.html { redirect_to "/homes/management", notice: '成功刪除使用者' }
            format.json { head :no_content }
          end
       end

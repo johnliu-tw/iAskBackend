@@ -71,6 +71,7 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
+
     respond_to do |format|
       if @question.update(question_params)
         format.html { redirect_to paper_questions_path(question_params[:paper_id],question_params[:id]), notice: '題目已被成功編輯' }
@@ -101,6 +102,6 @@ class QuestionsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
       params.require(:question).permit(:title, :title_attr, :answer, :analysis, :analysis_att, :analysis_url, :question_type, :active, :optionCount, :answer_count, :first_correct_count, :questionA, :questionA_attr, :questionB, :questionB_attr, :questionC, :questionC_attr, :questionD, :questionD_attr, :questionE, :questionE_attr, :questionF, :questionF_attr, :order,
-      :paper_id,:platform_type)
+      :paper_id,:platform_type,:remove_title_attr,:remove_questionA_attr,:remove_questionB_attr,:remove_questionC_attr,:remove_questionD_attr,:remove_questionE_attr,:remove_questionF_attr,:remove_analysis_att)
     end
 end

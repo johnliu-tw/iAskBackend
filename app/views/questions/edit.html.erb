@@ -19,57 +19,109 @@
   <%= f.input :title_attr,as: :string,label: '附檔'%>
   <%= f.input :title_attr,as: :file,label: false %>
   <label for="question_remove_title_attr_true" style="font-weight:normal;">
-    <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_title_attr][]" id="question_remove_title_attr_true">刪除
+    <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_title_attr]" id="question_remove_title_attr_true">&nbsp;刪除
   </label>
   <%= f.input :question_type, collection: [ "單選", "複選", "非選"], :label => "題型", :include_blank => false %>
   <div id="option-board">
-    <% if  @question.optionCount==4 && @question.question_type !="非選"%>
+    <% if  @question.optionCount == 4 && @question.question_type !="非選"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
-    <%= f.input :questionA_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionA_attr,as: :string, label: '附檔A'%>
+    <%= f.input :questionA_attr,as: :file, label: false %>
+    <label for="question_remove_qA_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionA_attr]" id="question_remove_qA_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
-    <%= f.input :questionB_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionB_attr,as: :string, label: '附檔B'%>
+    <%= f.input :questionB_attr,as: :file, label: false %>
+    <label for="question_remove_qB_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionB_attr]" id="question_remove_qB_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionC, :input_html => { :class => "question_option" }, label: '選項C' %>
-    <%= f.input :questionC_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionC_attr,as: :string, label: '附檔C'%>
+    <%= f.input :questionC_attr,as: :file, label: false %>
+    <label for="question_remove_qC_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionC_attr]" id="question_remove_qC_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionD, :input_html => { :class => "question_option" }, label: '選項D' %>
-    <%= f.input :questionD_attr,as: :file, label: '附檔' %>
-    <div id="option-buttons">
-      <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
-      <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
-    </div>
+    <%= f.input :questionD_attr,as: :string, label: '附檔D'%>
+    <%= f.input :questionD_attr,as: :file, label: false %>
+    <label for="question_remove_qD_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionD_attr]" id="question_remove_qD_attr_true">&nbsp;刪除
+    </label>
     <% elsif @question.optionCount == 5 && @question.question_type !="非選"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
-    <%= f.input :questionA_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionA_attr,as: :string, label: '附檔A'%>
+    <%= f.input :questionA_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionA_attr]" id="question_remove_qA_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
-    <%= f.input :questionB_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionB_attr,as: :string, label: '附檔B'%>
+    <%= f.input :questionB_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionB_attr]" id="question_remove_qB_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionC, :input_html => { :class => "question_option" }, label: '選項C' %>
-    <%= f.input :questionC_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionC_attr,as: :string, label: '附檔C'%>
+    <%= f.input :questionC_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionC_attr]" id="question_remove_qC_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionD, :input_html => { :class => "question_option" }, label: '選項D' %>
-    <%= f.input :questionD_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionD_attr,as: :string, label: '附檔D'%>
+    <%= f.input :questionD_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionD_attr]" id="question_remove_qD_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionE, :input_html => { :class => "question_option" }, label: '選項E' %>
-    <%= f.input :questionE_attr,as: :file, label: '附檔' %>
-    <div id="option-buttons">
-      <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
-      <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
-    </div>
+    <%= f.input :questionE_attr,as: :string, label: '附檔E'%>
+    <%= f.input :questionE_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionE_attr]" id="question_remove_qE_attr_true">&nbsp;刪除
+    </label>
     <% elsif @question.optionCount == 6 && @question.question_type !="非選"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
-    <%= f.input :questionA_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionA_attr,as: :string, label: '附檔A'%>
+    <%= f.input :questionA_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionA_attr]" id="question_remove_qA_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
-    <%= f.input :questionB_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionB_attr,as: :string, label: '附檔B'%>
+    <%= f.input :questionB_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionB_attr]" id="question_remove_qB_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionC, :input_html => { :class => "question_option" }, label: '選項C' %>
-    <%= f.input :questionC_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionC_attr,as: :string, label: '附檔C'%>
+    <%= f.input :questionC_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionC_attr]" id="question_remove_qC_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionD, :input_html => { :class => "question_option" }, label: '選項D' %>
-    <%= f.input :questionD_attr,as: :file, label: '附檔' %>
+    <%= f.input :questionD_attr,as: :string, label: '附檔D'%>
+    <%= f.input :questionD_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionD_attr]" id="question_remove_qD_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionE, :input_html => { :class => "question_option" }, label: '選項E' %>
-    <%= f.input :questionE_attr,as: :file, label: '附檔' %> 
+    <%= f.input :questionE_attr,as: :string, label: '附檔E'%>
+    <%= f.input :questionE_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionE_attr]" id="question_remove_qE_attr_true">&nbsp;刪除
+    </label>
     <%= f.input :questionF, :input_html => { :class => "question_option" }, label: '選項F' %>
-    <%= f.input :questionF_attr,as: :file, label: '附檔' %> 
+    <%= f.input :questionF_attr,as: :string, label: '附檔F'%>
+    <%= f.input :questionF_attr,as: :file, label: false %>
+    <label for="question_remove_title_attr_true" style="font-weight:normal;">
+      <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionF_attr]" id="question_remove_qF_attr_true">&nbsp;刪除
+    </label>
+    <% end %>
+  </div>
     <div id="option-buttons">
       <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
       <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
     </div>
-    <% end %>
-  </div>
   <br>
   <br>
   <br>
@@ -89,7 +141,11 @@
     <% end %>
   </div>
   <%= f.input :analysis,as: :text,input_html:{rows: 3}, label: '詳解' %>  
-  <%= f.input :analysis_att,as: :file, label: '附檔' %>  
+  <%= f.input :analysis_att,as: :string, label: '附檔' %>
+  <%= f.input :analysis_att,as: :file, label: false %>
+  <label for="question_remove_title_attr_true" style="font-weight:normal;">
+    <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_analysis_att]" id="question_remove_ans_attr_true">&nbsp;刪除
+  </label>  
   <%= f.input :analysis_url, label: '影片URL' %>  
   <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 有效性 ' %>
   <%= f.input :paper_id,as: :hidden,input_html: {value: @paper.id} %>  
