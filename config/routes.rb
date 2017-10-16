@@ -18,4 +18,6 @@ Rails.application.routes.draw do
   post 'papers/:id', :to => 'papers#update'
   post 'papers/:id/questions/:id', :to => 'questions#update'
   get  'homes/management', :to => 'home#management'
+  # APIS
+  get  'subjects/api/grade_get_subjects', :to => 'subjects#grade_get_subjects' 
 end

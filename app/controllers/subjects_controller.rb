@@ -78,6 +78,22 @@ class SubjectsController < ApplicationController
     end
   end
 
+  def grade_get_subjects
+
+    paper_ids = Grade.find(params[:grade_id]).paper_ids
+    paper_subject_ids = Set.new []
+    Rails.logger.debug(paper_ids)
+    paper_ids.each do |p|
+      paper_subject_ids.add(p)
+    end
+
+    @subjects = Subject.new
+    paper_subject_ids.each do |p_s_id|
+      @subjects = PaperSubject.find(p_s_id).subjects
+      Rails.logger.debug(@subjects.to_json)      
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_subject

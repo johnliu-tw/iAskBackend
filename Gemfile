@@ -16,7 +16,6 @@ end
 
 gem 'pg'
 
-# gem 'mysql2'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
