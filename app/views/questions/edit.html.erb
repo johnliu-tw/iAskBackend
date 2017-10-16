@@ -79,7 +79,7 @@
     <label for="question_remove_title_attr_true" style="font-weight:normal;">
       <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionE_attr]" id="question_remove_qE_attr_true">&nbsp;刪除
     </label>
-    <% elsif @question.optionCount == 6 && @question.question_type !="非選"%>
+    <% elsif @question.optionCount >= 6 && @question.question_type !="非選"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :string, label: '附檔A'%>
     <%= f.input :questionA_attr,as: :file, label: false %>

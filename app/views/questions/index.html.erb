@@ -91,7 +91,7 @@ $(function(){
         C:<%= question.questionC %><br>
         D:<%= question.questionD %><br>
         E:<%= question.questionE %>
-        <% elsif question.optionCount == 6 && question.question_type!="非選"%>
+        <% elsif question.optionCount >= 6 && question.question_type!="非選"%>
         A:<%= question.questionA %><br>
         B:<%= question.questionB %><br>
         C:<%= question.questionC %><br>

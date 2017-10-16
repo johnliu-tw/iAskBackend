@@ -5,6 +5,8 @@ class GradesController < ApplicationController
   # GET /grades
   # GET /grades.json
   def index
+    Rails.logger.debug("YOYOYO")    
+    Rails.logger.debug($platform_id)
     if current_user.has_role? :iAsk
       @grades = Grade.where(platform_type: 0).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :udn

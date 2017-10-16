@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :paper_subjects
   resources :home
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root "home#index"
+  root "home#management"
   post 'paper_subjects/:id', :to => 'paper_subjects#update'
   post 'papers/:id', :to => 'papers#update'
   post 'papers/:id/questions/:id', :to => 'questions#update'

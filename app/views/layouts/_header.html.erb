@@ -14,11 +14,11 @@ a.dropdown-item:hover{
       <li><a href="/">首頁</a></li>
       <% if current_user %>
       <li><a href="/papers">試卷管理</a></li>
-      <% if current_user.has_role? :leader%>
+      <% if (current_user.has_role? :leader)||(current_user.has_role? :admin)%>
       <li><a href="/paper_subjects">試卷科目管理</a></li>
-      <% end %>
       <li><a href="/subjects">科目管理</a></li>
       <li><a href="/grades">年級管理</a></li>
+      <% end %>
     </ul>
     <ul class="nav navbar-nav pull-right">
       <% if current_user.has_role? :admin%>
@@ -34,6 +34,8 @@ a.dropdown-item:hover{
           聯合改作文   
           <% elsif $platform_id == 2 %> 
           讀享        
+          <% else %>
+          未選
           <% end %>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
