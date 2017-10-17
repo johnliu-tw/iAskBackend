@@ -79,19 +79,18 @@ class SubjectsController < ApplicationController
   end
 
   def grade_get_subjects
-
     paper_ids = Grade.find(params[:grade_id]).paper_ids
-    paper_subject_ids = Set.new []
-    Rails.logger.debug(paper_ids)
-    paper_ids.each do |p|
-      paper_subject_ids.add(p)
+    paper_ids.uniq!
+    paper_subject_ids = Paper.where(:id => paper_ids).pluck(:paper_subject_id)
+    paper_subject_ids.uniq!
+    subject_ids = []
+    paper_subject_ids.each do |paper_subject_id|
+      subject_ids.push(PaperSubject.find( paper_subject_id).subject_ids)
     end
-
-    @subjects = Subject.new
-    paper_subject_ids.each do |p_s_id|
-      @subjects = PaperSubject.find(p_s_id).subjects
-      Rails.logger.debug(@subjects.to_json)      
-    end
+    subject_ids.uniq!
+    subject_ids.flatten!
+    @subjects = Subject.where(:id => subject_ids)
+    render json: @subjects
   end
 
   private
