@@ -20,4 +20,5 @@ Rails.application.routes.draw do
   get  'homes/management', :to => 'home#management'
   # APIS
   get  'subjects/api/grade_get_subjects', :to => 'subjects#grade_get_subjects' 
+  get  'subjects/api/paper_subject_get_subjects', :to => 'subjects#paper_subject_get_subjects' 
 end

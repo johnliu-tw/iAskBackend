@@ -93,6 +93,13 @@ class SubjectsController < ApplicationController
     render json: @subjects
   end
 
+  def paper_subject_get_subjects
+    paper_subject_id = params[:paper_subject_id]
+    subject_ids = PaperSubject.find(paper_subject_id).subject_ids
+    @subjects = Subject.where(:id => subject_ids)
+    render json: @subjects
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_subject

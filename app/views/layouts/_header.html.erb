@@ -1,13 +1,46 @@
 <style>
-a.dropdown-item:hover{
-    background-color:white;
+nav.navbar{
+  background-color:#265895; 
 }
+li a {
+  font-size: 14px;
+  color:white !important;
+  margin-top:10px;
+}
+li a:hover{
+  color:#ffee00 !important;
+}
+li a:active{
+  color:#ffee00 !important;
+}
+a.navbar-brand{
+    color:white !important;
+    margin-top:10px;
+}
+.logo{
+  height:40%;
+  width:40%;
+}
+.navbar-default .navbar-nav > .open > a{
+  background-color: #265895 !important;
+}
+div.dropdown-menu{
+  background-color: #265895 !important;
+}
+a.dropdown-item:hover{
+  background-color:#265895;
+}
+span.platform{
+    color:#ffee00 ;
+}
+
 </style>
 
 <nav class="navbar navbar-default navbar-toggleable-md">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">瀚師科技後台管理系統</a>
+      <img class="navbar-brand logo" src="/iask-logo.png">
+      <a class="navbar-brand" href="#">iAsk精選練習題庫管理系統</a>
     </div>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="nav navbar-nav">
@@ -28,20 +61,22 @@ a.dropdown-item:hover{
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           目前平台: 
+          <span class="platform">
           <% if $platform_id == 0 %>
-          iAsk
+          「 iAsk 」
           <% elsif $platform_id == 1 %> 
-          聯合改作文   
+          「 聯合改作文 」  
           <% elsif $platform_id == 2 %> 
-          讀享        
+          「 讀享 」         
           <% else %>
           未選
           <% end %>
+          </span>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="/home/iask">iAsk</a>
-          <a class="dropdown-item" href="/home/reader">讀享</a>
-          <a class="dropdown-item" href="/home/udn">聯合改作文</a>
+          <a class="dropdown-item" href="/home/iask">iAsk-好問</a>
+          <a class="dropdown-item" href="/home/reader">讀享X好問</a>
+          <a class="dropdown-item" href="/home/udn">聯合改作文iAsk</a>
         </div>
       </li>
       <% end %>

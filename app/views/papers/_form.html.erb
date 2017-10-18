@@ -1,3 +1,4 @@
+
 <%= simple_form_for(paper) do |f| %>
   <% if paper.errors.any? %>
     <div id="error_explanation">
@@ -20,6 +21,9 @@
       <% end %>
   </div>
   <%= f.input :paper_subject_id, :collection => @paper_subjects,:value_method => :id,:label_method => :title,:label => "試卷科目", :include_blank => false %>
+  <small>相關科目:<span id="relative-subjects"></span></small>
+  <br>
+  <br>
   <%= f.input :visible, collection: [ "免費可見", "購點後可見", "付費可見"], :label => "可見性設定", :include_blank => false %>
   <%= f.input :public_date,as: :string, input_html: {type: :date}, label: '上架日期' %>
   <%= f.input :note, label: '備註' %>
@@ -33,3 +37,4 @@
   <button class="btn btn-success"><%= link_to "題目管理", paper_questions_path(paper,:paper_id => paper.id) %></button>
   <% end %>
 <% end %>
+<script type="text/javascript" src="/js/getSubjects.js" defer></script>
