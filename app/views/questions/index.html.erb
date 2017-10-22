@@ -53,17 +53,32 @@ $(function(){
 <button class="btn btn-primary"><%= link_to '新增題目', new_paper_question_path %></button>
 <button class="btn btn-success" id="batch-active">批次有效</button>
 <button class="btn btn-danger" id="batch-inactive">批次無效</button>
-<table class="table">
+<table class="table" id="patents">
   <thead>
     <tr class="thead">
       <th><button class="btn btn-info" id="check-all">全選</button></th>
-      <th>題號</th>
-      <th>題幹</th>
-      <th>題型</th>
+      <th>題號&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/<%= @paper.id%>/questions?orderParam=position&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/<%= @paper.id%>/questions?orderParam=position&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
+      <th>題幹&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/<%= @paper.id%>/questions?orderParam=title&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/<%= @paper.id%>/questions?orderParam=title&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>
+      <th>題型&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/<%= @paper.id%>/questions?orderParam=question_type&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/<%= @paper.id%>/questions?orderParam=question_type&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>
       <th>選項</th>
       <th>答案</th>
-      <th>詳解</th>
-      <th>有效性</th>
+      <th>詳解&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/<%= @paper.id%>/questions?orderParam=analysis&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/<%= @paper.id%>/questions?orderParam=analysis&&order=DESC"><img src="/sort-down.png"></a>            
+      </th>
+      <th>有效性&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/<%= @paper.id%>/questions?orderParam=active&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/<%= @paper.id%>/questions?orderParam=active&&order=DESC"><img src="/sort-down.png"></a>            
+      </th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -71,8 +86,8 @@ $(function(){
   <tbody>
     <% @questions.each do |question| %>
       <tr>
-        <td><input type="checkbox" class="question_id" value=<%= question.id %> orderdata=<%= question.order %>></td>
-        <td><%= question.order %></td>     
+        <td><input type="checkbox" class="question_id" value=<%= question.id %> orderdata=<%= question.position %>></td>
+        <td><%= question.position %></td>     
         <td><%= question.title %></td>
         <td><%= question.question_type %></td>
         <td>

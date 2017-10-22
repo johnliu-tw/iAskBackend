@@ -13,7 +13,7 @@
       </ul>
     </div>
   <% end %>
-  <%= f.input :order, input_html: {value: @auto_num},label: '題號' %>
+  <%= f.input :position, input_html: {value: @auto_num},label: '題號' %>
   <%= f.input :title,as: :text,input_html:{rows: 5}, label: '題幹' %>
   <%= f.input :title_attr,as: :file, label: '附檔' %>
   <%= f.input :question_type, collection: [ "單選", "複選", "非選"], :label => "題型", :include_blank => false %>

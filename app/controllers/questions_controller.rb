@@ -5,14 +5,24 @@ class QuestionsController < ApplicationController
   # GET /questions
   # GET /questions.json
   def index
+    orderParam = params[:orderParam]
+    order = params[:order]
+    
+    if orderParam == nil
+      orderParam = "id"
+    end
+    if order == nil
+      order = "DESC"
+    end
+
     if current_user.has_role? :iAsk
-      @questions = Question.where(platform_type: 0, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 10)
+      @questions = Question.where(platform_type: 0, paper_id: params[:paper_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :udn
-      @questions = Question.where(platform_type: 1, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 10)    
+      @questions = Question.where(platform_type: 1, paper_id: params[:paper_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
     elsif current_user.has_role? :reader
-      @questions = Question.where(platform_type: 2, paper_id: params[:paper_id]).paginate(:page => params[:page], :per_page => 10)
+      @questions = Question.where(platform_type: 2, paper_id: params[:paper_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :admin
-      @questions = Question.where(paper_id: params[:paper_id],platform_type: $platform_id).paginate(:page => params[:page], :per_page => 10)
+      @questions = Question.where(paper_id: params[:paper_id],platform_type: $platform_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     end
     
     @paper = Paper.find(params[:paper_id])
@@ -101,7 +111,7 @@ class QuestionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
-      params.require(:question).permit(:title, :title_attr, :answer, :analysis, :analysis_att, :analysis_url, :question_type, :active, :optionCount, :answer_count, :first_correct_count, :questionA, :questionA_attr, :questionB, :questionB_attr, :questionC, :questionC_attr, :questionD, :questionD_attr, :questionE, :questionE_attr, :questionF, :questionF_attr, :order,
+      params.require(:question).permit(:title, :title_attr, :answer, :analysis, :analysis_att, :analysis_url, :question_type, :active, :optionCount, :answer_count, :first_correct_count, :questionA, :questionA_attr, :questionB, :questionB_attr, :questionC, :questionC_attr, :questionD, :questionD_attr, :questionE, :questionE_attr, :questionF, :questionF_attr, :position,
       :paper_id,:platform_type,:remove_title_attr,:remove_questionA_attr,:remove_questionB_attr,:remove_questionC_attr,:remove_questionD_attr,:remove_questionE_attr,:remove_questionF_attr,:remove_analysis_att)
     end
 end

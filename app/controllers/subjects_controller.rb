@@ -5,14 +5,24 @@ class SubjectsController < ApplicationController
   # GET /subjects
   # GET /subjects.json
   def index
+    orderParam = params[:orderParam]
+    order = params[:order]
+    
+    if orderParam == nil
+      orderParam = "id"
+    end
+    if order == nil
+      order = "DESC"
+    end
+
     if current_user.has_role? :iAsk
-      @subjects = Subject.where(platform_type: 0).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
+      @subjects = Subject.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :udn
-      @subjects = Subject.where(platform_type: 1).order(id: :desc).paginate(:page => params[:page], :per_page => 10)    
+      @subjects = Subject.where(platform_type: 1).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
     elsif current_user.has_role? :reader
-      @subjects = Subject.where(platform_type: 2).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
+      @subjects = Subject.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :admin
-      @subjects = Subject.where(platform_type: $platform_id).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
+      @subjects = Subject.where(platform_type: $platform_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     end
   end
 

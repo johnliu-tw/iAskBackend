@@ -10,23 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171004114214) do
+ActiveRecord::Schema.define(version: 20171022032131) do
 
-  create_table "grades", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "grades", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "platform_type"
   end
 
-  create_table "paper_gradeships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "paper_gradeships", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "paper_id"
     t.integer  "grade_id"
   end
 
-  create_table "paper_subjects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "paper_subjects", force: :cascade do |t|
     t.string   "title"
     t.string   "title_view"
     t.boolean  "active"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20171004114214) do
     t.integer  "platform_type"
   end
 
-  create_table "papers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "papers", force: :cascade do |t|
     t.string   "title"
     t.boolean  "active"
     t.string   "visible"
@@ -50,14 +50,14 @@ ActiveRecord::Schema.define(version: 20171004114214) do
     t.integer  "platform_type"
   end
 
-  create_table "papersubject_subjectships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "papersubject_subjectships", force: :cascade do |t|
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.integer  "paper_subject_id"
     t.integer  "subject_id"
   end
 
-  create_table "question_paperships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "question_paperships", force: :cascade do |t|
     t.integer  "order"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 20171004114214) do
     t.integer  "question_id"
   end
 
-  create_table "questions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "questions", force: :cascade do |t|
     t.string   "title"
     t.string   "title_attr"
     t.string   "answer"
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 20171004114214) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.integer  "paper_id"
-    t.integer  "order"
+    t.integer  "position"
     t.string   "questionG"
     t.string   "questionG_attr"
     t.string   "questionH"
@@ -100,24 +100,24 @@ ActiveRecord::Schema.define(version: 20171004114214) do
     t.integer  "platform_type"
   end
 
-  create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.string   "resource_type"
     t.integer  "resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
-    t.index ["name"], name: "index_roles_on_name", using: :btree
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["name"], name: "index_roles_on_name"
   end
 
-  create_table "subjects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "subjects", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "platform_type"
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -130,14 +130,14 @@ ActiveRecord::Schema.define(version: 20171004114214) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "users_roles", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
-    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
   end
 
 end

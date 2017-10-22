@@ -1,4 +1,4 @@
-$(window).load(function(){
+$(function(){
     
     getSubjects()
     $("select#paper_paper_subject_id").change(function(){

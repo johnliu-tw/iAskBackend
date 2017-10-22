@@ -55,10 +55,22 @@ $(function(){
   <thead>
     <tr class="thead">
       <th><button class="btn btn-info" id="check-all">全選</button></th>
-      <th>試卷科目</th>
-      <th>顯示科目</th>
-      <th>對應科目</th>
-      <th></th>
+      <th>試卷科目&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_subjects?orderParam=title&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_subjects?orderParam=title&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
+      <th>顯示科目&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_subjects?orderParam=title_view&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_subjects?orderParam=title_view&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
+      <th>對應科目&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_subjects?relation=subjects&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_subjects?relation=subjects&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
+      <th>有效性&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_subjects?orderParam=active&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_subjects?orderParam=active&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
       <th colspan="2">
       </th>
     </tr>

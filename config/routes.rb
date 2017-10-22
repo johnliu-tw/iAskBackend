@@ -21,4 +21,5 @@ Rails.application.routes.draw do
   # APIS
   get  'subjects/api/grade_get_subjects', :to => 'subjects#grade_get_subjects' 
   get  'subjects/api/paper_subject_get_subjects', :to => 'subjects#paper_subject_get_subjects' 
+  get  'papers/api/get_public_date', :to => 'papers#get_public_date' 
 end

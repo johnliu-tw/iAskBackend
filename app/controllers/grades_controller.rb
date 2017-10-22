@@ -5,16 +5,24 @@ class GradesController < ApplicationController
   # GET /grades
   # GET /grades.json
   def index
-    Rails.logger.debug("YOYOYO")    
-    Rails.logger.debug($platform_id)
+    orderParam = params[:orderParam]
+    order = params[:order]
+    
+    if orderParam == nil
+      orderParam = "id"
+    end
+    if order == nil
+      order = "DESC"
+    end
+
     if current_user.has_role? :iAsk
-      @grades = Grade.where(platform_type: 0).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
+      @grades = Grade.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :udn
-      @grades = Grade.where(platform_type: 1).order(id: :desc).paginate(:page => params[:page], :per_page => 10)    
+      @grades = Grade.where(platform_type: 1).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
     elsif current_user.has_role? :reader
-      @grades = Grade.where(platform_type: 2).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
+      @grades = Grade.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :admin
-      @grades = Grade.where(platform_type: $platform_id).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
+      @grades = Grade.where(platform_type: $platform_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     end
   end
 

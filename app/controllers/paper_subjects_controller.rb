@@ -5,14 +5,35 @@ class PaperSubjectsController < ApplicationController
   # GET /paper_subjects
   # GET /paper_subjects.json
   def index
-    if current_user.has_role? :iAsk
-      @paper_subjects = PaperSubject.where(platform_type: 0).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
-    elsif current_user.has_role? :udn
-      @paper_subjects = PaperSubject.where(platform_type: 1).order(id: :desc).paginate(:page => params[:page], :per_page => 10)    
-    elsif current_user.has_role? :reader
-      @paper_subjects = PaperSubject.where(platform_type: 2).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
-    elsif current_user.has_role? :admin
-      @paper_subjects = PaperSubject.where(platform_type: $platform_id).order(id: :desc).paginate(:page => params[:page], :per_page => 10)
+    orderParam = params[:orderParam]
+    order = params[:order]
+    if orderParam == nil
+      orderParam = "id"
+    end
+    if order == nil
+      order = "DESC"
+    end
+    
+    if params[:relation] == "subjects"
+      if current_user.has_role? :iAsk
+        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: 0).order("subjects.name #{order}").paginate(:page => params[:page], :per_page => 10)
+      elsif current_user.has_role? :udn
+        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: 1).order("subjects.name #{order}").paginate(:page => params[:page], :per_page => 10)    
+      elsif current_user.has_role? :reader
+        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: 2).order("subjects.name #{order}").paginate(:page => params[:page], :per_page => 10)
+      elsif current_user.has_role? :admin
+        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: $platform_id).order("subjects.name  #{order}").paginate(:page => params[:page], :per_page => 10)
+      end
+    else  
+      if current_user.has_role? :iAsk
+        @paper_subjects = PaperSubject.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+      elsif current_user.has_role? :udn
+        @paper_subjects = PaperSubject.where(platform_type: 1).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
+      elsif current_user.has_role? :reader
+        @paper_subjects = PaperSubject.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+      elsif current_user.has_role? :admin
+        @paper_subjects = PaperSubject.where(platform_type: $platform_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+      end
     end
   end
   # GET /paper_subjects/1
