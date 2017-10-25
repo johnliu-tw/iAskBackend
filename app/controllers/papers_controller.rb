@@ -1,50 +1,57 @@
 class PapersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_paper, only: [:show, :edit, :update, :destroy]
+  protect_from_forgery except: :filter
 
   # GET /papers
   # GET /papers.json
   def index
-    orderParam = params[:orderParam]
-    order = params[:order]
-    
-    if orderParam == nil
-      orderParam = "id"
-    end
-    if order == nil
-      order = "DESC"
-    end
 
-    if params[:relation] == "paper_subjects"
-      if current_user.has_role? :iAsk
-        @papers = Paper.includes(:paper_subject).where(platform_type: 0).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :udn
-        @papers = Paper.includes(:paper_subject).where(platform_type: 1).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)    
-      elsif current_user.has_role? :reader
-        @papers = Paper.includes(:paper_subject).where(platform_type: 2).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :admin
-        @papers = Paper.includes(:paper_subject).where(platform_type: $platform_id).order("paper_subjects.title  #{order}").paginate(:page => params[:page], :per_page => 10)
+    if params[:filter] == nil
+      orderParam = params[:orderParam]
+      order = params[:order]
+      
+      if orderParam == nil
+        orderParam = "id"
       end
-    elsif params[:relation] == "grades"
-      if current_user.has_role? :iAsk
-        @papers = Paper.includes(:grades).where(platform_type: 0).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :udn
-        @papers = Paper.includes(:grades).where(platform_type: 1).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)    
-      elsif current_user.has_role? :reader
-        @papers = Paper.includes(:grades).where(platform_type: 2).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :admin
-        @papers = Paper.includes(:grades).where(platform_type: $platform_id).order("grades.name  #{order}").paginate(:page => params[:page], :per_page => 10)
+      if order == nil
+        order = "DESC"
+      end
+
+      if params[:relation] == "paper_subjects"
+        if current_user.has_role? :iAsk
+          @papers = Paper.includes(:paper_subject).where(platform_type: 0).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :udn
+          @papers = Paper.includes(:paper_subject).where(platform_type: 1).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)    
+        elsif current_user.has_role? :reader
+          @papers = Paper.includes(:paper_subject).where(platform_type: 2).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :admin
+          @papers = Paper.includes(:paper_subject).where(platform_type: $platform_id).order("paper_subjects.title  #{order}").paginate(:page => params[:page], :per_page => 10)
+        end
+      elsif params[:relation] == "grades"
+        if current_user.has_role? :iAsk
+          @papers = Paper.includes(:grades).where(platform_type: 0).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :udn
+          @papers = Paper.includes(:grades).where(platform_type: 1).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)    
+        elsif current_user.has_role? :reader
+          @papers = Paper.includes(:grades).where(platform_type: 2).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :admin
+          @papers = Paper.includes(:grades).where(platform_type: $platform_id).order("grades.name  #{order}").paginate(:page => params[:page], :per_page => 10)
+        end
+      else
+        if current_user.has_role? :iAsk
+          @papers = Paper.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :udn
+          @papers = Paper.where(platform_type: 1).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
+        elsif current_user.has_role? :reader
+          @papers = Paper.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :admin
+          @papers = Paper.where(platform_type: $platform_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+        end
       end
     else
-      if current_user.has_role? :iAsk
-        @papers = Paper.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :udn
-        @papers = Paper.where(platform_type: 1).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
-      elsif current_user.has_role? :reader
-        @papers = Paper.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :admin
-        @papers = Paper.where(platform_type: $platform_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-      end
+      @papers = @@papers.paginate(:page => params[:page], :per_page => 10)
+      #do nothing 
     end
     @question = Question.new
   end
@@ -155,6 +162,45 @@ class PapersController < ApplicationController
   def get_public_date
     @papers = Paper.where(:platform_type => params[:platformId]).pluck(:public_date)
     render @papers
+  end
+
+  def filter
+    subject_name = params[:filter][:subject_name]
+    grade_name = params[:filter][:grade_name]
+    init_public_date = params[:filter][:init_public_date]
+    end_public_date = params[:filter][:end_public_date]    
+    active = params[:filter][:active]    
+
+    @@papers = Paper.all
+
+    if subject_name != ""
+      subject_id = Subject.where(:name => subject_name, :platform_type => $platform_id).pluck(:id)
+      subject_paper_subject_ids = PapersubjectSubjectship.where(:subject_id => subject_id).pluck(:paper_subject_id)
+      @@papers = @@papers.where(:paper_subject_id => subject_paper_subject_ids)
+    end
+    if grade_name != ""
+      grade_id = Grade.where(:name => grade_name, :platform_type => $platform_id).pluck(:id)
+      grade_paper_ids = PaperGradeship.where(:grade_id => grade_id).pluck(:paper_id)
+      @@papers = @@papers.where(:id => grade_paper_ids)
+      Rails.logger.debug(@@papers.to_json)
+    end
+    if init_public_date != "" && end_public_date == ""
+      @@papers = @@papers.where("public_date >= '#{init_public_date}'") 
+    elsif end_public_date != "" && init_public_date == "" 
+      @@papers = @@papers.where("public_date <= '#{end_public_date}'")
+    elsif end_public_date != "" && init_public_date != ""
+      @@papers = @@papers.where("public_date BETWEEN '#{init_public_date}' and '#{end_public_date}'")
+    end  
+    if active != ""
+      @@papers = @@papers.where(:active => active) 
+    end
+    Rails.logger.debug(@@papers.to_json)
+    respond_to do |format|
+      format.html { redirect_to '/papers?filter=true', notice: '成功建立試卷' }
+      format.json { render :index, status: :ok, location: @@papers }
+    end
+    
+
   end
 
   private

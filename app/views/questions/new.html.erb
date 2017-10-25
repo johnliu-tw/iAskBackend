@@ -16,16 +16,21 @@
   <%= f.input :position, input_html: {value: @auto_num},label: '題號' %>
   <%= f.input :title,as: :text,input_html:{rows: 5}, label: '題幹' %>
   <%= f.input :title_attr,as: :file, label: '附檔' %>
+  <img class="imgTitle">
   <%= f.input :question_type, collection: [ "單選", "複選", "非選"], :label => "題型", :include_blank => false %>
   <div id="option-board">
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :file, label: '附檔' %>
+    <img class="imgA">
     <%= f.input :questionB, :input_html => { :class => "question_option" }, label: '選項B' %>
     <%= f.input :questionB_attr,as: :file, label: '附檔' %>
+    <img class="imgB">
     <%= f.input :questionC, :input_html => { :class => "question_option" }, label: '選項C' %>
     <%= f.input :questionC_attr,as: :file, label: '附檔' %>
+    <img class="imgC">
     <%= f.input :questionD, :input_html => { :class => "question_option" }, label: '選項D' %>
     <%= f.input :questionD_attr,as: :file, label: '附檔' %>
+    <img class="imgD">
   </div>
   <div id="option-buttons">
     <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
@@ -39,9 +44,13 @@
   </div>
   <%= f.input :analysis,as: :text,input_html:{rows: 3}, label: '詳解' %>  
   <%= f.input :analysis_att,as: :file, label: '附檔' %>  
+  <img class="imgAns">
   <%= f.input :analysis_url, label: '影片URL' %>  
   <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 有效性 ' %>
   <%= f.input :paper_id,as: :hidden,input_html: {value: @paper.id} %>  
   <%= f.input :optionCount,as: :hidden,input_html: {value: 4} %>  
   <%= f.button :submit , "送出", class: "btn btn-primary" %>
+  <a href='/papers/<%=@paper.id%>/questions'><button class="btn btn-primary">上一頁</button></a>
 <% end %>
+
+<script type="text/javascript" src="/js/previewImage.js"></script> 

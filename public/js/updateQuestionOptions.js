@@ -1,6 +1,9 @@
 $(function(){
-    var optionList = ["A","B","C","D","E","F","G","H"]
-
+    var optionList = ["A","B","C","D","E","F"]
+    var imageElementList = [".imgTitle",".imgA",".imgB",".imgC",".imgD",".imgE",".imgF",".imgAns"]
+    var attributeElementList = ["#question_title_attr","#question_questionA_attr","#question_questionB_attr",
+                                "#question_questionC_attr","#question_questionD_attr","#question_questionE_attr",
+                                "#question_questionF_attr","#question_analysis_att"]
     activeMutipleAnswer();
 
     $("#add-option").click(function(){
@@ -12,29 +15,44 @@ $(function(){
                 content+="<label class='control-label string optional' for='question_question"+ optionList[newOptionNum-1] +"'>選項"+ optionList[newOptionNum-1] +"</label>"
                 content+="<input class='form-control string optional question_option' type='text' name='question[question"+ optionList[newOptionNum-1] +"]' id='question_question"+ optionList[newOptionNum-1] +"'>"
                 content+="</div>"
-                content+="<div class='form-group string optional question_question"+ optionList[newOptionNum-1] +"_attr'>"
-                content+="<label class='control-label string optional' for='question_question"+ optionList[newOptionNum-1] +"_attr'>附檔"+ optionList[newOptionNum-1] +"</label>"
-                content+="<input class='form-control string optional' type='text' value='' name='question[question"+ optionList[newOptionNum-1] +"_attr]' id='question_question"+ optionList[newOptionNum-1] +"_attr'>"
-                content+="</div>"
-                content+="<div class='form-group string optional question_question"+ optionList[newOptionNum-1] +"_attr'>"
-                content+="<input class='file optional' type='file' name='question[question"+ optionList[newOptionNum-1] +"_attr]' id='question_question"+ optionList[newOptionNum-1] +"_attr'>"
-                content+="</div>"
-                content+="<label for='question_remove_title_attr_true' style='font-weight:normal;'>"
-                content+="<input class='check_boxes optional' type='checkbox' value='true' name='question[remove_question"+ optionList[newOptionNum-1] +"_attr]' id='question_remove_q"+ optionList[newOptionNum-1] +"_attr_true'>&nbsp;刪除"
-                content+="</label>"
+                if(location.href.indexOf("edit")>-1){
+                    content+="<div class='form-group string optional q"+ optionList[newOptionNum-1] +"_attr'>"
+                    content+="<label class='control-label string optional' for='question_question"+ optionList[newOptionNum-1] +"_attr'>附檔"+ optionList[newOptionNum-1] +"</label>"
+                    content+="<input class='form-control string optional' type='text' value='' name='question[question"+ optionList[newOptionNum-1] +"_attr]' id='q"+ optionList[newOptionNum-1] +"_attr'>"
+                    content+="</div>"
+                    content+="<img class='img"+ optionList[newOptionNum-1] +"'>"       
+                    content+="<div class='form-group string optional question_question"+ optionList[newOptionNum-1] +"_attr'>"
+                    content+="<input class='file optional' type='file' name='question[question"+ optionList[newOptionNum-1] +"_attr]' id='question_question"+ optionList[newOptionNum-1] +"_attr'>"
+                    content+="</div>"             
+                    content+="<label for='question_remove_title_attr_true' style='font-weight:normal;'>"
+                    content+="<input class='check_boxes optional' type='checkbox' value='true' name='question[remove_question"+ optionList[newOptionNum-1] +"_attr]' id='question_remove_q"+ optionList[newOptionNum-1] +"_attr_true'>&nbsp;刪除"
+                    content+="</label>"
+                }
+                else{
+                    content+="<div class='form-group file optional question_question"+ optionList[newOptionNum-1] +"_attr'>"
+                    content+="<label class='control-label file optional' for='question_question"+ optionList[newOptionNum-1] +"_attr'>附檔"+ optionList[newOptionNum-1] +"</label>"
+                    content+="<input class='file optional' type='file' name='question[question"+ optionList[newOptionNum-1] +"_attr]' id='question_question"+ optionList[newOptionNum-1] +"_attr'>"
+                    content+="</div>"
+                    content+="<img class='img"+ optionList[newOptionNum-1] +"'>"  
+                }
             $("#option-board").append(content);
             updateAnswerOptions($("#question_question_type").val(),oldOptionNum,newOptionNum);
             $("#question_optionCount").val(newOptionNum)
         }
+        addPreviewEvent(imageElementList,attributeElementList);
     })
     $("#delete-option").click(function(){
         var oldOptionNum = $(".question_option").length;
         var newOptionNum = oldOptionNum -1;
         if(newOptionNum >= 0){
-            $("#option-board div").last().remove();
-            $("#option-board div").last().remove();
-            $("#option-board label").last().remove();
-            $("#option-board div").last().remove();
+            if(location.href.indexOf("edit")>-1){
+                $("#option-board div").last().remove();
+                $("#option-board div").last().remove();
+                $("#option-board label").last().remove();
+            }
+            else{
+                $("#option-board div").last().remove();                
+            }
             $("#option-board div").last().remove();
             updateAnswerOptions($("#question_question_type").val(),oldOptionNum,newOptionNum);
             $("#question_optionCount").val(newOptionNum)

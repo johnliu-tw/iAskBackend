@@ -124,7 +124,7 @@ $(function(){
         <span class="inactive">未啟用</span>
         <% end %>
         </td>
-        <td><%= link_to '檢視題目與附圖', paper_question_path(@paper,question) %></td>
+        <td><%= link_to '檢視題目與附圖', paper_question_path(@paper,question),target: '_blank' %></td>
         <td><%= link_to '編輯題目', edit_paper_question_path(@paper,question) %></td>
         <td><%= link_to '刪除題目', paper_question_path(@paper,question), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

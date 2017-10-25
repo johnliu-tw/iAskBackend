@@ -26,15 +26,15 @@ class Question < ApplicationRecord
      
     private
       def image_size_validation
-        errors[:image] << "Title should be less than 1MB" if title_attr.size > 1.megabytes
-        errors[:image] << "QA should be less than 1MB" if questionA_attr.size > 1.megabytes
-        errors[:image] << "QB should be less than 1MB" if questionB_attr.size > 1.megabytes
-        errors[:image] << "QC should be less than 1MB" if questionC_attr.size > 1.megabytes
-        errors[:image] << "QD should be less than 1MB" if questionD_attr.size > 1.megabytes
-        errors[:image] << "QE should be less than 1MB" if questionE_attr.size > 1.megabytes
-        errors[:image] << "QF should be less than 1MB" if questionF_attr.size > 1.megabytes
-        errors[:image] << "QG should be less than 1MB" if questionG_attr.size > 1.megabytes
-        errors[:image] << "QH should be less than 1MB" if questionH_attr.size > 1.megabytes
-        errors[:image] << "Ans should be less than 1MB" if analysis_att.size > 1.megabytes
+        errors[:image] << "Title should be less than 350KB" if title_attr.size > 0.35.megabytes
+        errors[:image] << "QA should be less than 350KB" if questionA_attr.size > 0.35.megabytes
+        errors[:image] << "QB should be less than 350KB" if questionB_attr.size > 0.35.megabytes
+        errors[:image] << "QC should be less than 350KB" if questionC_attr.size > 0.35.megabytes
+        errors[:image] << "QD should be less than 350KB" if questionD_attr.size > 0.35.megabytes
+        errors[:image] << "QE should be less than 350KB" if questionE_attr.size > 0.35.megabytes
+        errors[:image] << "QF should be less than 350KB" if questionF_attr.size > 0.35.megabytes
+        errors[:image] << "QG should be less than 350KB" if questionG_attr.size > 0.35.megabytes
+        errors[:image] << "QH should be less than 350KB" if questionH_attr.size > 0.35.megabytes
+        errors[:image] << "Ans should be less than 350KB" if analysis_att.size > 0.35.megabytes
       end
 end

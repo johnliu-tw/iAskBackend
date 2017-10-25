@@ -33,6 +33,7 @@
   <%= f.input :active,:item_wrapper_class => 'inline',:checked => ['無效', false], as: :radio_buttons, label: '有效性' %>
   <% end %>
   <%= f.button :submit , "送出", class: "btn btn-primary" %>
+  <a href="/papers"><button class= "btn btn-primary">上一頁</button></a>
   <% if paper.title != nil %> 
   <button class="btn btn-success"><%= link_to "題目管理", paper_questions_path(paper,:paper_id => paper.id) %></button>
   <% end %>

@@ -48,6 +48,7 @@ $(function(){
 <button class="btn btn-primary"><%= link_to '新增試卷', new_paper_path %></button>
 <button class="btn btn-success" id="batch-active">批次有效</button>
 <button class="btn btn-danger" id="batch-inactive">批次無效</button>
+<%= render 'filters', paper: @paper %>
 <table class="table">
   <thead>
     <tr class="thead">
