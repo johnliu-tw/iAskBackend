@@ -160,7 +160,7 @@ class PapersController < ApplicationController
   end
 
   def get_public_date
-    @papers = Paper.where(:platform_type => params[:platformId]).pluck(:public_date)
+    @papers = Paper.distinct(:public_date).where(:platform_type => params[:platformId])
     render @papers
   end
 
@@ -196,7 +196,7 @@ class PapersController < ApplicationController
     end
     Rails.logger.debug(@@papers.to_json)
     respond_to do |format|
-      format.html { redirect_to '/papers?filter=true', notice: '成功建立試卷' }
+      format.html { redirect_to '/papers?filter=true' }
       format.json { render :index, status: :ok, location: @@papers }
     end
     

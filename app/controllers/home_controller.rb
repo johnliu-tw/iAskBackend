@@ -66,6 +66,32 @@ class HomeController < ApplicationController
                     format.json { render json: @user.errors, status: :unprocessable_entity}   
                 end        
             end
+        else
+            respond_to do |format|
+                if @user.save
+                    if params[:user][:role_ids].include?("admin")
+                        @user.add_role :admin
+                        break
+                    end
+                    if params[:user][:role_ids].include?("iAsk")
+                        @user.add_role :iAsk
+                    end
+                    if params[:user][:role_ids].include?("reader")
+                        @user.add_role :reader
+                    end
+                    if params[:user][:role_ids].include?("udn")
+                        @user.add_role :udn
+                    end
+                    if params[:user][:role_ids].include?("leader")
+                        @user.add_role :leader
+                    end
+                    format.html { redirect_to homes_management_path, notice: '成功建立使用者' }
+                    format.json { render :show, status: :created, location: @user }
+                else
+                    format.html { render :new }
+                    format.json { render json: @user.errors, status: :unprocessable_entity }
+                end
+            end
         end
     end
 
