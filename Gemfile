@@ -37,10 +37,13 @@ gem 'bootstrap-sass'
 gem 'simple_form'
 gem 'will_paginate', '~> 3.1.1'
 gem 'carrierwave', '~> 0.10.0'
+gem 'carrierwave-audio'
 gem 'mini_magick', '~> 4.3'
 gem 'devise'
 gem 'rolify'
 gem 'cancancan'
+gem 'awesome_rails_console'
+gem 'pry-byebug'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -65,3 +68,12 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# Please clean up duplicated gems if any.
+# Feel free to remove gems that you don't want to use or if they conflict with other gem dependencies. (you might need to update .pryrc also)
+group :development, :test do
+  gem 'hirb'
+  gem 'hirb-unicode'
+  gem 'pry-byebug'
+  gem 'pry-stack_explorer'
+end

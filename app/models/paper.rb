@@ -1,5 +1,6 @@
 class Paper < ApplicationRecord
 
+    attr_accessor :subject_name
     has_many :questions
     has_many :paper_gradeships
     has_many :grades, :through => :paper_gradeships

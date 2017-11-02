@@ -87,7 +87,7 @@ class QuestionsController < ApplicationController
         format.html { redirect_to paper_questions_path(question_params[:paper_id],question_params[:id]), notice: '題目已被成功編輯' }
         format.json { render :show, status: :ok, location: @question }
       else
-        format.html { render :edit }
+        format.html { render :edit  }
         format.json { render json: paper_questions_path.errors, status: :unprocessable_entity }
       end
     end

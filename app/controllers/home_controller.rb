@@ -25,6 +25,9 @@ class HomeController < ApplicationController
         end
         @users = User.all.order(:id)
         @role_array = ["SuperAdmin", "Admin", "iAsk", "讀享", "聯合改作文"]
+        if !current_user.has_role? :admin
+            redirect_to papers_path
+        end
     end
 
     def new
@@ -71,19 +74,19 @@ class HomeController < ApplicationController
                 if @user.save
                     if params[:user][:role_ids].include?("admin")
                         @user.add_role :admin
-                        break
-                    end
-                    if params[:user][:role_ids].include?("iAsk")
-                        @user.add_role :iAsk
-                    end
-                    if params[:user][:role_ids].include?("reader")
-                        @user.add_role :reader
-                    end
-                    if params[:user][:role_ids].include?("udn")
-                        @user.add_role :udn
-                    end
-                    if params[:user][:role_ids].include?("leader")
-                        @user.add_role :leader
+                    else
+                        if params[:user][:role_ids].include?("iAsk")
+                            @user.add_role :iAsk
+                        end
+                        if params[:user][:role_ids].include?("reader")
+                            @user.add_role :reader
+                        end
+                        if params[:user][:role_ids].include?("udn")
+                            @user.add_role :udn
+                        end
+                        if params[:user][:role_ids].include?("leader")
+                            @user.add_role :leader
+                        end 
                     end
                     format.html { redirect_to homes_management_path, notice: '成功建立使用者' }
                     format.json { render :show, status: :created, location: @user }
@@ -154,6 +157,32 @@ class HomeController < ApplicationController
                     format.json { render json: @user.errors, status: :unprocessable_entity}   
                 end  
             end
+        else
+            respond_to do |format|
+                if @user.update(user_params)
+                    if params[:user][:role_ids].include?("admin")
+                        @user.add_role :admin
+                    else
+                        if params[:user][:role_ids].include?("iAsk")
+                            @user.add_role :iAsk
+                        end
+                        if params[:user][:role_ids].include?("reader")
+                            @user.add_role :reader
+                        end
+                        if params[:user][:role_ids].include?("udn")
+                            @user.add_role :udn
+                        end
+                        if params[:user][:role_ids].include?("leader")
+                            @user.add_role :leader
+                        end 
+                    end
+                    format.html { redirect_to homes_management_path, notice: '成功建立使用者' }
+                    format.json { render :show, status: :created, location: @user }
+                else
+                    format.html { redirect_to edit_home_path(@user) }
+                    format.json { render json: @user.errors, status: :unprocessable_entity }
+                end
+            end            
         end
     end
 

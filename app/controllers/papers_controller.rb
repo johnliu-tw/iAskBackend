@@ -163,6 +163,17 @@ class PapersController < ApplicationController
     @papers = Paper.distinct(:public_date).where(:platform_type => params[:platformId])
     render @papers
   end
+  def get_paper_by_platform
+    @papers = Paper.select("papers.*,paper_subjects.title_view").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:active => true,:platform_type => params[:platformId])
+    paper_subject_ids = Paper.distinct(:paper_subject_id).where(:active => true, :platform_type => params[:platformId]).pluck(:paper_subject_id)
+    @papers.each{
+      |paper| 
+      subject_name_list = PaperSubject.find(paper.paper_subject_id).subjects.pluck(:name).join(",")
+      paper.assign_attributes({ :subject_name => subject_name_list})
+    }
+    render json: @papers, methods: [:subject_name]
+  end
+
 
   def filter
     subject_name = params[:filter][:subject_name]
@@ -211,6 +222,6 @@ class PapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_params
-      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,grade_ids:[])
+      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,:subject_name,grade_ids:[])
     end
 end

@@ -1,3 +1,8 @@
+<style>
+.attachment{
+  max-width: 300px;
+}
+</style>
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -6,9 +11,16 @@
 </p>
 
 <p>
-  <strong>題幹附圖:</strong>
+  <strong>題幹附檔:</strong>
   <% if @question.title_attr.url != nil%>
-  <%= image_tag @question.title_attr.url %>
+    <% if @question.title_attr.url.include?("jpg") || @question.title_attr.url.include?("png") %>
+      <%= image_tag @question.title_attr.url ,:class => "attachment"%>
+    <% else %>
+      <audio controls>
+        <source src="<%= @question.title_attr.url %>" type="audio/mpeg">
+        </source>
+      </audio>
+    <% end %>
   <% end %>
 </p>
 
@@ -18,9 +30,16 @@
 </p>
 
 <p>
-  <strong>解析附圖:</strong>
+  <strong>解析附檔:</strong>
   <% if @question.analysis_att.url != nil %>
-  <%= image_tag @question.analysis_att.url %>
+    <% if @question.analysis_att.url.include?("jpg") || @question.analysis_att.url.include?("png") %>
+      <%= image_tag @question.analysis_att.url ,:class => "attachment"%>
+    <% else %>
+      <audio controls>
+        <source src="<%= @question.analysis_att.url %>" type="audio/mpeg">
+        </source>
+      </audio>
+    <% end %>
   <% end %>
 </p>
 
@@ -32,7 +51,14 @@
 <p>
   <strong>選項Ａ附圖:</strong>
   <% if @question.questionA_attr.url != nil %>
-  <%= image_tag @question.questionA_attr.url %>
+    <% if @question.questionA_attr.url.include?("jpg") || @question.questionA_attr.url.include?("png") %>
+      <%= image_tag @question.questionA_attr.url ,:class => "attachment"%>
+    <% else %>
+      <audio controls>
+        <source src="<%= @question.questionA_attr.url %>" type="audio/mpeg">
+        </source>
+      </audio>
+    <% end %>
   <% end %>
 </p>
 
@@ -44,7 +70,14 @@
 <p>
   <strong>選項Ｂ附圖:</strong>
   <% if @question.questionB_attr.url != nil %>
-  <%= image_tag @question.questionB_attr.url %>
+    <% if @question.questionB_attr.url.include?("jpg") || @question.questionB_attr.url.include?("png") %>
+      <%= image_tag @question.questionB_attr.url ,:class => "attachment"%>
+    <% else %>
+      <audio controls>
+        <source src="<%= @question.questionB_attr.url %>" type="audio/mpeg">
+        </source>
+      </audio>
+    <% end %>
   <% end %>
 </p>
 
@@ -56,7 +89,14 @@
 <p>
   <strong>選項Ｃ附圖:</strong>
   <% if @question.questionC_attr.url != nil %>
-  <%= image_tag @question.questionC_attr.url %>
+    <% if @question.questionC_attr.url.include?("jpg") || @question.questionC_attr.url.include?("png") %>
+      <%= image_tag @question.questionC_attr.url ,:class => "attachment"%>
+    <% else %>
+      <audio controls>
+        <source src="<%= @question.questionC_attr.url %>" type="audio/mpeg">
+        </source>
+      </audio>
+    <% end %>
   <% end %>
 </p>
 
@@ -68,7 +108,14 @@
 <p>
   <strong>選項Ｄ附圖::</strong>
   <% if @question.questionD_attr.url != nil %>
-  <%= image_tag @question.questionD_attr.url %>
+    <% if @question.questionD_attr.url.include?("jpg") || @question.questionD_attr.url.include?("png") %>
+      <%= image_tag @question.questionD_attr.url ,:class => "attachment"%>
+    <% else %>
+      <audio controls>
+        <source src="<%= @question.questionD_attr.url %>" type="audio/mpeg">
+        </source>
+      </audio>
+    <% end %>
   <% end %>
 </p>
 
@@ -80,7 +127,14 @@
 <p>
   <strong>選項Ｅ附圖::</strong>
   <% if @question.questionE_attr.url != nil %>
-  <%= image_tag @question.questionE_attr.url %>
+    <% if @question.questionE_attr.url.include?("jpg") || @question.questionE_attr.url.include?("png") %>
+      <%= image_tag @question.questionE_attr.url ,:class => "attachment"%>
+    <% else %>
+      <audio controls>
+        <source src="<%= @question.questionE_attr.url %>" type="audio/mpeg">
+        </source>
+      </audio>
+    <% end %>
   <% end %>
 </p>
 
@@ -92,7 +146,14 @@
 <p>
   <strong>選項Ｆ附圖::</strong>
   <% if @question.questionF_attr.url != nil %>
-  <%= image_tag @question.questionF_attr.url %>
+    <% if @question.questionF_attr.url.include?("jpg") || @question.questionF_attr.url.include?("png") %>
+      <%= image_tag @question.questionF_attr.url ,:class => "attachment"%>
+    <% else %>
+      <audio controls>
+        <source src="<%= @question.questionF_attr.url %>" type="audio/mpeg">
+        </source>
+      </audio>
+    <% end %>
   <% end %>
 </p>
 
