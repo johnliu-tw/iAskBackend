@@ -163,6 +163,9 @@
     <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_analysis_att]" id="question_remove_ans_attr_true">&nbsp;刪除
   </label>  
   <%= f.input :analysis_url, label: '影片URL' %>  
+  <%= f.input :difficulty_degree, collection: [ "低", "中", "高"], :label => "難易度"%>
+  <%= f.input :knowledge_point, label: '知識點' %>    
+  <p>備註：請用「;」來分隔知識點</p>
   <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 有效性 ' %>
   <%= f.input :paper_id,as: :hidden,input_html: {value: @paper.id} %>  
   <%= f.input :optionCount,as: :hidden %>  

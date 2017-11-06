@@ -163,6 +163,7 @@ class PapersController < ApplicationController
     @papers = Paper.distinct(:public_date).where(:platform_type => params[:platformId])
     render @papers
   end
+  
   def get_paper_by_platform
     @papers = Paper.select("papers.*,paper_subjects.title_view").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:active => true,:platform_type => params[:platformId])
     paper_subject_ids = Paper.distinct(:paper_subject_id).where(:active => true, :platform_type => params[:platformId]).pluck(:paper_subject_id)

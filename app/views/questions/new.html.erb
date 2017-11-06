@@ -46,6 +46,9 @@
   <%= f.input :analysis_att,as: :file, label: '附檔' %>  
   <img class="imgAns">
   <%= f.input :analysis_url, label: '影片URL' %>  
+  <%= f.input :difficulty_degree, collection: [ "低", "中", "高"], :label => "難易度", :selected => "中"%>
+  <%= f.input :knowledge_point, label: '知識點' %>    
+  <p>備註：請用「;」來分隔知識點</p>
   <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 有效性 ' %>
   <%= f.input :paper_id,as: :hidden,input_html: {value: @paper.id} %>  
   <%= f.input :optionCount,as: :hidden,input_html: {value: 4} %>  
