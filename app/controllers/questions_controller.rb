@@ -87,7 +87,8 @@ class QuestionsController < ApplicationController
         format.html { redirect_to paper_questions_path(question_params[:paper_id],question_params[:id]), notice: '題目已被成功編輯' }
         format.json { render :show, status: :ok, location: @question }
       else
-        format.html { render :edit  }
+
+        format.html { redirect_to edit_paper_question_path, notice: '上傳檔案大小不可超過500KB' }
         format.json { render json: paper_questions_path.errors, status: :unprocessable_entity }
       end
     end
