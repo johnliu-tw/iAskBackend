@@ -165,14 +165,40 @@ class PapersController < ApplicationController
   end
   
   def get_paper_by_platform
-    @papers = Paper.select("papers.*,paper_subjects.title_view").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:active => true,:platform_type => params[:platformId])
+    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,paper_subjects.title_view").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:active => true,:platform_type => params[:platformId])
     paper_subject_ids = Paper.distinct(:paper_subject_id).where(:active => true, :platform_type => params[:platformId]).pluck(:paper_subject_id)
     @papers.each{
       |paper| 
       subject_name_list = PaperSubject.find(paper.paper_subject_id).subjects.pluck(:name).join(",")
+      correct_rates = StudentCorrectRate.where(:paper_id => paper.id, :student_id => params[:studentId]).pluck(:correct_rate)
+      if !correct_rates.present?
+        correct_rate = 0
+      else
+        correct_rate = correct_rates[0].to_i
+      end
       paper.assign_attributes({ :subject_name => subject_name_list})
+      paper.assign_attributes({ :correct_rate => correct_rate})
     }
-    render json: @papers, methods: [:subject_name]
+    render json: @papers, methods: [:subject_name, :correct_rate]
+  end
+
+  def get_papers_by_subject
+    paper_subject_ids = PapersubjectSubjectship.where(:subject_id => params[:subjectId]).pluck(:paper_subject_id)
+    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,paper_subjects.title_view").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:paper_subject_id => paper_subject_ids, :active => true)
+    @papers.each{
+      |paper| 
+      subject_name_list = PaperSubject.find(paper.paper_subject_id).subjects.pluck(:name).join(",")
+      correct_rates = StudentCorrectRate.where(:paper_id => paper.id, :student_id => params[:studentId]).pluck(:correct_rate)
+      if !correct_rates.present?
+        correct_rate = 0
+      else
+        correct_rate = correct_rates[0].to_i
+      end
+      paper.assign_attributes({ :subject_name => subject_name_list})
+      paper.assign_attributes({ :correct_rate => correct_rate})
+    }
+    render json: @papers, methods: [:subject_name, :correct_rate]
+
   end
 
 
@@ -223,6 +249,6 @@ class PapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_params
-      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,:subject_name,grade_ids:[])
+      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,:subject_name,:correct_rate,grade_ids:[])
     end
 end
