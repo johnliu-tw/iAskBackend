@@ -87,7 +87,6 @@ class QuestionsController < ApplicationController
         format.html { redirect_to paper_questions_path(question_params[:paper_id],question_params[:id]), notice: '題目已被成功編輯' }
         format.json { render :show, status: :ok, location: @question }
       else
-
         format.html { redirect_to edit_paper_question_path, notice: '上傳檔案大小不可超過500KB' }
         format.json { render json: paper_questions_path.errors, status: :unprocessable_entity }
       end
@@ -104,15 +103,41 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def get_questionList_by_paperId
+    @questions = Question.select(:id,:title,:position,:questionA,:questionB,:questionC,:questionD,:questionE,:questionF).where(:active => true, :paper_id => params[:paperId])
+    puts @questions
+    @questions.each{
+      |question| 
+      answer_count = StudentAnswerLog.where(:question_id => question.id, :student_id => params[:studentId]).count
+      if answer_count == 0
+        answered = false
+      else
+        answered = true
+      end
+      question.assign_attributes({ :answered => answered})
+    }
+
+    render json: @questions, methods: [:answered], :except =>  get_question_file_attr
+  end
+
+  def get_question_by_questionId
+    @question = Question.select(:id,:title,:question_type,:answer,:analysis,:position,:questionA,:questionB,:questionC,:questionD,:questionE,:questionF).where(:id => params[:questionId])
+
+    render json: @question
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_question
       @question = Question.find(params[:id])
     end
 
+    def get_question_file_attr
+      return [:title_attr,:questionA_attr,:questionB_attr,:questionC_attr,:questionD_attr,:questionE_attr,:questionF_attr,:analysis_att]
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
       params.require(:question).permit(:title, :title_attr, :answer, :analysis, :analysis_att, :analysis_url, :question_type, :active, :optionCount, :answer_count, :first_correct_count, :questionA, :questionA_attr, :questionB, :questionB_attr, :questionC, :questionC_attr, :questionD, :questionD_attr, :questionE, :questionE_attr, :questionF, :questionF_attr, :position,
-      :paper_id,:platform_type,:remove_title_attr,:remove_questionA_attr,:remove_questionB_attr,:remove_questionC_attr,:remove_questionD_attr,:remove_questionE_attr,:remove_questionF_attr,:remove_analysis_att, :difficulty_degree, :knowledge_point)
+      :paper_id,:platform_type,:remove_title_attr,:remove_questionA_attr,:remove_questionB_attr,:remove_questionC_attr,:remove_questionD_attr,:remove_questionE_attr,:remove_questionF_attr,:remove_analysis_att, :difficulty_degree, :knowledge_point, :answered)
     end
 end

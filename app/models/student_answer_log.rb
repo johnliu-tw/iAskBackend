@@ -1,0 +1,2 @@
+class StudentAnswerLog < ApplicationRecord
+end
