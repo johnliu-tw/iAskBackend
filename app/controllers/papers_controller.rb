@@ -1,5 +1,5 @@
 class PapersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:index, :show, :new, :edit, :create, :update, :destroy]
   before_action :set_paper, only: [:show, :edit, :update, :destroy]
   protect_from_forgery except: :filter
 

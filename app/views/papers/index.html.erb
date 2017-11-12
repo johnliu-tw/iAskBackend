@@ -89,7 +89,9 @@ $(function(){
     <% @papers.each do |paper| %>
       <tr>
         <td><input type="checkbox" class="paper_id" value=<%= paper.id %>></td>
-        <td class="column-name"><%= paper.paper_subject.title %></td>
+        <% if paper.paper_subject!=nil%>
+          <td class="column-name"><%= paper.paper_subject.title %></td>
+        <% end %>
         <td><span class="column-name">
         <% paper.grades.each do |g| %>
           <%= g.name %>,
