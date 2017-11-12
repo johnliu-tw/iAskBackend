@@ -88,8 +88,8 @@ class SubjectsController < ApplicationController
     end
   end
 
-  def grade_get_subjects
-    paper_ids = Grade.find(params[:grade_id]).paper_ids
+  def get_subjects_by_grade
+    paper_ids = Grade.find(params[:gradeId]).paper_ids
     paper_ids.uniq!
     paper_subject_ids = Paper.where(:id => paper_ids).pluck(:paper_subject_id)
     paper_subject_ids.uniq!
@@ -99,7 +99,7 @@ class SubjectsController < ApplicationController
     end
     subject_ids.uniq!
     subject_ids.flatten!
-    @subjects = Subject.where(:id => subject_ids)
+    @subjects = Subject.select(:id,:name).where(:id => subject_ids)
     render json: @subjects
   end
 

@@ -88,7 +88,10 @@ class GradesController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  def get_grades_by_platform
+    @grades = Grade.select(:id,:name).where(:platform_type => params[:platformId])
+    render json: @grades
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_grade
