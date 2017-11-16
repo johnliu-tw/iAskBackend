@@ -22,7 +22,7 @@ class GradesController < ApplicationController
     elsif current_user.has_role? :reader
       @grades = Grade.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :admin
-      @grades = Grade.where(platform_type: $platform_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+      @grades = Grade.where(platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     end
   end
 
@@ -51,7 +51,7 @@ class GradesController < ApplicationController
     elsif current_user.has_role? :reader
       @grade.platform_type = 2
     elsif current_user.has_role? :admin
-      @grade.platform_type = $platform_id
+      @grade.platform_type = session[:platform_id]
     end
 
     respond_to do |format|

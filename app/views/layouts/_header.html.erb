@@ -64,11 +64,11 @@ a.sorter:hover{
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           目前平台: 
           <span class="platform">
-          <% if $platform_id == 0 %>
+          <% if session[:platform_id] == 0 %>
           「 iAsk 」
-          <% elsif $platform_id == 1 %> 
+          <% elsif session[:platform_id] == 1 %> 
           「 聯合改作文 」  
-          <% elsif $platform_id == 2 %> 
+          <% elsif session[:platform_id] == 2 %> 
           「 讀享 」         
           <% else %>
           未選

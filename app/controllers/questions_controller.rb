@@ -22,7 +22,7 @@ class QuestionsController < ApplicationController
     elsif current_user.has_role? :reader
       @questions = Question.where(platform_type: 2, paper_id: params[:paper_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :admin
-      @questions = Question.where(paper_id: params[:paper_id],platform_type: $platform_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+      @questions = Question.where(paper_id: params[:paper_id],platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     end
     
     @paper = Paper.find(params[:paper_id])
@@ -43,7 +43,7 @@ class QuestionsController < ApplicationController
     elsif current_user.has_role? :reader
       @auto_num = Question.where(platform_type: 2, paper_id: params[:paper_id]).size + 1 
     elsif current_user.has_role? :admin
-      @auto_num = Question.where(paper_id: params[:paper_id],platform_type: $platform_id).size + 1 
+      @auto_num = Question.where(paper_id: params[:paper_id],platform_type: session[:platform_id]).size + 1 
     end
 
     @paper = Paper.find(params[:paper_id])
@@ -65,7 +65,7 @@ class QuestionsController < ApplicationController
     elsif current_user.has_role? :reader
       @question.platform_type = 2
     elsif current_user.has_role? :admin
-      @question.platform_type = $platform_id
+      @question.platform_type = session[:platform_id]
     end
     respond_to do |format|
       if @question.save

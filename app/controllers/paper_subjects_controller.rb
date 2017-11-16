@@ -22,7 +22,7 @@ class PaperSubjectsController < ApplicationController
       elsif current_user.has_role? :reader
         @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: 2).order("subjects.name #{order}").paginate(:page => params[:page], :per_page => 10)
       elsif current_user.has_role? :admin
-        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: $platform_id).order("subjects.name  #{order}").paginate(:page => params[:page], :per_page => 10)
+        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: session[:platform_id]).order("subjects.name  #{order}").paginate(:page => params[:page], :per_page => 10)
       end
     else  
       if current_user.has_role? :iAsk
@@ -32,7 +32,7 @@ class PaperSubjectsController < ApplicationController
       elsif current_user.has_role? :reader
         @paper_subjects = PaperSubject.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
       elsif current_user.has_role? :admin
-        @paper_subjects = PaperSubject.where(platform_type: $platform_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+        @paper_subjects = PaperSubject.where(platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
       end
     end
   end
@@ -51,7 +51,7 @@ class PaperSubjectsController < ApplicationController
     elsif current_user.has_role? :reader
       @subjects = Subject.where(platform_type: 2)
     elsif current_user.has_role? :admin
-      @subjects = Subject.where(platform_type: $platform_id)      
+      @subjects = Subject.where(platform_type: session[:platform_id])      
     end
   end
 
@@ -64,7 +64,7 @@ class PaperSubjectsController < ApplicationController
     elsif current_user.has_role? :reader
       @subjects = Subject.where(platform_type: 2)
     elsif current_user.has_role? :admin
-      @subjects = Subject.where(platform_type: $platform_id)   
+      @subjects = Subject.where(platform_type: session[:platform_id])   
     end
   end
 
@@ -79,7 +79,7 @@ class PaperSubjectsController < ApplicationController
     elsif current_user.has_role? :reader
       @paper_subject.platform_type = 2
     elsif current_user.has_role? :admin
-      @paper_subject.platform_type = $platform_id
+      @paper_subject.platform_type = session[:platform_id]
     end
     respond_to do |format|
       if @paper_subject.save

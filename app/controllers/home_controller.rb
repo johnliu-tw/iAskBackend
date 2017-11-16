@@ -2,26 +2,26 @@ class HomeController < ApplicationController
     before_action :authenticate_user!
     before_action :set_user, only: [:edit, :update, :destroy]
     def index
-        $platform_id = 3
+        session[:platform_id] = 3
     end
 
     def show
         if(params[:id] == "iask")
-            $platform_id = 0
+            session[:platform_id] = 0
         elsif(params[:id] == "udn")
-            $platform_id = 1
+            session[:platform_id] = 1
         elsif(params[:id] == "reader")
-            $platform_id = 2
+            session[:platform_id]  = 2
         else
-            $platform_id = 3 
+            session[:platform_id]  = 3 
         end
 
         redirect_to papers_path
     end
 
     def management
-        if($platform_id==nil)
-            $platform_id = 3
+        if(session[:platform_id]==nil)
+            session[:platform_id] = 3
         end
         @users = User.all.order(:id)
         @role_array = ["SuperAdmin", "Admin", "iAsk", "讀享", "聯合改作文"]

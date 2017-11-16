@@ -22,7 +22,7 @@ class SubjectsController < ApplicationController
     elsif current_user.has_role? :reader
       @subjects = Subject.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     elsif current_user.has_role? :admin
-      @subjects = Subject.where(platform_type: $platform_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+      @subjects = Subject.where(platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     end
   end
 
@@ -51,7 +51,7 @@ class SubjectsController < ApplicationController
     elsif current_user.has_role? :reader
       @subject.platform_type = 2
     elsif current_user.has_role? :admin
-      @subject.platform_type = $platform_id
+      @subject.platform_type = session[:platform_id]
     end
     respond_to do |format|
       if @subject.save
