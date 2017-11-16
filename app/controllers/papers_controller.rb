@@ -165,7 +165,7 @@ class PapersController < ApplicationController
   end
   
   def get_paper_by_platform
-    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,paper_subjects.title_view").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:active => true,:platform_type => params[:platformId])
+    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:active => true,:platform_type => params[:platformId])
     paper_subject_ids = Paper.distinct(:paper_subject_id).where(:active => true, :platform_type => params[:platformId]).pluck(:paper_subject_id)
     @papers.each{
       |paper| 
@@ -184,7 +184,7 @@ class PapersController < ApplicationController
 
   def get_papers_by_subject
     paper_subject_ids = PapersubjectSubjectship.where(:subject_id => params[:subjectId]).pluck(:paper_subject_id)
-    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,paper_subjects.title_view").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:paper_subject_id => paper_subject_ids, :active => true)
+    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:paper_subject_id => paper_subject_ids, :active => true)
     @papers.each{
       |paper| 
       subject_name_list = PaperSubject.find(paper.paper_subject_id).subjects.pluck(:name).join(",")
@@ -220,7 +220,6 @@ class PapersController < ApplicationController
       grade_id = Grade.where(:name => grade_name, :platform_type => $platform_id).pluck(:id)
       grade_paper_ids = PaperGradeship.where(:grade_id => grade_id).pluck(:paper_id)
       @@papers = @@papers.where(:id => grade_paper_ids)
-      Rails.logger.debug(@@papers.to_json)
     end
     if init_public_date != "" && end_public_date == ""
       @@papers = @@papers.where("public_date >= '#{init_public_date}'") 
@@ -232,7 +231,6 @@ class PapersController < ApplicationController
     if active != ""
       @@papers = @@papers.where(:active => active) 
     end
-    Rails.logger.debug(@@papers.to_json)
     respond_to do |format|
       format.html { redirect_to '/papers?filter=true' }
       format.json { render :index, status: :ok, location: @@papers }

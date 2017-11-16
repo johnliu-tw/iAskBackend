@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171106163554) do
+ActiveRecord::Schema.define(version: 20171115141013) do
 
   create_table "grades", force: :cascade do |t|
     t.string   "name"
@@ -116,6 +116,8 @@ ActiveRecord::Schema.define(version: 20171106163554) do
     t.string  "student_id"
     t.string  "question_id"
     t.boolean "correct"
+    t.string  "answer"
+    t.integer "answer_count"
   end
 
   create_table "student_correct_rates", force: :cascade do |t|

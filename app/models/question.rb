@@ -2,6 +2,8 @@ class Question < ApplicationRecord
     belongs_to :papers
 
     attr_accessor :answered 
+    attr_accessor :corrected
+    attr_accessor :answer_count
     mount_uploader :title_attr, ImageUploader
     mount_uploader :questionA_attr, ImageUploader
     mount_uploader :questionB_attr, ImageUploader
