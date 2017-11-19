@@ -26,11 +26,11 @@ Rails.application.routes.draw do
   get  'grades/api/get_grades_by_platform', :to => 'grades#get_grades_by_platform'
   get  'subjects/api/get_subjects_by_grade', :to => 'subjects#get_subjects_by_grade' 
 
-  post 'homes/api//homes/api/answer_question_logs', :to => 'homes#answer_question_logs' 
-  post 'homes/api//homes/api/answer_question_correct', :to => 'homes#answer_question_correct' 
-  post 'homes/api//homes/api/answer_question_correct_first', :to => 'homes#answer_question_correct_first' 
-  post 'homes/api//homes/api/open_paper', :to => 'homes#open_paper' 
-  post 'homes/api//homes/api/finish_paper', :to => 'homes#finish_paper' 
+  post 'homes/api/answer_question_logs', :to => 'homes#answer_question_logs' 
+  post 'homes/api/answer_question_correct', :to => 'homes#answer_question_correct' 
+  post 'homes/api/answer_question_correct_first', :to => 'homes#answer_question_correct_first' 
+  post 'homes/api/open_paper', :to => 'homes#open_paper' 
+  post 'homes/api/finish_paper', :to => 'homes#finish_paper' 
 
   post 'papers/api/filter', :to => 'papers#filter'
 end

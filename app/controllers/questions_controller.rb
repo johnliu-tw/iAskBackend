@@ -104,7 +104,7 @@ class QuestionsController < ApplicationController
   end
 
   def get_questionList_by_paperId
-    @questions = Question.select(:id,:title,:position,:questionA,:questionB,:questionC,:questionD,:questionE,:questionF, :answer).select(get_question_by_questionId).where(:active => true, :paper_id => params[:paperId])
+    @questions = Question.select(:id,:title,:position,:questionA,:questionB,:questionC,:questionD,:questionE,:questionF, :answer).select(get_question_file_attr).where(:active => true, :paper_id => params[:paperId])
     corrected = false
     @questions.each{
       |question|       
@@ -134,12 +134,12 @@ class QuestionsController < ApplicationController
   def get_question_by_questionId
     answer_count = StudentAnswerLog.where(:student_id => params[:studentId],:question_id => params[:questionId]).size
     if answer_count > 0
-      @question = Question.select("questions.id,questions.title,questions.question_type,questions.answer,questions.analysis,questions.position,questions.questionA,questions.questionB,questions.questionC,questions.questionD,questions.questionE,questions.questionF,student_answer_logs.answer_count,student_answer_logs.answer as last_answer").select(get_question_file_attr).joins("inner join student_answer_logs on student_answer_logs.question_id = questions.id").where(:id => params[:questionId]).where("student_answer_logs.student_id =?",params[:studentId]).order("student_answer_logs.answer_count DESC").limit(1)
+      @question = Question.select("questions.*,student_answer_logs.answer_count,student_answer_logs.answer as last_answer").joins("inner join student_answer_logs on student_answer_logs.question_id = questions.id").where(:id => params[:questionId]).where("student_answer_logs.student_id =?",params[:studentId]).order("student_answer_logs.answer_count DESC").limit(1)
       @question[0].assign_attributes({ :answer_count => answer_count})
       
       render json: @question,  methods: [:answer_count], :except =>  check_empty_question_file_attr(@question)
     else
-      @question = Question.select("questions.id,questions.title,questions.question_type,questions.answer,questions.analysis,questions.position,questions.questionA,questions.questionB,questions.questionC,questions.questionD,questions.questionE,questions.questionF").select(get_question_file_attr).where(:id => params[:questionId])
+      @question = Question.select("*").where(:id => params[:questionId])
       @question[0].assign_attributes({ :answer_count => 0})
 
       render json: @question,  methods: [:answer_count], :except =>  check_empty_question_file_attr(@question)   
@@ -156,7 +156,7 @@ class QuestionsController < ApplicationController
     end
 
     def check_empty_question_file_attr(question)
-      attrList = []
+      attrList = [:created_at, :updated_at,:questionG, :questionG_attr, :questionH, :questionH_attr, :platform_type, :difficulty_degree, :knowledge_point, :paper_id, :analysis_url, :optionCount, :first_correct_count, :active]
       if question[0].questionE_attr.url == nil 
         attrList.push(:questionE_attr)
       end
@@ -165,6 +165,7 @@ class QuestionsController < ApplicationController
       end
       return attrList
     end
+
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params

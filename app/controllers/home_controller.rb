@@ -194,6 +194,14 @@ class HomeController < ApplicationController
          end
     end
 
+    def answer_question_logs
+        @log = StudentAnswerLog.new(:student_id => params[:studentId], :question_id => params[:questionId],
+                                :correct => params[:correct], :answer => params[:answer], :answer_count => params[:answer_count])
+        @log.save!
+
+        render :json 
+    end
+
     private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
