@@ -196,10 +196,34 @@ class HomeController < ApplicationController
 
     def answer_question_logs
         @log = StudentAnswerLog.new(:student_id => params[:studentId], :question_id => params[:questionId],
-                                :correct => params[:correct], :answer => params[:answer], :answer_count => params[:answer_count])
-        @log.save!
+                                :correct => params[:correct], :answer => params[:answer], :answer_count => params[:answerCount])
+        result = @log.save!
 
-        render :json 
+        if params[:correct]
+            correct_q_size = StudentAnswerLog.where(:student_id => params[:studentId], :correct => true ).count
+            @question = Question.find(params[:questionId])
+            total_q_size = Question.where(:paper_id => @question.paper_id).count
+            correct_rate = (correct_q_size/total_q_size)*100
+
+            @correct_log = StudentCorrectRate.where(:student_id => params[:studentId])
+            if @correct_log.size > 0
+                result = @correct_log.update(:correct_rate => correct_rate)
+            else
+                @new_log = StudentCorrectRate.new(:student_id => params[:studentId], :paper_id => @question.paper_id, :correct_rate => correct_rate)
+                result = @new_log.save!
+            end
+        end
+
+        respond_to do |format|
+            format.json { render :json => result }
+            format.xml do
+               if result
+                 head :ok
+               else
+                 render :xml => resp, :status => 403 
+               end
+            end
+        end
     end
 
     private

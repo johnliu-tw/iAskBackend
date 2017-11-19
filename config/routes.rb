@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
   resources :paper_subjects
   resources :home
+  resources :student_answer_logs
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root "home#management"
   post 'paper_subjects/:id', :to => 'paper_subjects#update'
@@ -26,11 +27,11 @@ Rails.application.routes.draw do
   get  'grades/api/get_grades_by_platform', :to => 'grades#get_grades_by_platform'
   get  'subjects/api/get_subjects_by_grade', :to => 'subjects#get_subjects_by_grade' 
 
-  post 'homes/api/answer_question_logs', :to => 'homes#answer_question_logs' 
-  post 'homes/api/answer_question_correct', :to => 'homes#answer_question_correct' 
-  post 'homes/api/answer_question_correct_first', :to => 'homes#answer_question_correct_first' 
-  post 'homes/api/open_paper', :to => 'homes#open_paper' 
-  post 'homes/api/finish_paper', :to => 'homes#finish_paper' 
+  post 'homes/api/answer_question_logs', :to => 'home#answer_question_logs' 
+  post 'homes/api/answer_question_correct', :to => 'home#answer_question_correct' 
+  post 'homes/api/answer_question_correct_first', :to => 'home#answer_question_correct_first' 
+  post 'homes/api/open_paper', :to => 'home#open_paper' 
+  post 'homes/api/finish_paper', :to => 'home#finish_paper' 
 
   post 'papers/api/filter', :to => 'papers#filter'
 end
