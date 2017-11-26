@@ -64,11 +64,17 @@ $(function(){
     });
     $("div#answer-board").click(function(){
         var answerNum = $(".question_answer_checkbox:checked").length;
-        var answerStirng="";
-        for(var i=0; i<answerNum;i++){
-            answerStirng += $(".question_answer_checkbox:checked")[i].value
+        if(answerNum > 0){
+            var answerString="";
+            for(var i=0; i<answerNum;i++){
+                answerString += $(".question_answer_checkbox:checked")[i].value
+            }
+            $("#question_answer").val(answerString);
         }
-        $("#question_answer").val(answerStirng);
+        else{
+            answerString = $(".question_answer_radio:checked").val();
+            $("#question_answer").val(answerString);
+        }
     });
 
     function updateAnswerOptions(questionType,oldOptionNum,newOptionNum){ 
@@ -149,7 +155,7 @@ $(function(){
         $("#answer-board").html(content)        
     }
     function activeMutipleAnswer(){
-        $("#question_answer").val()
+        answers = $("#question_answer").val()
         if($("#question_answer").val()){
             var answers=$("#question_answer").val().split("")
         }

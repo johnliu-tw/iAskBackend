@@ -183,10 +183,24 @@ class PapersController < ApplicationController
       else
         correct_rate = correct_rates[0].to_i
       end
+
+      question_ids =  Question.where(:paper_id => paper.id, :active => true).pluck(:id)
+      total_q_size = question_ids.size
+      log_ids = StudentAnswerLog.where(:question_id => question_ids , :student_id => params[:studentId]).pluck(:question_id)
+      answered_size = log_ids.uniq.size
+
+      if total_q_size == 0
+        finish_rate = 0
+      else
+        finish_rate = (answered_size.to_f / total_q_size.to_f)*100
+      end
+
+
       paper.assign_attributes({ :subject_name => subject_name_list})
       paper.assign_attributes({ :correct_rate => correct_rate})
+      paper.assign_attributes({ :finish_rate => finish_rate})      
     }
-    render json: @papers, methods: [:subject_name, :correct_rate]
+    render json: @papers, methods: [:subject_name, :correct_rate, :finish_rate]
   end
 
   def get_papers_by_subject
@@ -201,8 +215,21 @@ class PapersController < ApplicationController
       else
         correct_rate = correct_rates[0].to_i
       end
+
+      question_ids =  Question.where(:paper_id => paper.id, :active => true).pluck(:id)
+      total_q_size = question_ids.size
+      log_ids = StudentAnswerLog.where(:question_id => question_ids , :student_id => params[:studentId]).pluck(:question_id)
+      answered_size = log_ids.uniq.size
+
+      if total_q_size == 0
+        finish_rate = 0
+      else
+        finish_rate = (answered_size.to_f / total_q_size.to_f)*100
+      end
+
       paper.assign_attributes({ :subject_name => subject_name_list})
       paper.assign_attributes({ :correct_rate => correct_rate})
+      paper.assign_attributes({ :finish_rate => finish_rate})     
     }
     render json: @papers, methods: [:subject_name, :correct_rate]
 

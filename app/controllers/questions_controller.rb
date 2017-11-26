@@ -105,10 +105,10 @@ class QuestionsController < ApplicationController
 
   def get_questionList_by_paperId
     @questions = Question.select(:id,:title,:position,:questionA,:questionB,:questionC,:questionD,:questionE,:questionF, :answer).select(get_question_file_attr).where(:active => true, :paper_id => params[:paperId])
-    corrected = false
     @questions.each{
       |question|       
       @answer_logs = StudentAnswerLog.where(:question_id => question.id, :student_id => params[:studentId])
+      corrected = false
       @answer_logs.each{
         |answer_log|
         if answer_log.correct
@@ -156,7 +156,7 @@ class QuestionsController < ApplicationController
     end
 
     def check_empty_question_file_attr(question)
-      attrList = [:created_at, :updated_at,:questionG, :questionG_attr, :questionH, :questionH_attr, :platform_type, :difficulty_degree, :knowledge_point, :paper_id, :analysis_url, :optionCount, :first_correct_count, :active]
+      attrList = [:created_at, :updated_at,:questionG, :questionG_attr, :questionH, :questionH_attr, :platform_type, :difficulty_degree, :knowledge_point, :paper_id, :optionCount, :first_correct_count, :active]
       if question[0].questionE_attr.url == nil 
         attrList.push(:questionE_attr)
       end

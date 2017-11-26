@@ -1,6 +1,8 @@
 class HomeController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_user!, only: [:index, :show, :new, :edit, :create, :update, :destroy, :management]
     before_action :set_user, only: [:edit, :update, :destroy]
+    protect_from_forgery except: :answer_question_logs
+
     def index
         session[:platform_id] = 3
     end
@@ -200,12 +202,13 @@ class HomeController < ApplicationController
         result = @log.save!
 
         if params[:correct]
-            correct_q_size = StudentAnswerLog.where(:student_id => params[:studentId], :correct => true ).count
             @question = Question.find(params[:questionId])
-            total_q_size = Question.where(:paper_id => @question.paper_id).count
-            correct_rate = (correct_q_size/total_q_size)*100
+            question_ids = Question.where(:paper_id => @question.paper_id).pluck(:id)
+            correct_q_size = StudentAnswerLog.where(:student_id => params[:studentId], :correct => true, :question_id => question_ids ).count
+            total_q_size = question_ids.size
+            correct_rate = (correct_q_size.to_f/total_q_size.to_f)*100
 
-            @correct_log = StudentCorrectRate.where(:student_id => params[:studentId])
+            @correct_log = StudentCorrectRate.where(:student_id => params[:studentId], :paper_id=>@question.paper_id)
             if @correct_log.size > 0
                 result = @correct_log.update(:correct_rate => correct_rate)
             else
@@ -215,13 +218,10 @@ class HomeController < ApplicationController
         end
 
         respond_to do |format|
+            if result
             format.json { render :json => result }
-            format.xml do
-               if result
-                 head :ok
-               else
-                 render :xml => resp, :status => 403 
-               end
+            else
+            format.json { render :json => result, :status => 403 }
             end
         end
     end
