@@ -184,7 +184,7 @@ class PapersController < ApplicationController
         correct_rate = correct_rates[0].to_i
       end
 
-      question_ids =  Question.where(:paper_id => paper.id, :active => true).pluck(:id)
+      question_ids =  Question.where(:paper_id => paper.id, :active => true).where.not(:question_type => "非選").pluck(:id)
       total_q_size = question_ids.size
       log_ids = StudentAnswerLog.where(:question_id => question_ids , :student_id => params[:studentId]).pluck(:question_id)
       answered_size = log_ids.uniq.size

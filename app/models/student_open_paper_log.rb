@@ -1,0 +1,2 @@
+class StudentOpenPaperLog < ApplicationRecord
+end

@@ -1,0 +1,10 @@
+class CreateStudentOpenPaperLogs < ActiveRecord::Migration[5.0]
+  def change
+    create_table :student_open_paper_logs do |t|
+      t.string :paper_id
+      t.string :student_id
+
+      t.timestamps
+    end
+  end
+end

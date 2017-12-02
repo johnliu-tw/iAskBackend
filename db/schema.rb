@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130181526) do
+ActiveRecord::Schema.define(version: 20171202171344) do
 
   create_table "grades", force: :cascade do |t|
     t.string   "name"
@@ -44,12 +44,10 @@ ActiveRecord::Schema.define(version: 20171130181526) do
     t.integer  "grade"
     t.integer  "open_count"
     t.integer  "correct_count"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.integer  "paper_subject_id"
     t.integer  "platform_type"
-    t.boolean  "finished"
-    t.datetime "finished_timestamp"
   end
 
   create_table "papersubject_subjectships", force: :cascade do |t|
@@ -68,40 +66,40 @@ ActiveRecord::Schema.define(version: 20171130181526) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.string   "title"
-    t.string   "title_attr"
-    t.string   "answer"
-    t.string   "analysis"
-    t.string   "analysis_att"
-    t.string   "analysis_url"
-    t.string   "question_type"
-    t.boolean  "active"
-    t.integer  "optionCount"
+    t.string   "title",               limit: 128
+    t.string   "title_attr",          limit: 128
+    t.string   "answer",              limit: 128
+    t.string   "analysis",            limit: 128
+    t.string   "analysis_att",        limit: 128
+    t.string   "analysis_url",        limit: 128
+    t.string   "question_type",       limit: 128
+    t.boolean  "active",              limit: 128
+    t.integer  "optionCount",         limit: 128
     t.integer  "answer_count"
-    t.integer  "first_correct_count"
-    t.string   "questionA"
-    t.string   "questionA_attr"
-    t.string   "questionB"
-    t.string   "questionB_attr"
-    t.string   "questionC"
-    t.string   "questionC_attr"
-    t.string   "questionD"
-    t.string   "questionD_attr"
-    t.string   "questionE"
-    t.string   "questionE_attr"
-    t.string   "questionF"
-    t.string   "questionF_attr"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.integer  "paper_id"
-    t.integer  "position"
-    t.string   "questionG"
-    t.string   "questionG_attr"
-    t.string   "questionH"
-    t.string   "questionH_attr"
-    t.integer  "platform_type"
-    t.string   "difficulty_degree"
-    t.string   "knowledge_point"
+    t.integer  "first_correct_count", limit: 128
+    t.string   "questionA",           limit: 128
+    t.string   "questionA_attr",      limit: 128
+    t.string   "questionB",           limit: 128
+    t.string   "questionB_attr",      limit: 128
+    t.string   "questionC",           limit: 128
+    t.string   "questionC_attr",      limit: 128
+    t.string   "questionD",           limit: 128
+    t.string   "questionD_attr",      limit: 128
+    t.string   "questionE",           limit: 128
+    t.string   "questionE_attr",      limit: 128
+    t.string   "questionF",           limit: 128
+    t.string   "questionF_attr",      limit: 128
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "paper_id",            limit: 128
+    t.integer  "position",            limit: 128
+    t.string   "questionG",           limit: 128
+    t.string   "questionG_attr",      limit: 128
+    t.string   "questionH",           limit: 128
+    t.string   "questionH_attr",      limit: 128
+    t.integer  "platform_type",       limit: 128
+    t.string   "difficulty_degree",   limit: 128
+    t.string   "knowledge_point",     limit: 128
   end
 
   create_table "roles", force: :cascade do |t|
@@ -112,6 +110,12 @@ ActiveRecord::Schema.define(version: 20171130181526) do
     t.datetime "updated_at"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
+  end
+
+  create_table "sqlite_stat1", id: false, force: :cascade do |t|
+    t. "tbl"
+    t. "idx"
+    t. "stat"
   end
 
   create_table "student_answer_logs", force: :cascade do |t|
@@ -133,9 +137,11 @@ ActiveRecord::Schema.define(version: 20171130181526) do
   end
 
   create_table "student_correct_rates", force: :cascade do |t|
-    t.string "student_id"
-    t.string "paper_id"
-    t.string "correct_rate"
+    t.string   "student_id"
+    t.string   "paper_id"
+    t.string   "correct_rate"
+    t.boolean  "finished"
+    t.datetime "finished_timestamp"
   end
 
   create_table "student_open_paper_logs", force: :cascade do |t|

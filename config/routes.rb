@@ -32,6 +32,11 @@ Rails.application.routes.draw do
   post 'homes/api/answer_question_correct_first', :to => 'home#answer_question_correct_first' 
   post 'homes/api/open_paper', :to => 'home#open_paper' 
   post 'homes/api/finish_paper', :to => 'home#finish_paper' 
+  
+  post 'homes/api/student_open_paper_log', :to => 'home#student_open_paper_log' 
+  post 'homes/api/student_open_question_log', :to => 'home#student_open_question_log' 
+  post 'homes/api/student_finish_paper', :to => 'home#student_finish_paper' 
+  post 'homes/api/student_ask_teacher_question', :to => 'home#student_ask_teacher_question' 
 
   post 'papers/api/filter', :to => 'papers#filter'
 end

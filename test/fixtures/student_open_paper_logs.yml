@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  paper_id: MyString
+  student_id: MyString
+
+two:
+  paper_id: MyString
+  student_id: MyString

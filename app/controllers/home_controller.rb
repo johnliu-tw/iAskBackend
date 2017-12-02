@@ -203,6 +203,7 @@ class HomeController < ApplicationController
 
         if params[:correct]
             @question = Question.find(params[:questionId])
+            @question.increment!(:answer_count)
             question_ids = Question.where(:paper_id => @question.paper_id).pluck(:id)
             correct_q_size = StudentAnswerLog.where(:student_id => params[:studentId], :correct => true, :question_id => question_ids ).count
             total_q_size = question_ids.size
@@ -224,6 +225,64 @@ class HomeController < ApplicationController
             format.json { render :json => result, :status => 403 }
             end
         end
+    end
+
+    def answer_question_correct_first
+        question = Question.find(params[:questionId])
+        result = question.increment!(:first_correct_count)
+        respond_to do |format|
+            if result
+            format.json { render :json => {:result => true } }
+            else
+            format.json { render :json => {:result => false }, :status => 403 }
+            end
+        end
+    end
+
+    def student_open_paper_log
+        result = StudentOpenPaperLog.create(:paper_id => params[:paperId], :student_id => params[:studentId])
+        paper = Paper.find(params[:paperId])
+        paper.increment!(:open_count)
+        respond_to do |format|
+            if result
+            format.json { render :json => {:result => true }  }
+            else
+            format.json { render :json => {:result => false } , :status => 403 }
+            end
+        end        
+    end
+    def student_open_question_log
+        result = StudentOpenQuestionLog.create(:question_id => params[:questionId], :student_id => params[:studentId])
+        respond_to do |format|
+            if result
+            format.json { render :json => {:result => true }  }
+            else
+            format.json { render :json => {:result => false }, :status => 403 }
+            end
+        end        
+    end
+
+    def student_ask_teacher_question
+        result = StudentAskTeacherLog.create(:question_id => params[:questionId], :student_id => params[:studentId], :teacher_id => params[:teacherId], :student_answer => params[:studentAns], :correct => params[:correct])
+        respond_to do |format|
+            if result
+            format.json { render :json => {:result => true }  }
+            else
+            format.json { render :json => {:result => false }, :status => 403 }
+            end
+        end        
+    end
+
+    def student_finish_paper
+        student_correct_rate_log = StudentCorrectRate.where(:student_id => params[:studentId], :paper_id => params[:paperId])
+        result = student_correct_rate_log.update(:finished => true, :finished_timestamp => current())
+        respond_to do |format|
+            if result
+            format.json { render :json => {:result => true } }
+            else
+            format.json { render :json => {:result => false }, :status => 403 }
+            end
+        end   
     end
 
     private
