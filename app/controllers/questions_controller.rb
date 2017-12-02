@@ -31,6 +31,7 @@ class QuestionsController < ApplicationController
   # GET /questions/1
   # GET /questions/1.json
   def show
+    @image_file_type = ["jpg", "png", "JPG", "PNG"]
   end
 
   # GET /questions/new
@@ -104,7 +105,7 @@ class QuestionsController < ApplicationController
   end
 
   def get_questionList_by_paperId
-    @questions = Question.select(:id,:title,:position,:questionA,:questionB,:questionC,:questionD,:questionE,:questionF, :answer).select(get_question_file_attr).where(:active => true, :paper_id => params[:paperId])
+    @questions = Question.select(:id,:title,:position,:questionA,:questionB,:questionC,:questionD,:questionE,:questionF, :answer, :analysis, :analysis_url).select(get_question_file_attr).where(:active => true, :paper_id => params[:paperId])
     @questions.each{
       |question|       
       @answer_logs = StudentAnswerLog.where(:question_id => question.id, :student_id => params[:studentId])
@@ -128,7 +129,7 @@ class QuestionsController < ApplicationController
       question.assign_attributes({ :corrected => corrected})
     }
 
-    render json: @questions, methods: [:answered,:corrected],:except => [:analysis_att]
+    render json: @questions, methods: [:answered,:corrected]
   end
 
   def get_question_by_questionId
