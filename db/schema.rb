@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171115141013) do
+ActiveRecord::Schema.define(version: 20171130181526) do
 
   create_table "grades", force: :cascade do |t|
     t.string   "name"
@@ -44,10 +44,12 @@ ActiveRecord::Schema.define(version: 20171115141013) do
     t.integer  "grade"
     t.integer  "open_count"
     t.integer  "correct_count"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.integer  "paper_subject_id"
     t.integer  "platform_type"
+    t.boolean  "finished"
+    t.datetime "finished_timestamp"
   end
 
   create_table "papersubject_subjectships", force: :cascade do |t|
@@ -120,10 +122,34 @@ ActiveRecord::Schema.define(version: 20171115141013) do
     t.integer "answer_count"
   end
 
+  create_table "student_ask_teacher_logs", force: :cascade do |t|
+    t.string   "question_id"
+    t.string   "student_id"
+    t.string   "teacher_id"
+    t.string   "student_answer"
+    t.boolean  "correct"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
   create_table "student_correct_rates", force: :cascade do |t|
     t.string "student_id"
     t.string "paper_id"
     t.string "correct_rate"
+  end
+
+  create_table "student_open_paper_logs", force: :cascade do |t|
+    t.string   "paper_id"
+    t.string   "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "student_open_question_logs", force: :cascade do |t|
+    t.string   "question_id"
+    t.string   "student_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "subjects", force: :cascade do |t|

@@ -13,7 +13,7 @@
 <p>
   <strong>題幹附檔:</strong>
   <% if @question.title_attr.url != nil%>
-    <% if @question.title_attr.url.include?("jpg") || @question.title_attr.url.include?("png") %>
+    <% if @image_file_type.any? { |filetype| @question.title_attr.url.include? filetype }%>
       <%= image_tag @question.title_attr.url ,:class => "attachment"%>
     <% else %>
       <audio controls>
@@ -32,7 +32,7 @@
 <p>
   <strong>解析附檔:</strong>
   <% if @question.analysis_att.url != nil %>
-    <% if @question.analysis_att.url.include?("jpg") || @question.analysis_att.url.include?("png") %>
+    <% if @image_file_type.any? { |filetype| @question.analysis_att.url.include? filetype }%>
       <%= image_tag @question.analysis_att.url ,:class => "attachment"%>
     <% else %>
       <audio controls>
@@ -51,7 +51,7 @@
 <p>
   <strong>選項Ａ附圖:</strong>
   <% if @question.questionA_attr.url != nil %>
-    <% if @question.questionA_attr.url.include?("jpg") || @question.questionA_attr.url.include?("png") %>
+    <% if @image_file_type.any? { |filetype| @question.questionA_attr.url.include? filetype } %>
       <%= image_tag @question.questionA_attr.url ,:class => "attachment"%>
     <% else %>
       <audio controls>
@@ -70,7 +70,7 @@
 <p>
   <strong>選項Ｂ附圖:</strong>
   <% if @question.questionB_attr.url != nil %>
-    <% if @question.questionB_attr.url.include?("jpg") || @question.questionB_attr.url.include?("png") %>
+    <% if @image_file_type.any? { |filetype| @question.questionB_attr.url.include? filetype } %>
       <%= image_tag @question.questionB_attr.url ,:class => "attachment"%>
     <% else %>
       <audio controls>
@@ -89,7 +89,7 @@
 <p>
   <strong>選項Ｃ附圖:</strong>
   <% if @question.questionC_attr.url != nil %>
-    <% if @question.questionC_attr.url.include?("jpg") || @question.questionC_attr.url.include?("png") %>
+    <% if @image_file_type.any? { |filetype| @question.questionC_attr.url.include? filetype } %>
       <%= image_tag @question.questionC_attr.url ,:class => "attachment"%>
     <% else %>
       <audio controls>
@@ -108,7 +108,7 @@
 <p>
   <strong>選項Ｄ附圖::</strong>
   <% if @question.questionD_attr.url != nil %>
-    <% if @question.questionD_attr.url.include?("jpg") || @question.questionD_attr.url.include?("png") %>
+    <% if @image_file_type.any? { |filetype| @question.questionD_attr.url.include? filetype } %>
       <%= image_tag @question.questionD_attr.url ,:class => "attachment"%>
     <% else %>
       <audio controls>
@@ -127,7 +127,7 @@
 <p>
   <strong>選項Ｅ附圖::</strong>
   <% if @question.questionE_attr.url != nil %>
-    <% if @question.questionE_attr.url.include?("jpg") || @question.questionE_attr.url.include?("png") %>
+    <% if @image_file_type.any? { |filetype| @question.questionE_attr.url.include? filetype } %>
       <%= image_tag @question.questionE_attr.url ,:class => "attachment"%>
     <% else %>
       <audio controls>
@@ -146,7 +146,7 @@
 <p>
   <strong>選項Ｆ附圖::</strong>
   <% if @question.questionF_attr.url != nil %>
-    <% if @question.questionF_attr.url.include?("jpg") || @question.questionF_attr.url.include?("png") %>
+    <% if @image_file_type.any? { |filetype| @question.questionF_attr.url.include? filetype } %>
       <%= image_tag @question.questionF_attr.url ,:class => "attachment"%>
     <% else %>
       <audio controls>
