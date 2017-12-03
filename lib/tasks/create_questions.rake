@@ -1,4 +1,3 @@
-
 require 'csv'
 namespace :csv do 
     task :load_data => [ :environment ] do

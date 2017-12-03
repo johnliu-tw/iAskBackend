@@ -203,7 +203,12 @@ class HomeController < ApplicationController
 
         if params[:correct]
             @question = Question.find(params[:questionId])
-            @question.increment!(:answer_count)
+            if @question.answer_count == nil
+                @question.answer_count = 1
+            else
+                @question.answer_count = @question.answer_count + 1
+            end
+            @question.save!
             question_ids = Question.where(:paper_id => @question.paper_id).pluck(:id)
             correct_q_size = StudentAnswerLog.where(:student_id => params[:studentId], :correct => true, :question_id => question_ids ).count
             total_q_size = question_ids.size
@@ -283,6 +288,29 @@ class HomeController < ApplicationController
             format.json { render :json => {:result => false }, :status => 403 }
             end
         end   
+    end
+
+    def show_log_api_data
+
+        if params[:logType] == "answer_question_correct_first"
+            result = Question.select(:first_correct_count).where(:id => params[:questionId])
+        elsif params[:logType] == "student_open_paper_log"
+            result = StudentOpenPaperLog.all
+        elsif params[:logType] == "student_open_question_log"
+            result = StudentOpenQuestionLog.all
+        elsif params[:logType] == "student_ask_teacher_question"
+            result = StudentAskTeacherLog.all
+        elsif params[:logType] == "student_finish_paper"
+            result = StudentCorrectRate.select(:finished, :finished_timestamp).where(:student_id => params[:studentId], :paper_id => params[:paperId])
+        elsif params[:logType] == "question_answer_count"
+            result = StudentAnswerLog.where(:question_id => params[:questionId]).count
+        else
+            result = false
+        end
+        respond_to do |format|
+            format.json { render :json => result}
+        end
+                   
     end
 
     private

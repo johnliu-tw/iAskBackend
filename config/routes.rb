@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   post 'homes/api/student_open_question_log', :to => 'home#student_open_question_log' 
   post 'homes/api/student_finish_paper', :to => 'home#student_finish_paper' 
   post 'homes/api/student_ask_teacher_question', :to => 'home#student_ask_teacher_question' 
+  get 'homes/api/show_log_api_data', :to => 'home#show_log_api_data' 
 
   post 'papers/api/filter', :to => 'papers#filter'
 end
