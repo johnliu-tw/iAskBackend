@@ -1,0 +1,36 @@
+<%= simple_form_for(paper_set) do |f| %>
+  <% if paper_set.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(paper_set.errors.count, "error") %> prohibited this paper_set from being saved:</h2>
+
+      <ul>
+      <% paper_set.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.input :title, label: '試卷包名稱' %>
+  <div class="form-group string optional paper_set_title">
+    <label class="control-label string optional" for="paper_set_title">包含試卷</label></br>
+
+    <% if paper_set.papers.empty? %>
+
+    <input class="btn btn-default form-control" type="button" value="選擇試卷" style="width:10%;"></br>
+    <% else %>
+    <input class="btn btn-danger btn-sm" value="刪除試卷"><input class="btn btn-success btn-sm" value="重設試卷">
+    <input class="form-control string optional" type="text" name="paper_set[papers]" id="paper_set_paper_id">
+    <% end %>
+  </div>
+  <%= f.input :price, label: '售價設定(點)' %>
+  <%= f.input :public_date,as: :string, input_html: {type: :date}, label: '上架日期' %>
+  <%= f.input :description, label: '描述' %>
+  <% if paper_set.active != nil %>
+    <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: '有效性' %>
+  <% else %>
+    <%= f.input :active,:item_wrapper_class => 'inline',:checked => ['無效', false], as: :radio_buttons, label: '有效性' %>
+  <% end %>  
+  <%= f.button :submit , "送出", class: "btn btn-primary" %>
+    <a href="/paper_sets"><button class= "btn btn-primary">上一頁</button></a>
+<% end %>

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @paper_set.title %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @paper_set.price %>
+</p>
+
+<p>
+  <strong>Public date:</strong>
+  <%= @paper_set.public_date %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @paper_set.description %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @paper_set.active %>
+</p>
+
+<%= link_to 'Edit', edit_paper_set_path(@paper_set) %> |
+<%= link_to 'Back', paper_sets_path %>

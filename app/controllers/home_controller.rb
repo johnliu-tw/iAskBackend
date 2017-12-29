@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
     before_action :authenticate_user!, only: [:index, :show, :new, :edit, :create, :update, :destroy, :management]
     before_action :set_user, only: [:edit, :update, :destroy]
-    protect_from_forgery except: :answer_question_logs
+    protect_from_forgery except:  [:answer_question_logs, :student_open_paper_log, :student_open_question_log, :student_ask_teacher_question, :answer_question_correct_first, :student_finish_paper ]
 
     def index
         session[:platform_id] = 3
@@ -209,7 +209,7 @@ class HomeController < ApplicationController
                 @question.answer_count = @question.answer_count + 1
             end
             @question.save!
-            question_ids = Question.where(:paper_id => @question.paper_id).pluck(:id)
+            question_ids = Question.where(:paper_id => @question.paper_id).where.not(:question_type => "非選").pluck(:id)
             correct_q_size = StudentAnswerLog.where(:student_id => params[:studentId], :correct => true, :question_id => question_ids ).count
             total_q_size = question_ids.size
             correct_rate = (correct_q_size.to_f/total_q_size.to_f)*100
@@ -280,7 +280,7 @@ class HomeController < ApplicationController
 
     def student_finish_paper
         student_correct_rate_log = StudentCorrectRate.where(:student_id => params[:studentId], :paper_id => params[:paperId])
-        result = student_correct_rate_log.update(:finished => true, :finished_timestamp => current())
+        result = student_correct_rate_log.update(:finished => true, :finished_timestamp => Time.now)
         respond_to do |format|
             if result
             format.json { render :json => {:result => true } }

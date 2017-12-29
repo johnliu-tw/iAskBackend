@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :paper_sets
   devise_for :users
   resources :paper_gradeships
   resources :grades
@@ -26,6 +27,7 @@ Rails.application.routes.draw do
   get  'questions/api/get_question_by_questionId', :to => 'questions#get_question_by_questionId'
   get  'grades/api/get_grades_by_platform', :to => 'grades#get_grades_by_platform'
   get  'subjects/api/get_subjects_by_grade', :to => 'subjects#get_subjects_by_grade' 
+  get  'paper_sets/api/get_paper_sets_by_platform', :to => 'paper_sets#get_paper_sets_by_platform' 
 
   post 'homes/api/answer_question_logs', :to => 'home#answer_question_logs' 
   post 'homes/api/answer_question_correct', :to => 'home#answer_question_correct' 
