@@ -235,6 +235,36 @@ class PapersController < ApplicationController
 
   end
 
+  def get_papers_by_paper_set
+    @papers = Paper.where(:paper_set_id => params[:paperSetId], :active => true)
+    @papers.each{
+      |paper|
+      correct_rates = StudentCorrectRate.where(:paper_id => paper.id, :student_id => params[:studentId]).pluck(:correct_rate)
+      if !correct_rates.present?
+        correct_rate = 0
+      else
+        correct_rate = correct_rates[0].to_i
+      end
+
+
+      question_ids =  Question.where(:paper_id => paper.id, :active => true).where.not(:question_type => "非選").pluck(:id)
+      total_q_size = question_ids.size
+      log_ids = StudentAnswerLog.where(:question_id => question_ids , :student_id => params[:studentId]).pluck(:question_id)
+      answered_size = log_ids.uniq.size
+
+      if total_q_size == 0
+        finish_rate = 0
+      else
+        finish_rate = (answered_size.to_f / total_q_size.to_f)*100
+      end
+
+      paper.assign_attributes({ :correct_rate => correct_rate})
+      paper.assign_attributes({ :finish_rate => finish_rate})
+    }
+
+    render json: @papers, methods: [:subject_name, :correct_rate]
+  end
+
 
   def filter
     subject_name = params[:filter][:subject_name]
@@ -274,6 +304,66 @@ class PapersController < ApplicationController
     end
 
   end
+
+  def select 
+    if params[:filter] == nil
+      orderParam = params[:orderParam]
+      order = params[:order]
+      
+      if orderParam == nil
+        orderParam = "id"
+      end
+      if order == nil
+        order = "DESC"
+      end
+
+      if params[:relation] == "paper_subjects"
+        if current_user.has_role? :iAsk
+          @papers = Paper.includes(:paper_subject).where(platform_type: 0).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :udn
+          @papers = Paper.includes(:paper_subject).where(platform_type: 1).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)    
+        elsif current_user.has_role? :reader
+          @papers = Paper.includes(:paper_subject).where(platform_type: 2).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :admin
+          @papers = Paper.includes(:paper_subject).where(platform_type: session[:platform_id]).order("paper_subjects.title  #{order}").paginate(:page => params[:page], :per_page => 10)
+        end
+      elsif params[:relation] == "grades"
+        if current_user.has_role? :iAsk
+          @papers = Paper.includes(:grades).where(platform_type: 0).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :udn
+          @papers = Paper.includes(:grades).where(platform_type: 1).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)    
+        elsif current_user.has_role? :reader
+          @papers = Paper.includes(:grades).where(platform_type: 2).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :admin
+          @papers = Paper.includes(:grades).where(platform_type: session[:platform_id]).order("grades.name  #{order}").paginate(:page => params[:page], :per_page => 10)
+        end
+      else
+        if current_user.has_role? :iAsk
+          @papers = Paper.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :udn
+          @papers = Paper.where(platform_type: 1).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
+        elsif current_user.has_role? :reader
+          @papers = Paper.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.has_role? :admin
+          @papers = Paper.where(platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+        end
+      end
+    else
+      if current_user.has_role? :iAsk
+        @papers = Paper.where(:id => session[:filter_papers_id], :platform_type => 0).paginate(:page => params[:page], :per_page => 10)
+      elsif current_user.has_role? :udn
+        @papers = Paper.where(:id => session[:filter_papers_id], :platform_type => 1).paginate(:page => params[:page], :per_page => 10)
+      elsif current_user.has_role? :reader
+        @papers = Paper.where(:id => session[:filter_papers_id], :platform_type => 2).paginate(:page => params[:page], :per_page => 10)
+      elsif current_user.has_role? :admin
+        @papers = Paper.where(:id => session[:filter_papers_id], :platform_type => session[:platform_id]).paginate(:page => params[:page], :per_page => 10)
+      end
+    end
+    @question = Question.new
+  end  
+
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
