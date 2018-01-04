@@ -13,15 +13,10 @@
 
   <%= f.input :title, label: '試卷包名稱' %>
   <div class="form-group string optional paper_set_title">
-    <label class="control-label string optional" for="paper_set_title">包含試卷</label></br>
-
-    <% if paper_set.papers.empty? %>
-
-    <input class="btn btn-default form-control" type="button" value="選擇試卷" style="width:10%;"></br>
-    <% else %>
-    <input class="btn btn-danger btn-sm" value="刪除試卷"><input class="btn btn-success btn-sm" value="重設試卷">
+    <label class="control-label string optional" for="paper_set_title">包含試卷 (Id)</label></br>
+    <input class="btn btn-default" id="select-paper" type="button" value="選擇試卷">
     <input class="form-control string optional" type="text" name="paper_set[papers]" id="paper_set_paper_id">
-    <% end %>
+    <input id="delete-paper" class="btn btn-danger btn-sm" type="button" value="刪除試卷">
   </div>
   <%= f.input :price, label: '售價設定(點)' %>
   <%= f.input :public_date,as: :string, input_html: {type: :date}, label: '上架日期' %>
@@ -31,6 +26,83 @@
   <% else %>
     <%= f.input :active,:item_wrapper_class => 'inline',:checked => ['無效', false], as: :radio_buttons, label: '有效性' %>
   <% end %>  
+  <%= f.input :id,as: :hidden %>  
   <%= f.button :submit , "送出", class: "btn btn-primary" %>
-    <a href="/paper_sets"><button class= "btn btn-primary">上一頁</button></a>
+    <a href="/paper_sets"><button id="back" class= "btn btn-primary">上一頁</button></a>
 <% end %>
+
+<script>
+
+var paperSetId = $("#paper_set_id").val();
+
+if(localStorage.length!=0){
+  $("#paper_set_paper_id").val(localStorage.paperIds)
+  $("#paper_set_title").val(localStorage.paperSetTitle)
+  $("#paper_set_price").val(localStorage.paperSetPrice)
+  $("#paper_set_public_date").val(localStorage.paperSetPublicDate)
+  $("#paper_set_description").val(localStorage.paperSetDescription)
+  if(localStorage.paperSetActive){
+    $("#paper_set_active_true").attr("checked", true)
+  }
+  else{
+    $("#paper_set_active_true").attr("checked", false)
+  }
+}
+else{
+  loadPapers();
+}
+
+$("#select-paper").on("click", function(){
+  var paperSetTitle = $("#paper_set_title").val();
+  var paperSetPrice = $("#paper_set_price").val();
+  var paperSetPublicDate = $("#paper_set_public_date").val();
+  var paperSetDescription = $("#paper_set_description").val();
+  var paperSetActive = $(".paper_set_active input:checked").val();
+
+  localStorage.setItem("paperSetTitle", paperSetTitle);
+  localStorage.setItem("paperSetPrice", paperSetPrice);
+  localStorage.setItem("paperSetPublicDate", paperSetPublicDate);
+  localStorage.setItem("paperSetDescription", paperSetDescription);
+  localStorage.setItem("paperSetActive", paperSetActive);
+  localStorage.setItem("paperSetId", paperSetId);    
+
+  window.open("/papers/tools/select?id="+paperSetId,"","width=1200,height=600")
+
+})
+
+$('.simple_form').submit(function() {
+  localStorage.clear();
+});
+$('#back').on("click",function() {
+  localStorage.clear();
+});
+$('#delete-paper').on("click", function(){
+  var paperIds = $("#paper_set_paper_id").val().split(",");
+  deletePapers(paperIds);
+})
+
+function loadPapers(){
+  $.ajax({
+    type: "GET",
+    url: "/paper_sets/api/get_paper_sets_by_id.json?Id="+paperSetId,
+    dataType: "json",
+    contentType: 'application/json',
+    data: {}
+    })
+    .complete(function(data){
+     var paperIds = data.responseJSON.paper_ids
+     $("#paper_set_paper_id").val(paperIds)
+    });
+}
+
+function deletePapers( paperIds ){
+  $.ajax({
+      type: "post",
+      url: "/paper_sets/api/clear_paper_paper_set_id",
+      data: {paperIds : paperIds}
+    })
+    .complete(function(data){
+      window.location.reload();
+    });
+}
+</script>

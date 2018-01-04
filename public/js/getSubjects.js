@@ -22,7 +22,7 @@ $(function(){
                     subjectNames += ","
                 }
                 $("#relative-subjects").text(subjectNames)
-            })
-      }
+        })
+    }
 
 })

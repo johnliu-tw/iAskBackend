@@ -1,3 +1,16 @@
+
+<script>
+$(function(){
+    var pathName =  window.location.pathname
+    $("#pathName").val(pathName)
+
+    var url_string = window.location.href
+    var url = new URL(url_string);
+    var id = url.searchParams.get("id");
+    $("#paperSetId").val(id)
+})
+</script>
+
 <form id="filter" action="/papers/api/filter" novalidate="novalidate" method="post">
 科目 : <%= collection_select(:filter, :subject_name, Subject.distinct(:name).where(:platform_type => session[:platform_id]).order(:name), :name, :name, prompt: true) %>
 年級 : <%= collection_select(:filter, :grade_name, Grade.distinct(:name).where(:platform_type => session[:platform_id]).order(:name), :name, :name, prompt: true) %>
@@ -11,6 +24,8 @@
     <option value="true">有效</option>
     <option value="false">無效</option>
 </select>
+<input id='pathName' name="filter[path_name]" type="hidden">
+<input id='paperSetId' name="filter[paper_set_id]" type="hidden">
 <button type="submit">
 篩選
 </button>

@@ -1,0 +1,126 @@
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+<style>
+.freeze{
+  pointer-events: none;
+  background-color: gray;
+}
+</style>
+
+<script>
+$(function(){
+
+
+
+  $("#check-all").click(function(){
+    $(".paper_id").each(function(){
+      $(this).attr("checked","true")
+    });
+  })
+  $("#uncheck-all").click(function(){
+    $(".paper_id").each(function(){
+      $(this).attr("checked","false")
+    });
+  })
+  $("#close").click(function(){
+    window.close();
+  })
+  $("#submit").click(function(){
+    var paperIds = [];
+    $(".paper_id:checked").each(function(){
+      paperIds.push($(this).val());
+    });
+    localStorage.setItem("paperIds", paperIds);
+    window.opener.location.reload();
+    window.close();
+  })
+
+
+})
+
+</script> 
+
+<p id="notice"><%= notice %></p>
+<h1>試卷列表</h1>
+<button class="btn btn-success" id="check-all">批次選擇</button>
+<button class="btn btn-danger" id="uncheck-all">批次取消</button>
+<%= render 'filters', paper: @paper %> 
+<table class="table">
+  <thead>
+    <tr class="thead">
+      <th></th>
+      <th>試卷科目&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/tools/select?relation=paper_subjects&&order=ASC&&id=<%= params[:id] %>"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/tools/select?relation=paper_subjects&&order=DESC&&id=<%= params[:id] %>"><img src="/sort-down.png"></a>
+      </th>
+      <th>年級&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/tools/select?relation=grades&&order=ASC&&id=<%= params[:id] %>"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/tools/select?relation=grades&&order=DESC&&id=<%= params[:id] %>"><img src="/sort-down.png"></a>      
+      </th>      
+      <th>試卷名稱&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/tools/select?orderParam=title&&order=ASC&&id=<%= params[:id] %>"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/tools/select?orderParam=title&&order=DESC&&id=<%= params[:id] %>"><img src="/sort-down.png"></a>
+      </th>
+      <th>可見性設定&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/tools/select?orderParam=visible&&order=ASC&&id=<%= params[:id] %>"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/tools/select?orderParam=visible&&order=DESC&&id=<%= params[:id] %>"><img src="/sort-down.png"></a>         
+      </th>
+      <th>上架日期&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/tools/select?orderParam=public_date&&order=ASC&&id=<%= params[:id] %>"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/tools/select?orderParam=public_date&&order=DESC&&id=<%= params[:id] %>"><img src="/sort-down.png"></a>      
+      </th>
+      <th>備註&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/tools/select?orderParam=note&&order=ASC&&id=<%= params[:id] %>"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/tools/select?orderParam=note&&order=DESC&&id=<%= params[:id] %>"><img src="/sort-down.png"></a>        
+      </th>
+      <th>有效性&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers/tools/select?orderParam=active&&order=ASC&&id=<%= params[:id] %>"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers/tools/select?orderParam=active&&order=DESC&&id=<%= params[:id] %>"><img src="/sort-down.png"></a>       
+      </th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @papers.each do |paper| %>
+    <% if params[:id].present? %>
+      <% if (@paper_ids.include? paper.id) || (@public_date > paper.public_date) %>
+        <tr class="freeze">
+      <% else %>
+        <tr>
+      <% end %>
+    <% end %>
+        <td><input type="checkbox" class="paper_id" value=<%= paper.id %>></td>
+        <% if paper.paper_subject!=nil%>
+          <td class="column-name"><%= paper.paper_subject.title %></td>
+        <% end %>
+        <td><span class="column-name">
+        <% paper.grades.each do |g| %>
+          <%= g.name %>,
+        <% end %>
+        </span></td>
+        <td class="column-name"><%= paper.title %></td>
+        <td class="column-name"><%= paper.visible %></td>
+        <td class="column-name"><%= paper.public_date %></td>
+        <td class="column-name"><%= paper.note %></td>
+        <td class="column-name paper_set_id" style="display:none"><%= paper.paper_set_id %></td>
+        <td>
+        <% if paper.active == true%>
+        <span class="active">已啟用</span>
+        <% else %>
+        <span class="inactive">未啟用</span>
+        <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<%= will_paginate @papers, :previous_label => '上一頁', :next_label => '下一頁' %>
+
+<button class="btn btn-primary" id="submit">送出</button>
+<button class="btn btn-primary" id="close">取消</button>

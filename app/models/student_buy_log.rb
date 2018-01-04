@@ -1,0 +1,2 @@
+class StudentBuyLog < ApplicationRecord
+end

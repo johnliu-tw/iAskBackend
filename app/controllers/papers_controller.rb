@@ -262,7 +262,7 @@ class PapersController < ApplicationController
       paper.assign_attributes({ :finish_rate => finish_rate})
     }
 
-    render json: @papers, methods: [:subject_name, :correct_rate]
+    render json: @papers, methods: [:finish_rate, :correct_rate]
   end
 
 
@@ -299,13 +299,23 @@ class PapersController < ApplicationController
     end
     session[:filter_papers_id] = @filter_papers.pluck(:id)
     respond_to do |format|
-      format.html { redirect_to '/papers?filter=true' }
+      if params[:filter][:path_name] == "/papers"
+        format.html { redirect_to '/papers?filter=true' }
+      elsif 
+        format.html { redirect_to '/papers/tools/select?filter=true&&id='+params[:filter][:paper_set_id] }
+      end
       format.json { render :index, status: :ok, location: @filter_papers }
     end
 
   end
 
   def select 
+
+    if params[:id].present?
+      @paper_ids = Paper.where.not(:paper_set_id => nil).pluck(:id)
+      @public_date = PaperSet.find(params[:id]).public_date
+    end
+
     if params[:filter] == nil
       orderParam = params[:orderParam]
       order = params[:order]
@@ -360,6 +370,9 @@ class PapersController < ApplicationController
       end
     end
     @question = Question.new
+
+    render template: "papers/select",layout: false 
+
   end  
 
 

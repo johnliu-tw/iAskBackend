@@ -20,14 +20,18 @@ Rails.application.routes.draw do
   post 'papers/:id', :to => 'papers#update'
   post 'papers/:id/questions/:id', :to => 'questions#update'
   get  'homes/management', :to => 'home#management'
+  get  'papers/tools/select', :to => 'papers#select'
   # APIS
   get  'papers/api/get_paper_by_platform', :to => 'papers#get_paper_by_platform' 
   get  'papers/api/get_papers_by_subject', :to => 'papers#get_papers_by_subject' 
+  get  'papers/api/get_papers_by_paper_set', :to => 'papers#get_papers_by_paper_set' 
   get  'questions/api/get_questionList_by_paperId', :to => 'questions#get_questionList_by_paperId'
   get  'questions/api/get_question_by_questionId', :to => 'questions#get_question_by_questionId'
   get  'grades/api/get_grades_by_platform', :to => 'grades#get_grades_by_platform'
   get  'subjects/api/get_subjects_by_grade', :to => 'subjects#get_subjects_by_grade' 
   get  'paper_sets/api/get_paper_sets_by_platform', :to => 'paper_sets#get_paper_sets_by_platform' 
+  get  'paper_sets/api/get_paper_sets_by_id', :to => 'paper_sets#get_paper_sets_by_id' 
+  get  'paper_sets/api/check_paper_bought', :to => 'paper_sets#check_paper_bought' 
 
   post 'homes/api/answer_question_logs', :to => 'home#answer_question_logs' 
   post 'homes/api/answer_question_correct', :to => 'home#answer_question_correct' 
@@ -42,4 +46,6 @@ Rails.application.routes.draw do
   get 'homes/api/show_log_api_data', :to => 'home#show_log_api_data' 
 
   post 'papers/api/filter', :to => 'papers#filter'
+  post 'paper_sets/api/clear_paper_paper_set_id', :to => 'paper_sets#clear_paper_paper_set_id'
+  post 'paper_sets/api/student_buy_paper_set', :to => 'paper_sets#student_buy_paper_set'
 end
