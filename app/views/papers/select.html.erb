@@ -17,12 +17,16 @@ $(function(){
 
   $("#check-all").click(function(){
     $(".paper_id").each(function(){
-      $(this).attr("checked","true")
+      if($(this).closest("tr").attr("class") != "freeze"){
+        $(this).attr("checked","true")
+      }
     });
   })
   $("#uncheck-all").click(function(){
     $(".paper_id").each(function(){
-      $(this).attr("checked","false")
+      if($(this).closest("tr").attr("class") != "freeze"){
+        $(this).removeAttr("checked")
+      }
     });
   })
   $("#close").click(function(){
