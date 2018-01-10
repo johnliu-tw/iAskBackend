@@ -1,6 +1,6 @@
 class PaperSetsController < ApplicationController
   before_action :set_paper_set, only: [:show, :edit, :update, :destroy]
-
+  protect_from_forgery except:[:student_buy_paper_set]
   # GET /paper_sets
   # GET /paper_sets.json
   def index

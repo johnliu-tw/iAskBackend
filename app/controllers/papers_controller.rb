@@ -172,7 +172,7 @@ class PapersController < ApplicationController
   end
   
   def get_paper_by_platform
-    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,papers.visible, paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:active => true,:platform_type => params[:platformId])
+    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,papers.visible, papers.paper_set_id, paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:active => true,:platform_type => params[:platformId])
     paper_subject_ids = Paper.distinct(:paper_subject_id).where(:active => true, :platform_type => params[:platformId]).pluck(:paper_subject_id)
     @papers.each{
       |paper| 

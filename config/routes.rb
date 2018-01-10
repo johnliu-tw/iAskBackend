@@ -49,3 +49,5 @@ Rails.application.routes.draw do
   post 'paper_sets/api/clear_paper_paper_set_id', :to => 'paper_sets#clear_paper_paper_set_id'
   post 'paper_sets/api/student_buy_paper_set', :to => 'paper_sets#student_buy_paper_set'
 end
+
+
