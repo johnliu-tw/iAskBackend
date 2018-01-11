@@ -8,6 +8,9 @@
   pointer-events: none;
   background-color: gray;
 }
+.table{
+  font-size: 14px;
+}
 </style>
 
 <script>
@@ -56,6 +59,7 @@ $(function(){
   <thead>
     <tr class="thead">
       <th></th>
+      <th>試卷 Id&nbsp;</th>
       <th>試卷科目&nbsp;
         <a class="sorter" id="name-ASC" href="/papers/tools/select?relation=paper_subjects&&order=ASC&&id=<%= params[:id] %>"><img src="/sort-up.png"></a>
         <a class="sorter" id='name-DESC' href="/papers/tools/select?relation=paper_subjects&&order=DESC&&id=<%= params[:id] %>"><img src="/sort-down.png"></a>
@@ -98,6 +102,7 @@ $(function(){
       <% end %>
     <% end %>
         <td><input type="checkbox" class="paper_id" value=<%= paper.id %>></td>
+        <td class="column-name"><%= paper.id %></td>
         <% if paper.paper_subject!=nil%>
           <td class="column-name"><%= paper.paper_subject.title %></td>
         <% end %>
