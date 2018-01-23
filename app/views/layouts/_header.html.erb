@@ -61,8 +61,8 @@ a.sorter:hover{
     </ul>
     <ul class="nav navbar-nav pull-right">
       <% if current_user.has_role? :admin%>
-      <li><a href="/">題目分析</a></li>
-      <li><a href="/">試卷分析</a></li>
+      <li><a href="/paper_analytics">試卷分析</a></li>
+      <li><a href="/user_analytics">使用者分析</a></li>
       <li><a href="/homes/management">使用者管理</a></li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

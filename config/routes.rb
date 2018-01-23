@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   post 'papers/:id/questions/:id', :to => 'questions#update'
   get  'homes/management', :to => 'home#management'
   get  'papers/tools/select', :to => 'papers#select'
+  get  'user_analytics/', :to => 'user_analytics#index'
+  get  'paper_analytics/', :to => 'paper_analytics#index'
+
   # APIS
   get  'papers/api/get_paper_by_platform', :to => 'papers#get_paper_by_platform' 
   get  'papers/api/get_papers_by_subject', :to => 'papers#get_papers_by_subject' 
@@ -48,6 +51,8 @@ Rails.application.routes.draw do
   post 'papers/api/filter', :to => 'papers#filter'
   post 'paper_sets/api/clear_paper_paper_set_id', :to => 'paper_sets#clear_paper_paper_set_id'
   post 'paper_sets/api/student_buy_paper_set', :to => 'paper_sets#student_buy_paper_set'
+  post 'paper_analytics/api/filter', :to => 'paper_analytics#filter'
+  
 end
 
 

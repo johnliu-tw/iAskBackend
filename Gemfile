@@ -45,6 +45,7 @@ gem 'rack-cors'
 gem 'cancancan'
 gem 'awesome_rails_console'
 gem 'pry-byebug'
+gem 'rest-client'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password

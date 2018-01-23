@@ -1,0 +1,101 @@
+<p id="notice"><%= notice %></p>
+
+<h1>試卷分析</h1>
+<%= render 'filters', paper: @paper %>
+<table class="table">
+  <thead>
+    <tr class="thead">
+      <th>平台&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=platform_type&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=platform_type&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
+      <th>試卷名稱&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=title&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=title&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
+      <th>試卷科目&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?relation=paper_subjects&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?relation=paper_subjects&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
+      <th>年級&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?relation=grades&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?relation=grades&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>
+      <th>上架日期&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=public_date&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=public_date&&order=DESC"><img src="/sort-down.png"></a>      
+      </th> 
+      <th>題數&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?relation=questions&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?relation=questions&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>      
+      <th>有效性&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=active&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=active&&order=DESC"><img src="/sort-down.png"></a>       
+      </th>
+      <th>可見權限&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=visible&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=visible&&order=DESC"><img src="/sort-down.png"></a>         
+      </th>
+      <th>答卷人數&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?relation=student_open_paper_logs&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?relation=student_open_paper_logs&&order=DESC"><img src="/sort-down.png"></a>         
+      </th>
+      <th>平均完成時間&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=answer_time&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=answer_time&&order=DESC"><img src="/sort-down.png"></a>         
+      </th>
+      <th>平均完成率&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=finish_rate&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=finish_rate&&order=DESC"><img src="/sort-down.png"></a>         
+      </th>
+      <th>平均答對率&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=correct_rate&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=correct_rate&&order=DESC"><img src="/sort-down.png"></a>         
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @papers.each do |paper| %>
+      <tr>
+        <td class="column-name">
+          <% if paper.platform_type == 0 %>
+            iAsk - 好問
+          <% elsif paper.platform_type == 1 %>
+            聯合改作文
+          <% else  %>
+            讀享
+          <% end %>
+        </td>
+        <td class="column-name"><%= paper.title %></td>
+        <% if paper.paper_subject!=nil%>
+          <td class="column-name"><%= paper.paper_subject.title %></td>
+        <% end %>
+        <td><span class="column-name">
+        <% paper.grades.each do |g| %>
+          <%= g.name %>,
+        <% end %>
+        </span></td>
+        <td class="column-name"><%= paper.public_date %></td>
+        <td class="column-name"><%= paper.questions.size %></td>
+        <td>
+        <% if paper.active == true%>
+        <span class="active">已啟用</span>
+        <% else %>
+        <span class="inactive">未啟用</span>
+        <% end %>
+        </td>
+        <td class="column-name"><%= paper.visible %></td>
+        <td class="column-name"><%= paper.student_open_paper_logs.size %></td>
+        <td class="column-name"><%= paper.answer_time.strftime("%H:%M:%S") %></td>
+        <td class="column-name"><%= paper.finish_rate %></td>
+        <td class="column-name"><%= paper.correct_rate %></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<%= will_paginate @papers, :previous_label => '上一頁', :next_label => '下一頁' %>

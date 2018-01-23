@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
     belongs_to :papers
-
+    has_many :student_answer_logs
+    
     attr_accessor :answered 
     attr_accessor :corrected
     attr_accessor :answer_count

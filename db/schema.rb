@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180104133133) do
+ActiveRecord::Schema.define(version: 20180122170949) do
 
   create_table "grades", force: :cascade do |t|
     t.string   "name"
@@ -60,6 +60,9 @@ ActiveRecord::Schema.define(version: 20180104133133) do
     t.integer  "paper_subject_id"
     t.integer  "platform_type"
     t.string   "paper_set_id"
+    t.float    "correct_rate"
+    t.float    "finish_rate"
+    t.datetime "answer_time"
   end
 
   create_table "papersubject_subjectships", force: :cascade do |t|
@@ -131,11 +134,13 @@ ActiveRecord::Schema.define(version: 20180104133133) do
   end
 
   create_table "student_answer_logs", force: :cascade do |t|
-    t.string  "student_id"
-    t.string  "question_id"
-    t.boolean "correct"
-    t.string  "answer"
-    t.integer "answer_count"
+    t.string   "student_id"
+    t.string   "question_id"
+    t.boolean  "correct"
+    t.string   "answer"
+    t.integer  "answer_count"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "student_ask_teacher_logs", force: :cascade do |t|
@@ -175,6 +180,26 @@ ActiveRecord::Schema.define(version: 20180104133133) do
     t.string   "student_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "student_paper_logs", force: :cascade do |t|
+    t.string   "student_id"
+    t.string   "paper_id"
+    t.float    "correct_rate"
+    t.float    "finish_rate"
+    t.integer  "answer_times"
+    t.datetime "answer_time"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string   "name"
+    t.string   "years"
+    t.string   "grade"
+    t.string   "school"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "subjects", force: :cascade do |t|
