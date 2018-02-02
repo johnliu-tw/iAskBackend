@@ -21,8 +21,8 @@ Rails.application.routes.draw do
   post 'papers/:id/questions/:id', :to => 'questions#update'
   get  'homes/management', :to => 'home#management'
   get  'papers/tools/select', :to => 'papers#select'
-  get  'user_analytics/', :to => 'user_analytics#index'
-  get  'paper_analytics/', :to => 'paper_analytics#index'
+  get  'user_analytics', :to => 'user_analytics#index'
+  get  'paper_analytics', :to => 'paper_analytics#index'
 
   # APIS
   get  'papers/api/get_paper_by_platform', :to => 'papers#get_paper_by_platform' 

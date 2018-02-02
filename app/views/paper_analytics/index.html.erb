@@ -87,7 +87,7 @@
         <% end %>
         </td>
         <td class="column-name"><%= paper.visible %></td>
-        <td class="column-name"><%= paper.student_open_paper_logs.size %></td>
+        <td class="column-name"><%= paper.student_open_paper_logs.select(:student_id).distinct.count %></td>
         <td class="column-name"><%= paper.answer_time.strftime("%H:%M:%S") %></td>
         <td class="column-name"><%= paper.finish_rate %></td>
         <td class="column-name"><%= paper.correct_rate %></td>

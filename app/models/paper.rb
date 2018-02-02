@@ -3,6 +3,7 @@ class Paper < ApplicationRecord
     attr_accessor :subject_name
     has_many :questions
     has_many :student_paper_logs
+    has_many :student_open_paper_logs
     has_many :paper_gradeships
     has_many :paper_sets
     has_many :grades, :through => :paper_gradeships

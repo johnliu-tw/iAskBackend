@@ -1,12 +1,5 @@
 
 <form id="filter" action="/paper_analytics/api/filter" novalidate="novalidate" method="post">
-平台:
-<select name="filter[platform_type]">
-    <option value="">請選擇</option>
-    <option value="0">iAsk好問</option>
-    <option value="1">聯合改作文</option>
-    <option value="2">讀享</option>
-</select>
 科目 : <%= collection_select(:filter, :subject_name, Subject.distinct(:name).where(:platform_type => session[:platform_id]).order(:name), :name, :name, prompt: true) %>
 年級 : <%= collection_select(:filter, :grade_name, Grade.distinct(:name).where(:platform_type => session[:platform_id]).order(:name), :name, :name, prompt: true) %>
 上架日期: 

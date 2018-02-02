@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-    belongs_to :papers
+    belongs_to :paper
     has_many :student_answer_logs
     
     attr_accessor :answered 

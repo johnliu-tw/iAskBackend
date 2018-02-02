@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180122170949) do
+ActiveRecord::Schema.define(version: 20180201171252) do
 
   create_table "grades", force: :cascade do |t|
     t.string   "name"
@@ -188,18 +188,19 @@ ActiveRecord::Schema.define(version: 20180122170949) do
     t.float    "correct_rate"
     t.float    "finish_rate"
     t.integer  "answer_times"
-    t.datetime "answer_time"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "answer_time",  default: '2000-01-01 00:00:00'
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
   end
 
-  create_table "students", force: :cascade do |t|
+  create_table "students", id: :string, force: :cascade do |t|
     t.string   "name"
     t.string   "years"
     t.string   "grade"
     t.string   "school"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["id"], name: "sqlite_autoindex_students_1", unique: true
   end
 
   create_table "subjects", force: :cascade do |t|
