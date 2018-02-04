@@ -5,10 +5,6 @@
 <table class="table">
   <thead>
     <tr class="thead">
-      <th>平台&nbsp;
-        <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=platform_type&&order=ASC"><img src="/sort-up.png"></a>
-        <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=platform_type&&order=DESC"><img src="/sort-down.png"></a>
-      </th>
       <th>試卷名稱&nbsp;
         <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=title&&order=ASC"><img src="/sort-up.png"></a>
         <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=title&&order=DESC"><img src="/sort-down.png"></a>
@@ -59,15 +55,6 @@
   <tbody>
     <% @papers.each do |paper| %>
       <tr>
-        <td class="column-name">
-          <% if paper.platform_type == 0 %>
-            iAsk - 好問
-          <% elsif paper.platform_type == 1 %>
-            聯合改作文
-          <% else  %>
-            讀享
-          <% end %>
-        </td>
         <td class="column-name"><%= paper.title %></td>
         <% if paper.paper_subject!=nil%>
           <td class="column-name"><%= paper.paper_subject.title %></td>

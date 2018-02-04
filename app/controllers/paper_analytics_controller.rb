@@ -3,6 +3,8 @@ class PaperAnalyticsController < ApplicationController
   
   def index
     @papers = Paper.all.paginate(:page => params[:page], :per_page => 10)
+    
+    platform_type = 0
 
     if current_user.has_role? :iAsk
       platform_type = 0
@@ -18,7 +20,6 @@ class PaperAnalyticsController < ApplicationController
     if params[:filter] == nil
       orderParam = params[:orderParam]
       order = params[:order]
-      platform_type = 0
       # detect order by which parameter
       if orderParam == nil
         orderParam = "id"
