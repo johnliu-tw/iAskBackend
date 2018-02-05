@@ -4,6 +4,20 @@ class PaperSetsController < ApplicationController
   # GET /paper_sets
   # GET /paper_sets.json
   def index
+
+    platform_type = 0
+
+    if current_user.has_role? :iAsk
+      platform_type = 0
+    elsif current_user.has_role? :udn
+      platform_type = 1
+    elsif current_user.has_role? :reader
+      platform_type = 2
+    elsif current_user.has_role? :admin
+      platform_type = session[:platform_id]
+    end
+
+
     orderParam = params[:orderParam]
     order = params[:order]
     if orderParam == nil
@@ -12,14 +26,11 @@ class PaperSetsController < ApplicationController
     if order == nil
       order = "DESC"
     end
-    if current_user.has_role? :iAsk
-      @paper_sets = PaperSet.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-    elsif current_user.has_role? :udn
-      @paper_sets = PaperSet.where(platform_type: 1).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
-    elsif current_user.has_role? :reader
-      @paper_sets = PaperSet.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-    elsif current_user.has_role? :admin
-      @paper_sets = PaperSet.where(platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+
+    if params[:relation] == "buy_logs"
+      @paper_sets = PaperSet.left_joins(:student_buy_logs, :papers).group(:id).where("papers.platform_type = #{platform_type}").order("COUNT(student_buy_logs.id) #{order}")
+    else
+      @paper_sets = PaperSet.where(platform_type: platform_type).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     end
   end
 

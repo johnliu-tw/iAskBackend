@@ -73,6 +73,10 @@ $(function(){
         <a class="sorter" id="name-ASC" href="/paper_sets?orderParam=active&&order=ASC"><img src="/sort-up.png"></a>
         <a class="sorter" id='name-DESC' href="/paper_sets?orderParam=active&&order=DESC"><img src="/sort-down.png"></a>
       </th>
+      <th>購買次數&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_sets?relation=buy_logs&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_sets?relation=buy_logs&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
       <th colspan="3">
       </th>
     </tr>
@@ -86,6 +90,7 @@ $(function(){
         <td><span class="column-name"><%= paper_set.price %></span></td>
         <td><span class="column-name"><%= paper_set.public_date %></span></td>
         <td><span class="column-name"><%= paper_set.description %></span></td>
+        <td><span class="column-name"><%= paper_set.student_buy_logs.size %></span></td>
         <td>
           <% if paper_set.active == true%>
           <span class="active">已啟用</span>

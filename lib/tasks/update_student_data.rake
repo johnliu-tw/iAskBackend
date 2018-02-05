@@ -1,6 +1,6 @@
 namespace :create do
   task :update_student_data => [ :environment ] do
-    @student_answer_logs = StudentAnswerLog.distinct(:student_id).all
+    @student_answer_logs = StudentAnswerLog.all
     student_answer_logs.each{
       |student_answer_log|
       if student_answer_log.student_id != nil

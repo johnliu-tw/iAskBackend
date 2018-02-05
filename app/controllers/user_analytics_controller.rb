@@ -51,7 +51,7 @@ class UserAnalyticsController < ApplicationController
     years = params[:filter][:years]
 
 
-    @filter_logs = StudentPaperLog.left_joins(:paper)
+    @filter_logs = StudentPaperLog.joins(:paper)
     if subject_name.present?
       subject_id = Subject.where(:name => subject_name, :platform_type => session[:platform_id]).pluck(:id)
       subject_paper_subject_ids = PapersubjectSubjectship.where(:subject_id => subject_id).pluck(:paper_subject_id)
