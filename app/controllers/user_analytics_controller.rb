@@ -1,7 +1,7 @@
 class UserAnalyticsController < ApplicationController
+  protect_from_forgery except: :filter
 
   def index
-
     platform_type = 0
 
     if current_user.has_role? :iAsk
@@ -38,7 +38,12 @@ class UserAnalyticsController < ApplicationController
           @student_paper_logs = StudentPaperLog.left_joins(:paper).where("papers.platform_type = #{platform_type}").order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
       end
     else
-      @student_paper_logs = StudentPaperLog.left_joins(:paper).where("papers.platform_type = #{platform_type} and student_paper_logs.id = #{session[:filter_log_id]}").paginate(:page => params[:page], :per_page => 10)
+      @student_paper_logs = StudentPaperLog.left_joins(:paper).where(:papers => {:platform_type => platform_type}, :id => session[:filter_log_id]).paginate(:page => params[:page], :per_page => 10)
+    end
+
+    respond_to do |format|
+      format.html
+      format.xls 
     end
 
   end
@@ -55,12 +60,12 @@ class UserAnalyticsController < ApplicationController
     if subject_name.present?
       subject_id = Subject.where(:name => subject_name, :platform_type => session[:platform_id]).pluck(:id)
       subject_paper_subject_ids = PapersubjectSubjectship.where(:subject_id => subject_id).pluck(:paper_subject_id)
-      @filter_logs = @filter_logs.where("papers.paper_subject_id = #{subject_paper_subject_ids}")
+      @filter_logs = @filter_logs.where(:papers => {:paper_subject_id => subject_paper_subject_ids} )
     end
     if grade.present?
       grade_id = Grade.where(:name => grade, :platform_type => session[:platform_id]).pluck(:id)
       grade_paper_ids = PaperGradeship.where(:grade_id => grade_id).pluck(:paper_id)
-      @filter_logs = @filter_logs.where("papers.id = #{grade_paper_ids}")
+      @filter_logs = @filter_logs.where(:papers => {:id => grade_paper_ids} )
     end
     if init_public_date.present? && end_public_date.empty?
       @filter_logs = @filter_logs.where("papers.public_date >= '#{init_public_date}'")
@@ -73,7 +78,7 @@ class UserAnalyticsController < ApplicationController
       years_id = Student.where(:years => years).pluck(:id)
       @filter_logs = @filter_logs.where(:student_id => years_id)
     end
-    session[:filter_papers_id] = @filter_logs.pluck(:id)
+    session[:filter_log_id] = @filter_logs.pluck(:id)
 
     respond_to do |format|
       format.html { redirect_to '/user_analytics?filter=true' }

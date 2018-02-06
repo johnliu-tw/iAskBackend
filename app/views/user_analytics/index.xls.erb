@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">學生姓名</Data></Cell>
+        <Cell><Data ss:Type="String">年段</Data></Cell>
+        <Cell><Data ss:Type="String">就讀學校</Data></Cell>
+        <Cell><Data ss:Type="String">年級</Data></Cell>
+        <Cell><Data ss:Type="String">試卷名稱</Data></Cell>
+        <Cell><Data ss:Type="String">試卷科目</Data></Cell>
+        <Cell><Data ss:Type="String">上架日期</Data></Cell>
+        <Cell><Data ss:Type="String">題數</Data></Cell>
+        <Cell><Data ss:Type="String">累積作答次數</Data></Cell>
+        <Cell><Data ss:Type="String">累積作答時間</Data></Cell>
+        <Cell><Data ss:Type="String">完成率</Data></Cell>
+        <Cell><Data ss:Type="String">答對率</Data></Cell>
+      </Row>
+    <% @student_paper_logs.each do |log| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= log.student.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.student.grade %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.student.school %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.student.years %></Data></Cell>     
+        <Cell><Data ss:Type="String"><%= log.paper.title %></Data></Cell>   
+        <Cell><Data ss:Type="String">       
+        <% if log.paper.paper_subject!=nil%>
+          <%= log.paper.paper_subject.title %>
+        <% end %>
+        </Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.paper.public_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.paper.questions.size %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.answer_times %></Data></Cell>
+        <Cell><Data ss:Type="String">
+        <% if log.answer_time != nil %>
+            <%= log.answer_time.strftime("%H:%M:%S") %>
+        <% end %>
+        </Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.finish_rate.round(2) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.correct_rate.round(2) %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

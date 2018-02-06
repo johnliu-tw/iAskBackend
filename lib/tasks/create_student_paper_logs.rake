@@ -22,9 +22,9 @@ namespace :create do
       
               pre_time = answer_log.created_at
             }
-            if answer_time != 0.0
-                answer_time = Time.at(answer_time/1000).strftime("%H:%M:%S")
-            end
+            
+            answer_time = Time.at(answer_time).strftime("%H:%M:%S")
+
             #count finish rate
             total_size = log.question.paper.questions.size
             finish_size = StudentAnswerLog.distinct(:question_id).where(:question_id => log.question_id, :student_id => log.student_id).size

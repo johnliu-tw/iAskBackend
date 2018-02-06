@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">試卷名稱</Data></Cell>
+        <Cell><Data ss:Type="String">試卷科目</Data></Cell>
+        <Cell><Data ss:Type="String">年級</Data></Cell>
+        <Cell><Data ss:Type="String">上架日期</Data></Cell>
+        <Cell><Data ss:Type="String">題數</Data></Cell>
+        <Cell><Data ss:Type="String">有效性</Data></Cell>
+        <Cell><Data ss:Type="String">可見權限</Data></Cell>
+        <Cell><Data ss:Type="String">答卷人數</Data></Cell>
+        <Cell><Data ss:Type="String">平均完成時間</Data></Cell>
+        <Cell><Data ss:Type="String">平均完成率</Data></Cell>
+        <Cell><Data ss:Type="String">平均答對率</Data></Cell>
+      </Row>
+    <% @papers.each do |paper| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= paper.title %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= paper.paper_subject.title %></Data></Cell>
+        <Cell><Data ss:Type="String">
+        <% paper.grades.each do |g| %>
+          <%= g.name %>,
+        <% end %>
+        </Data></Cell>
+        <Cell><Data ss:Type="String"><%= paper.public_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= paper.questions.size %></Data></Cell>        
+        <Cell><Data ss:Type="String">       
+        <% if paper.active == true%>
+        已啟用
+        <% else %>
+        未啟用
+        <% end %>
+        </Data></Cell>
+        <Cell><Data ss:Type="String"><%= paper.visible %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= paper.student_open_paper_logs.select(:student_id).distinct.count %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= paper.answer_time.strftime("%H:%M:%S") %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= paper.finish_rate %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= paper.correct_rate %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

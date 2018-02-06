@@ -45,6 +45,10 @@ class PaperAnalyticsController < ApplicationController
     end
 
       @papers = assign_fake_attribute(@papers)
+      respond_to do |format|
+        format.html
+        format.xls 
+      end
   end
 
 

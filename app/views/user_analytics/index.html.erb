@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>使用者分析</h1>
+<a href="/user_analytics.xls"><button class="btn btn-primary" >匯出報表</button></a>
 <%= render 'filters', student_open_paper_logs: @student_open_paper_logs %>
 <table class="table">
   <thead>
@@ -73,11 +74,11 @@
         <td class="column-name"><%= log.answer_times %></td>  
         <td class="column-name">
         <% if log.answer_time != nil %>
-        <%= (log.answer_time - 8*60*60).strftime("%H:%M:%S") %>
+        <%= log.answer_time.strftime("%H:%M:%S") %>
         <% end %>
         </td>
-        <td class="column-name"><%= log.finish_rate %></td>
-        <td class="column-name"><%= log.correct_rate %></td>
+        <td class="column-name"><%= log.finish_rate.round(2) %>%</td>
+        <td class="column-name"><%= log.correct_rate.round(2) %>%</td>
 
       </tr>
     <% end %>
