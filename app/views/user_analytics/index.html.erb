@@ -1,7 +1,17 @@
+<script>
+$(function(){
+var localPath = window.location.pathname
+var localParam = window.location.search
+var excelUrl = localPath + ".xls" + localParam
+$("#excelUrl").attr("href",excelUrl)
+})
+
+</script>
+
 <p id="notice"><%= notice %></p>
 
 <h1>使用者分析</h1>
-<a href="/user_analytics.xls"><button class="btn btn-primary" >匯出報表</button></a>
+<a id="excelUrl" href="/user_analytics.xls"><button class="btn btn-primary" >匯出報表</button></a>
 <%= render 'filters', student_open_paper_logs: @student_open_paper_logs %>
 <table class="table">
   <thead>

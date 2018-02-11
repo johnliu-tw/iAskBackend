@@ -27,18 +27,18 @@ class UserAnalyticsController < ApplicationController
       end
       
       if params[:relation] == "paper_subjects"
-          @student_paper_logs = StudentPaperLog.left_joins(:paper_subject, :paper).where("papers.platform_type = #{platform_type}").order("paper_subjects.title  #{order}").paginate(:page => params[:page], :per_page => 10)
+          @student_paper_logs = StudentPaperLog.left_joins(:paper_subject, :paper).where("papers.platform_type = #{platform_type}").order("paper_subjects.title  #{order}").paginate(:page => params[:page], :per_page => 30)
       elsif params[:relation] == "student"
-          @student_paper_logs = StudentPaperLog.left_joins(:student, :paper).where("papers.platform_type = #{platform_type}").order("students.#{params[:attribute]}  #{order}").paginate(:page => params[:page], :per_page => 10)
+          @student_paper_logs = StudentPaperLog.left_joins(:student, :paper).where("papers.platform_type = #{platform_type}").order("students.#{params[:attribute]}  #{order}").paginate(:page => params[:page], :per_page => 30)
       elsif params[:relation] == "questions"
-          @student_paper_logs = StudentPaperLog.left_joins(:questions, :paper).group(:id).where("papers.platform_type = #{platform_type}").order("COUNT(questions.id) #{order}").paginate(:page => params[:page], :per_page => 10)
+          @student_paper_logs = StudentPaperLog.left_joins(:questions, :paper).group(:id).where("papers.platform_type = #{platform_type}").order("COUNT(questions.id) #{order}").paginate(:page => params[:page], :per_page => 30)
       elsif params[:relation] == "paper"
-          @student_paper_logs = StudentPaperLog.left_joins(:paper).where("papers.platform_type = #{platform_type}").order("papers.#{params[:attribute]}  #{order}").paginate(:page => params[:page], :per_page => 10)
+          @student_paper_logs = StudentPaperLog.left_joins(:paper).where("papers.platform_type = #{platform_type}").order("papers.#{params[:attribute]}  #{order}").paginate(:page => params[:page], :per_page => 30)
       else
-          @student_paper_logs = StudentPaperLog.left_joins(:paper).where("papers.platform_type = #{platform_type}").order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+          @student_paper_logs = StudentPaperLog.left_joins(:paper).where("papers.platform_type = #{platform_type}").order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 30)
       end
     else
-      @student_paper_logs = StudentPaperLog.left_joins(:paper).where(:papers => {:platform_type => platform_type}, :id => session[:filter_log_id]).paginate(:page => params[:page], :per_page => 10)
+      @student_paper_logs = StudentPaperLog.left_joins(:paper).where(:papers => {:platform_type => platform_type}, :id => session[:filter_log_id]).paginate(:page => params[:page], :per_page => 30)
     end
 
     respond_to do |format|

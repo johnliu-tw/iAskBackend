@@ -2,7 +2,7 @@ class PaperAnalyticsController < ApplicationController
   protect_from_forgery except: :filter
   
   def index
-    @papers = Paper.all.paginate(:page => params[:page], :per_page => 10)
+    @papers = Paper.all
     
     platform_type = 0
 
@@ -30,18 +30,18 @@ class PaperAnalyticsController < ApplicationController
       end
 
       if params[:relation] == "paper_subjects"
-          @papers = Paper.includes(:paper_subject).where(platform_type: platform_type).order("paper_subjects.title  #{order}").paginate(:page => params[:page], :per_page => 10)
+          @papers = Paper.includes(:paper_subject).where(platform_type: platform_type).order("paper_subjects.title  #{order}").paginate(:page => params[:page], :per_page => 30)
       elsif params[:relation] == "grades"
-          @papers = Paper.includes(:grades).where(platform_type: platform_type).order("grades.name  #{order}").paginate(:page => params[:page], :per_page => 10)
+          @papers = Paper.includes(:grades).where(platform_type: platform_type).order("grades.name  #{order}").paginate(:page => params[:page], :per_page => 30)
       elsif params[:relation] == "questions"
-          @papers = Paper.left_joins(:questions).group(:id).where(platform_type: platform_type).order("COUNT(questions.id) #{order}").paginate(:page => params[:page], :per_page => 10)
+          @papers = Paper.left_joins(:questions).group(:id).where(platform_type: platform_type).order("COUNT(questions.id) #{order}").paginate(:page => params[:page], :per_page => 30)
       elsif params[:relation] == "student_open_paper_logs" 
-          @papers = Paper.left_joins(:student_open_paper_logs).where(platform_type: platform_type).group(:id).order("COUNT(student_open_paper_logs.id) #{order}").paginate(:page => params[:page], :per_page => 10)
-      else
-          @papers = Paper.order("#{orderParam}  #{order}").where(platform_type: platform_type).paginate(:page => params[:page], :per_page => 10)
+          @papers = Paper.left_joins(:student_open_paper_logs).where(platform_type: platform_type).group(:id).order("COUNT(student_open_paper_logs.id) #{order}").paginate(:page => params[:page], :per_page => 30)
+      else 
+          @papers = Paper.order("#{orderParam}  #{order}").where(platform_type: platform_type).paginate(:page => params[:page], :per_page => 30)
       end
     else
-        @papers = Paper.where(:id => session[:filter_papers_id],platform_type: platform_type).paginate(:page => params[:page], :per_page => 10)
+        @papers = Paper.where(:id => session[:filter_papers_id],platform_type: platform_type).paginate(:page => params[:page], :per_page => 30)
     end
 
       @papers = assign_fake_attribute(@papers)
