@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">日期</Data></Cell>
+        <Cell><Data ss:Type="String">姓名</Data></Cell>
+        <Cell><Data ss:Type="String">帳號</Data></Cell>
+        <Cell><Data ss:Type="String">註冊時間</Data></Cell>
+        <Cell><Data ss:Type="String">年段</Data></Cell>
+        <Cell><Data ss:Type="String">年級</Data></Cell>
+        <Cell><Data ss:Type="String">試卷包名稱</Data></Cell>
+        <Cell><Data ss:Type="String">內含試卷數</Data></Cell>
+        <Cell><Data ss:Type="String">上架時間</Data></Cell>
+        <Cell><Data ss:Type="String">售價</Data></Cell>
+      </Row>
+    <% @buy_logs.each do |log| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= log.created_at.strftime('%Y-%m-%d') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.student.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.student.account %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.student.register_time %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.student.grade %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.student.years %></Data></Cell> 
+        <Cell><Data ss:Type="String"><%= log.paper_set.title %></Data></Cell>   
+        <Cell><Data ss:Type="String"><%= log.paper_set.papers.count %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.paper_set.public_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.paper_set.price%></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

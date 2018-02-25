@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'paper_set_buy_analytics/index'
+
   resources :paper_sets
   devise_for :users
   resources :paper_gradeships
@@ -21,8 +23,10 @@ Rails.application.routes.draw do
   post 'papers/:id/questions/:id', :to => 'questions#update'
   get  'homes/management', :to => 'home#management'
   get  'papers/tools/select', :to => 'papers#select'
+  get  'papers/tools/show_papers', :to => 'papers#show_papers'
   get  'user_analytics', :to => 'user_analytics#index'
   get  'paper_analytics', :to => 'paper_analytics#index'
+  get  'paper_set_buy_analytics', :to => 'paper_set_buy_analytics#index'
 
   # APIS
   get  'papers/api/get_paper_by_platform', :to => 'papers#get_paper_by_platform' 
@@ -53,6 +57,7 @@ Rails.application.routes.draw do
   post 'paper_sets/api/student_buy_paper_set', :to => 'paper_sets#student_buy_paper_set'
   post 'paper_analytics/api/filter', :to => 'paper_analytics#filter'
   post 'user_analytics/api/filter', :to => 'user_analytics#filter'
+  post 'paper_set_buy_analytics/api/filter', :to => 'user_analytics#filter'
   
 end
 

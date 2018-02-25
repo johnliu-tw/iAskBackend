@@ -5,7 +5,7 @@ class Paper < ApplicationRecord
     has_many :student_paper_logs
     has_many :student_open_paper_logs
     has_many :paper_gradeships
-    has_many :paper_sets
+    belongs_to :paper_set
     has_many :grades, :through => :paper_gradeships
     has_many :students, :through => :student_paper_logs
     belongs_to :paper_subject, class_name: "PaperSubject", foreign_key: "paper_subject_id"

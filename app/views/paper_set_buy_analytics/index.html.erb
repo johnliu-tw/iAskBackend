@@ -1,0 +1,91 @@
+<style>
+a:hover{
+    background-color:white;
+}
+</style>
+<script>
+$(function(){
+var localPath = window.location.pathname
+var localParam = window.location.search
+var excelUrl = localPath + ".xls" + localParam
+$("#excelUrl").attr("href",excelUrl)
+})
+
+</script>
+
+<p id="notice"><%= notice %></p>
+
+<h1>試卷包購買紀錄</h1>
+<a id="excelUrl" href="/paper_set_buy_analytics.xls"><button class="btn btn-primary" >匯出報表</button></a>
+<%= render 'filters', buy_logs: @buy_logs %>
+<table class="table">
+  <thead>
+    <tr class="thead">
+      <th>日期&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_set_buy_analytics?orderParam=created_at&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_set_buy_analytics?orderParam=created_at&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>
+      <th>姓名&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_set_buy_analytics?relation=student&&attribute=name&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_set_buy_analytics?relation=student&&attribute=name&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>
+      <th>帳號&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_set_buy_analytics?relation=student&&attribute=account&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_set_buy_analytics?relation=student&&attribute=account&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>
+      <th>註冊時間&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_set_buy_analytics?relation=student&&attribute=register_time&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_set_buy_analytics?relation=student&&attribute=register_timename&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>
+      <th>年段&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_set_buy_analytics?relation=student&&attribute=grade&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_set_buy_analytics?relation=student&&attribute=grade&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>
+      <th>年級&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_set_buy_analytics?relation=student&&attribute=years&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_set_buy_analytics?relation=student&&attribute=years&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>
+      <th>試卷包名稱&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_set_buy_analytics?relation=paper_set&&attribute=title&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_set_buy_analytics?relation=paper_set&&attribute=title&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
+      <th>內含試卷數&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_set_buy_analytics?relation=paper_count&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_set_buy_analytics?relation=paper_count&&order=DESC"><img src="/sort-down.png"></a>
+      </th>
+      <th>上架時間&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_set_buy_analytics?relation=paper_set&&attribute=public_date&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_set_buy_analytics?relation=paper_set&&attribute=public_date&&order=DESC"><img src="/sort-down.png"></a>      
+      </th> 
+      <th>售價&nbsp;
+        <a class="sorter" id="name-ASC" href="/paper_set_buy_analytics?relation=paper_set&&attribute=price&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/paper_set_buy_analytics?relation=paper_set&&attribute=price&&order=DESC"><img src="/sort-down.png"></a>      
+      </th>      
+  </thead>
+
+  <tbody>
+    <% @buy_logs.each do |log| %>
+      <tr>
+        <td class="column-name"><%= log.created_at.strftime('%Y-%m-%d') %></td>
+        <td class="column-name"><%= log.student.name %></td>
+        <td class="column-name"><%= log.student.account %></td>
+        <td class="column-name"><%= log.student.register_time %></td>
+        <td class="column-name"><%= log.student.grade %></td>
+        <td class="column-name"><%= log.student.years %></td>
+        <td class="column-name"><%= log.paper_set.title %></td>
+        <td class="column-name"><a class="show-papers" href="#" data="<%= log.paper_set.id %>"><%= log.paper_set.papers.count %></a></td>
+        <td class="column-name"><%= log.paper_set.public_date %></td>
+        <td class="column-name"><%= log.paper_set.price %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<%= will_paginate @buy_logs, :previous_label => '上一頁', :next_label => '下一頁' %>
+<script>
+$(".show-papers").click(function(){
+    var paperSetId = $(this).attr("data");
+    window.open("/papers/tools/show_papers?id="+paperSetId,"","width=600,height=400")
+})
+</script>

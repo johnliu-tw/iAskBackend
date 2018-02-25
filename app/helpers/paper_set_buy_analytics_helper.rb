@@ -1,0 +1,2 @@
+module PaperSetBuyAnalyticsHelper
+end

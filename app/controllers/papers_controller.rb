@@ -374,6 +374,11 @@ class PapersController < ApplicationController
 
   end  
 
+  def show_papers
+    @papers = Paper.where(:paper_set_id => params[:id]).paginate(:page => params[:page], :per_page => 10)
+    render template: "papers/show_papers",layout: false 
+  end
+
 
 
 
