@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'paper_set_buy_analytics/index'
-
   resources :paper_sets
   devise_for :users
   resources :paper_gradeships
@@ -57,7 +55,7 @@ Rails.application.routes.draw do
   post 'paper_sets/api/student_buy_paper_set', :to => 'paper_sets#student_buy_paper_set'
   post 'paper_analytics/api/filter', :to => 'paper_analytics#filter'
   post 'user_analytics/api/filter', :to => 'user_analytics#filter'
-  post 'paper_set_buy_analytics/api/filter', :to => 'user_analytics#filter'
+  post 'paper_set_buy_analytics/api/filter', :to => 'paper_set_buy_analytics#filter'
   
 end
 
