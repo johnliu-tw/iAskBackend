@@ -1,12 +1,12 @@
 
 <form id="filter" action="/user_analytics/api/filter" novalidate="novalidate" method="post">
-年段 : <%= collection_select(:filter, :grade, Student.distinct(:grade).order(:grade), :grade, :grade, prompt: true) %>
-科目 : <%= collection_select(:filter, :subject_name, Subject.distinct(:name).where(:platform_type => session[:platform_id]).order(:name), :name, :name, prompt: true) %>
-年級 : <%= collection_select(:filter, :years, Student.distinct(:years).order(:years), :years, :years, prompt: true) %>
+年段 : <%= collection_select(:filter, :grade, Student.select(:grade).distinct.order(:grade), :grade, :grade, prompt: true) %>
+科目 : <%= collection_select(:filter, :subject_name, Subject.select(:name).distinct.where(:platform_type => session[:platform_id]).order(:name), :name, :name, prompt: true) %>
+年級 : <%= collection_select(:filter, :years, Student.select(:years).distinct.order(:years), :years, :years, prompt: true) %>
 上架日期: 
-<%= collection_select(:filter, :init_public_date, Paper.distinct(:public_date).where(:platform_type => session[:platform_id]).order(:public_date), :public_date, :public_date, prompt: true) %>
+<%= collection_select(:filter, :init_public_date, Paper.select(:public_date).distinct.where(:platform_type => session[:platform_id]).order(:public_date), :public_date, :public_date, prompt: true) %>
 ~
-<%= collection_select(:filter, :end_public_date, Paper.distinct(:public_date).where(:platform_type => session[:platform_id]).order(:public_date), :public_date, :public_date, prompt: true) %>
+<%= collection_select(:filter, :end_public_date, Paper.select(:public_date).distinct.where(:platform_type => session[:platform_id]).order(:public_date), :public_date, :public_date, prompt: true) %>
 <button type="submit">
 篩選
 </button>

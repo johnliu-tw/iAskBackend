@@ -23,12 +23,12 @@
         <Cell><Data ss:Type="String"><%= log.created_at.strftime('%Y-%m-%d') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= log.student.name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= log.student.account %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= log.student.register_time %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.student.register_time.strftime("%H:%M:%S") %></Data></Cell>
         <Cell><Data ss:Type="String"><%= log.student.grade %></Data></Cell>
         <Cell><Data ss:Type="String"><%= log.student.years %></Data></Cell> 
         <Cell><Data ss:Type="String"><%= log.paper_set.title %></Data></Cell>   
         <Cell><Data ss:Type="String"><%= log.paper_set.papers.count %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= log.paper_set.public_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log.paper_set.public_date.strftime("%H:%M:%S") %></Data></Cell>
         <Cell><Data ss:Type="String"><%= log.paper_set.price%></Data></Cell>
       </Row>
     <% end %>

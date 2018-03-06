@@ -91,7 +91,7 @@ class SubjectsController < ApplicationController
   def get_subjects_by_grade
     paper_ids = Grade.find(params[:gradeId]).paper_ids
     paper_ids.uniq!
-    paper_subject_ids = Paper.where(:id => paper_ids).pluck(:paper_subject_id)
+    paper_subject_ids = Paper.where(:id => paper_ids, :active => true).pluck(:paper_subject_id)
     paper_subject_ids.uniq!
     subject_ids = []
     paper_subject_ids.each do |paper_subject_id|

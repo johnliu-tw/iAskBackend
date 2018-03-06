@@ -23,7 +23,7 @@ namespace :create do
               Student.create(:id => response["id"],:name => response["name"],
                             :years => Grade.find(response["grade"]).name, :grade => grade,
                             :school => response["school"][response["school"].size-1],
-                            :register_time => Time.at(response["createAt"] / 1000), :account => response["email"])  
+                            :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])  
             end  
 
           when 2 #reader
@@ -32,7 +32,7 @@ namespace :create do
             response = JSON.parse(response.to_s.tr('$', ''))[0]  
             if response["name"]
               Student.create(:id => response["id"],:name => response["name"],
-              :register_time => Time.at(response["createAt"] / 1000), :account => response["email"])
+              :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])
             end  
           when 1 #udn
             url = "http://52.69.167.52:3001/listStudentsByUids/"+student_answer_log.student_id
@@ -45,15 +45,15 @@ namespace :create do
               elsif Grade.find(response["grade"]).name.include("高")
                 grade = "高中"
               end
-              if response["school"].present?
+              if response["schoolName"].present?
                 Student.create(:id => response["id"],:name => response["name"],
                             :years => Grade.find(response["grade"]).name, :grade => grade,
                             :school => response["schoolName"][response["schoolName"].size-1],
-                            :register_time => Time.at(response["createAt"] / 1000), :account => response["email"]) 
+                            :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"]) 
               else
                 Student.create(:id => response["id"],:name => response["name"],
                             :years => Grade.find(response["grade"]).name, :grade => grade,
-                            :register_time => Time.at(response["createAt"] / 1000), :account => response["email"])                 
+                            :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])                 
               end 
             end  
           else
@@ -78,11 +78,11 @@ namespace :create do
                   Student.find(response["id"]).update(:id => response["id"],:name => response["name"],
                               :years => Grade.find(response["grade"]).name, :grade => grade,
                               :school => response["school"][response["school"].size-1],
-                              :register_time => Time.at(response["createAt"] / 1000), :account => response["email"])  
+                              :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])  
                 else
                   Student.find(response["id"]).update(:id => response["id"],:name => response["name"],
                   :years => Grade.find(response["grade"]).name, :grade => grade,
-                  :register_time => Time.at(response["createAt"] / 1000), :account => response["email"])                   
+                  :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])                   
                 end
               end  
   
@@ -92,7 +92,7 @@ namespace :create do
               response = JSON.parse(response.to_s.tr('$', ''))[0]  
               if response["name"]
                 Student.find(response["id"]).update(:id => response["id"],:name => response["name"],
-                :register_time => Time.at(response["createAt"] / 1000), :account => response["email"])
+                :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])
               end  
             when 1
               url = "http://52.69.167.52:3001/listStudentsByUids/"+student_answer_log.student_id
@@ -109,11 +109,11 @@ namespace :create do
                   Student.find(response["id"]).update(:id => response["id"],:name => response["name"],
                               :years => Grade.find(response["grade"]).name, :grade => grade,
                               :school => response["schoolName"][response["schoolName"].size-1],
-                              :register_time => Time.at(response["createAt"] / 1000), :account => response["email"])  
+                              :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])  
                 else
                   Student.find(response["id"]).update(:id => response["id"],:name => response["name"],
                   :years => Grade.find(response["grade"]).name, :grade => grade,
-                  :register_time => Time.at(response["createAt"] / 1000), :account => response["email"])                   
+                  :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])                   
                 end
               end
           end            

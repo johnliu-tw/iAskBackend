@@ -205,7 +205,7 @@ class PapersController < ApplicationController
 
   def get_papers_by_subject
     paper_subject_ids = PapersubjectSubjectship.where(:subject_id => params[:subjectId]).pluck(:paper_subject_id)
-    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,papers.visible,paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:paper_subject_id => paper_subject_ids, :active => true)
+    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,papers.visible,papers.paper_set_id, paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:paper_subject_id => paper_subject_ids, :active => true)
     @papers.each{
       |paper| 
       subject_name_list = PaperSubject.find(paper.paper_subject_id).subjects.pluck(:name).join(",")
@@ -234,6 +234,39 @@ class PapersController < ApplicationController
     render json: @papers, methods: [:subject_name, :correct_rate]
 
   end
+
+  def get_papers_by_subject_and_grade
+    @papers = Paper.joins(:grades).where("grades.id = #{params[:gradeId]}")
+    paper_subject_ids = PapersubjectSubjectship.where(:subject_id => params[:subjectId]).pluck(:paper_subject_id)
+    @papers = @papers.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,papers.visible,papers.paper_set_id, paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:paper_subject_id => paper_subject_ids, :active => true)
+    @papers.each{
+      |paper| 
+      subject_name_list = PaperSubject.find(paper.paper_subject_id).subjects.pluck(:name).join(",")
+      correct_rates = StudentCorrectRate.where(:paper_id => paper.id, :student_id => params[:studentId]).pluck(:correct_rate)
+      if !correct_rates.present?
+        correct_rate = 0
+      else
+        correct_rate = correct_rates[0].to_i
+      end
+
+      question_ids =  Question.where(:paper_id => paper.id, :active => true).where.not(:question_type => "非選").pluck(:id)
+      total_q_size = question_ids.size
+      log_ids = StudentAnswerLog.where(:question_id => question_ids , :student_id => params[:studentId]).pluck(:question_id)
+      answered_size = log_ids.uniq.size
+
+      if total_q_size == 0
+        finish_rate = 0
+      else
+        finish_rate = (answered_size.to_f / total_q_size.to_f)*100
+      end
+
+      paper.assign_attributes({ :subject_name => subject_name_list})
+      paper.assign_attributes({ :correct_rate => correct_rate})
+      paper.assign_attributes({ :finish_rate => finish_rate})     
+    }
+    render json: @papers, methods: [:subject_name, :correct_rate]
+  end
+
 
   def get_papers_by_paper_set
     @papers = Paper.where(:paper_set_id => params[:paperSetId], :active => true)

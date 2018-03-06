@@ -43,26 +43,59 @@ namespace :csv do
                 new_subject_id = 13
             when "14"
                 new_subject_id = 12
+            when "36"
+                new_subject_id = 22
+            when "37"
+                new_subject_id = 23
+            when "38"
+                new_subject_id = 24
+            when "39"
+                new_subject_id = 25
+            when "40"
+                new_subject_id = 26
+            when "41"
+                new_subject_id = 27
+            when "42"
+                new_subject_id = 28
+            when "43"
+                new_subject_id = 29
+            when "45"
+                new_subject_id = 30
+            when "46"
+                new_subject_id = 31
+            when "47"
+                new_subject_id = 32
+            when "48"
+                new_subject_id = 33
+            when "49"
+                new_subject_id = 34
+            when "50"
+                new_subject_id = 35
+            when "51"
+                new_subject_id = 36
+            when "52"
+                new_subject_id = 37
+            when "53"
+                new_subject_id = 38
             else
                 new_subject_id = 1
             end
 
             grade_paper_ids = PaperGradeship.where(:grade_id => new_grade_id).pluck(:paper_id)          
-            paper = Paper.where(:paper_subject_id => new_subject_id, :id => grade_paper_ids).limit(1)
+            paper = Paper.where(:paper_subject_id => new_subject_id, :id => grade_paper_ids, :public_date => row[4]).limit(1)
 
             if paper.size == 0
-                mapping_string = "舊試卷用資料" + new_subject_id.to_s + "-" +  new_grade_id.to_s 
+                paper_title = row[4] + "-" + new_grade_id.to_s + "-" + new_subject_id.to_s 
                 Paper.create do |p|
-                    p.title = "舊有試卷"
+                    p.title = paper_title
                     p.paper_subject_id = new_subject_id 
                     p.visible = "購點後可見"
-                    p.public_date = "2017-12-01"
+                    p.public_date = row[4]
                     p.grade_ids = new_grade_id 
                     p.active = false
                     p.platform_type = 0
-                    p.note = mapping_string
                 end
-                paper_id = Paper.where(:note => mapping_string)[0].id
+                paper_id = Paper.where(:title => paper_title)[0].id
             else
                 paper_id = paper[0].id
             end

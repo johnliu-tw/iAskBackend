@@ -69,7 +69,7 @@ $("#excelUrl").attr("href",excelUrl)
         <td class="column-name"><%= log.created_at.strftime('%Y-%m-%d') %></td>
         <td class="column-name"><%= log.student.name %></td>
         <td class="column-name"><%= log.student.account %></td>
-        <td class="column-name"><%= log.student.register_time %></td>
+        <td class="column-name"><%= log.student.register_time.strftime("%H:%M:%S") %></td>
         <td class="column-name"><%= log.student.grade %></td>
         <td class="column-name"><%= log.student.years %></td>
         <td class="column-name"><%= log.paper_set.title %></td>
