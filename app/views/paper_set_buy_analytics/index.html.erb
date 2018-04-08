@@ -65,18 +65,20 @@ $("#excelUrl").attr("href",excelUrl)
 
   <tbody>
     <% @buy_logs.each do |log| %>
-      <tr>
-        <td class="column-name"><%= log.created_at.strftime('%Y-%m-%d') %></td>
-        <td class="column-name"><%= log.student.name %></td>
-        <td class="column-name"><%= log.student.account %></td>
-        <td class="column-name"><%= log.student.register_time.strftime("%H:%M:%S") %></td>
-        <td class="column-name"><%= log.student.grade %></td>
-        <td class="column-name"><%= log.student.years %></td>
-        <td class="column-name"><%= log.paper_set.title %></td>
-        <td class="column-name"><a class="show-papers" href="#" data="<%= log.paper_set.id %>"><%= log.paper_set.papers.count %></a></td>
-        <td class="column-name"><%= log.paper_set.public_date %></td>
-        <td class="column-name"><%= log.paper_set.price %></td>
-      </tr>
+      <% if log.student.present? %>
+        <tr>
+          <td class="column-name"><%= log.created_at.strftime('%Y-%m-%d') %></td>
+          <td class="column-name"><%= log.student.name %></td>
+          <td class="column-name"><%= log.student.account %></td>
+          <td class="column-name"><%= log.student.register_time.strftime('%Y-%m-%d %H:%M:%S') %></td>
+          <td class="column-name"><%= log.student.grade %></td>
+          <td class="column-name"><%= log.student.years %></td>
+          <td class="column-name"><%= log.paper_set.title %></td>
+          <td class="column-name"><a class="show-papers" href="#" data="<%= log.paper_set.id %>"><%= log.paper_set.papers.count %></a></td>
+          <td class="column-name"><%= log.paper_set.public_date %></td>
+          <td class="column-name"><%= log.paper_set.price %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

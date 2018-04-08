@@ -29,7 +29,8 @@ Rails.application.routes.draw do
   # APIS
   get  'papers/api/get_paper_by_platform', :to => 'papers#get_paper_by_platform' 
   get  'papers/api/get_papers_by_subject', :to => 'papers#get_papers_by_subject' 
-  get  'papers/api/get_papers_by_paper_set', :to => 'papers#get_papers_by_paper_set' 
+  get  'papers/api/get_papers_by_paper_set', :to => 'papers#get_papers_by_paper_set'
+  get  'papers/api/get_papers_by_subject_and_grade', :to => 'papers#get_papers_by_subject_and_grade'  
   get  'questions/api/get_questionList_by_paperId', :to => 'questions#get_questionList_by_paperId'
   get  'questions/api/get_question_by_questionId', :to => 'questions#get_question_by_questionId'
   get  'grades/api/get_grades_by_platform', :to => 'grades#get_grades_by_platform'

@@ -7,6 +7,15 @@ class PapersController < ApplicationController
   # GET /papers.json
   def index
 
+    if current_user.has_role? :iAsk
+      session[:platform_id] = 0
+    elsif current_user.has_role? :udn
+      session[:platform_id] = 1
+    elsif current_user.has_role? :reader
+      session[:platform_id] = 2
+    end
+
+
     if params[:filter] == nil
       orderParam = params[:orderParam]
       order = params[:order]
@@ -19,46 +28,14 @@ class PapersController < ApplicationController
       end
 
       if params[:relation] == "paper_subjects"
-        if current_user.has_role? :iAsk
-          @papers = Paper.includes(:paper_subject).where(platform_type: 0).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)
-        elsif current_user.has_role? :udn
-          @papers = Paper.includes(:paper_subject).where(platform_type: 1).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)    
-        elsif current_user.has_role? :reader
-          @papers = Paper.includes(:paper_subject).where(platform_type: 2).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 10)
-        elsif current_user.has_role? :admin
-          @papers = Paper.includes(:paper_subject).where(platform_type: session[:platform_id]).order("paper_subjects.title  #{order}").paginate(:page => params[:page], :per_page => 10)
-        end
+        @papers = Paper.includes(:paper_subject).where(platform_type: session[:platform_id]).order("paper_subjects.title  #{order}").paginate(:page => params[:page], :per_page => 10)
       elsif params[:relation] == "grades"
-        if current_user.has_role? :iAsk
-          @papers = Paper.includes(:grades).where(platform_type: 0).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)
-        elsif current_user.has_role? :udn
-          @papers = Paper.includes(:grades).where(platform_type: 1).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)    
-        elsif current_user.has_role? :reader
-          @papers = Paper.includes(:grades).where(platform_type: 2).order("grades.name #{order}").paginate(:page => params[:page], :per_page => 10)
-        elsif current_user.has_role? :admin
-          @papers = Paper.includes(:grades).where(platform_type: session[:platform_id]).order("grades.name  #{order}").paginate(:page => params[:page], :per_page => 10)
-        end
+        @papers = Paper.includes(:grades).where(platform_type: session[:platform_id]).order("grades.name  #{order}").paginate(:page => params[:page], :per_page => 10)
       else
-        if current_user.has_role? :iAsk
-          @papers = Paper.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-        elsif current_user.has_role? :udn
-          @papers = Paper.where(platform_type: 1).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
-        elsif current_user.has_role? :reader
-          @papers = Paper.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-        elsif current_user.has_role? :admin
-          @papers = Paper.where(platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-        end
+        @papers = Paper.where(platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
       end
     else
-      if current_user.has_role? :iAsk
-        @papers = Paper.where(:id => session[:filter_papers_id], :platform_type => 0).paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :udn
-        @papers = Paper.where(:id => session[:filter_papers_id], :platform_type => 1).paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :reader
-        @papers = Paper.where(:id => session[:filter_papers_id], :platform_type => 2).paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :admin
-        @papers = Paper.where(:id => session[:filter_papers_id], :platform_type => session[:platform_id]).paginate(:page => params[:page], :per_page => 10)
-      end
+      @papers = Paper.where(:id => session[:filter_papers_id], :platform_type => session[:platform_id]).paginate(:page => params[:page], :per_page => 10)
     end
     @question = Question.new
   end
