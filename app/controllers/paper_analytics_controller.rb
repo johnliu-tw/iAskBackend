@@ -146,4 +146,8 @@ class PaperAnalyticsController < ApplicationController
 
   end
 
+  def true?(obj)
+    obj.to_s == "true"
+  end
+
 end

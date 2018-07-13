@@ -48,10 +48,6 @@ $("#excelUrl").attr("href",excelUrl)
         <a class="sorter" id="name-ASC" href="/paper_analytics?relation=student_open_paper_logs&&order=ASC"><img src="/sort-up.png"></a>
         <a class="sorter" id='name-DESC' href="/paper_analytics?relation=student_open_paper_logs&&order=DESC"><img src="/sort-down.png"></a>         
       </th>
-      <th>平均完成時間&nbsp;
-        <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=answer_time&&order=ASC"><img src="/sort-up.png"></a>
-        <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=answer_time&&order=DESC"><img src="/sort-down.png"></a>         
-      </th>
       <th>平均完成率&nbsp;
         <a class="sorter" id="name-ASC" href="/paper_analytics?orderParam=finish_rate&&order=ASC"><img src="/sort-up.png"></a>
         <a class="sorter" id='name-DESC' href="/paper_analytics?orderParam=finish_rate&&order=DESC"><img src="/sort-down.png"></a>         
@@ -86,7 +82,6 @@ $("#excelUrl").attr("href",excelUrl)
         </td>
         <td class="column-name"><%= paper.visible %></td>
         <td class="column-name"><%= paper.student_open_paper_logs.select(:student_id).distinct.count %></td>
-        <td class="column-name"><%= paper.answer_time.strftime("%H:%M:%S") %></td>
         <td class="column-name"><%= paper.finish_rate %></td>
         <td class="column-name"><%= paper.correct_rate %></td>
 

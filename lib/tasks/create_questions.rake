@@ -1,7 +1,7 @@
 require 'csv'
 namespace :csv do 
-    task :load_data => [ :environment ] do
-    csv_text = File.expand_path('../questions.csv', __FILE__)
+    task :load_data, [:fileName] => [ :environment ] do |t, args|
+    csv_text = File.expand_path('../questions'+ args[:fileName] +'.csv', __FILE__)
     counter = 0
         CSV.foreach(csv_text) do |row|
             counter = counter + 1

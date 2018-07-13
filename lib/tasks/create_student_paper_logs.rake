@@ -31,8 +31,11 @@ namespace :create do
             finish_rate = (finish_size.to_f / total_size.to_f)*100
 
             #count correct rate
-            correct_rate = log.student.student_correct_rates.where(:paper_id => log.question.paper.id)[0].correct_rate
-
+            if log.student.present?
+              correct_rate = log.student.student_correct_rates.where(:paper_id => log.question.paper.id)[0].correct_rate
+            else
+              correct_rate = 100
+            end
             #count answer times
 
             question_ids = Paper.find(log.question.paper_id).questions.pluck(:id)

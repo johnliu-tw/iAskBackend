@@ -260,7 +260,7 @@ class HomeController < ApplicationController
         result = StudentOpenQuestionLog.create(:question_id => params[:questionId], :student_id => params[:studentId])
         respond_to do |format|
             if result
-            format.json { render :json => {:result => true }  }
+            format.json { render :json => {:result => true, :student_open_question_log_id =>result.id  }  }
             else
             format.json { render :json => {:result => false }, :status => 403 }
             end

@@ -20,10 +20,17 @@ namespace :create do
                 grade = "高中"
               end
 
-              Student.create(:id => response["id"],:name => response["name"],
-                            :years => Grade.find(response["grade"]).name, :grade => grade,
-                            :school => response["school"][response["school"].size-1],
-                            :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])  
+              if response["schoolName"].present?
+                Student.create(:id => response["id"],:name => response["name"],
+                              :years => Grade.find(response["grade"]).name, :grade => grade,
+                              :school => response["schoolName"][response["schoolName"].size-1],
+                              :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])  
+              else
+                Student.create(:id => response["id"],:name => response["name"],
+                  :years => Grade.find(response["grade"]).name, :grade => grade,
+                  :register_time => Time.at(response["createdAt"] / 1000), :account => response["email"])  
+              end
+              
             end  
 
           when 2 #reader

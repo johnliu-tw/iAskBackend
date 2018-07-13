@@ -246,7 +246,7 @@ class PapersController < ApplicationController
 
 
   def get_papers_by_paper_set
-    @papers = Paper.where(:paper_set_id => params[:paperSetId], :active => true)
+    @papers = Paper.select("papers.*, paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins(:paper_subject).where(:paper_set_id => params[:paperSetId], :active => true)
     @papers.each{
       |paper|
       correct_rates = StudentCorrectRate.where(:paper_id => paper.id, :student_id => params[:studentId]).pluck(:correct_rate)
@@ -268,11 +268,14 @@ class PapersController < ApplicationController
         finish_rate = (answered_size.to_f / total_q_size.to_f)*100
       end
 
+      subject_name_list = paper.paper_subject.subjects.pluck(:name).join(",")
+      
       paper.assign_attributes({ :correct_rate => correct_rate})
       paper.assign_attributes({ :finish_rate => finish_rate})
+      paper.assign_attributes({ :subject_name => subject_name_list})
     }
 
-    render json: @papers, methods: [:finish_rate, :correct_rate]
+    render json: @papers, methods: [:finish_rate, :correct_rate, :subject_name]
   end
 
 

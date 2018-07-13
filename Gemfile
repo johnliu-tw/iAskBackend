@@ -47,6 +47,7 @@ gem 'awesome_rails_console'
 gem 'pry-byebug'
 gem 'rest-client'
 gem 'activerecord-session_store'
+gem 'rails-erd'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password

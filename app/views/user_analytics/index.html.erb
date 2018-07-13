@@ -68,29 +68,31 @@ $("#excelUrl").attr("href",excelUrl)
 
   <tbody>
     <% @student_paper_logs.each do |log| %>
-      <tr>
-        <td class="column-name"><%= log.student.name %></td>
-        <td class="column-name"><%= log.student.grade %></td>
-        <td class="column-name"><%= log.student.school %></td>
-        <td class="column-name"><%= log.student.years %></td>
-        <td class="column-name"><%= log.paper.title %></td>
-        <td class="column-name">
-        <% if log.paper.paper_subject!=nil%>
-          <%= log.paper.paper_subject.title %>
-        <% end %>
-        </td>
-        <td class="column-name"><%= log.paper.public_date %></td>
-        <td class="column-name"><%= log.paper.questions.size %></td>
-        <td class="column-name"><%= log.answer_times %></td>  
-        <td class="column-name">
-        <% if log.answer_time != nil %>
-        <%= log.answer_time.strftime("%H:%M:%S") %>
-        <% end %>
-        </td>
-        <td class="column-name"><%= log.finish_rate.round(2) %>%</td>
-        <td class="column-name"><%= log.correct_rate.round(2) %>%</td>
+      <% if log.student.present? %>
+        <tr>
+          <td class="column-name"><%= log.student.name %></td>
+          <td class="column-name"><%= log.student.grade %></td>
+          <td class="column-name"><%= log.student.school %></td>
+          <td class="column-name"><%= log.student.years %></td>
+          <td class="column-name"><%= log.paper.title %></td>
+          <td class="column-name">
+          <% if log.paper.paper_subject!=nil%>
+            <%= log.paper.paper_subject.title %>
+          <% end %>
+          </td>
+          <td class="column-name"><%= log.paper.public_date %></td>
+          <td class="column-name"><%= log.paper.questions.size %></td>
+          <td class="column-name"><%= log.answer_times %></td>  
+          <td class="column-name">
+          <% if log.answer_time != nil %>
+          <%= log.answer_time.strftime("%H:%M:%S") %>
+          <% end %>
+          </td>
+          <td class="column-name"><%= log.finish_rate.round(2) %>%</td>
+          <td class="column-name"><%= log.correct_rate.round(2) %>%</td>
 
-      </tr>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
