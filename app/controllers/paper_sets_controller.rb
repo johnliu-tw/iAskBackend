@@ -84,12 +84,14 @@ class PaperSetsController < ApplicationController
   def update
     respond_to do |format|
       if @paper_set.update(paper_set_params)
-        paper_ids = params[:paper_set][:papers].split(",")
-        paper_ids.each{
-          |paper_id|
-          paper = Paper.find(paper_id)
-          paper.update(:paper_set_id => @paper_set.id)
-        }
+        if params[:paper_set][:papers]
+          paper_ids = params[:paper_set][:papers].split(",")
+          paper_ids.each{
+            |paper_id|
+            paper = Paper.find(paper_id)
+            paper.update(:paper_set_id => @paper_set.id)
+          }
+        end
         format.html { redirect_to paper_sets_path, notice: '成功編輯試卷包' }
         format.json { render :index, status: :ok, location: @paper_set }
       else

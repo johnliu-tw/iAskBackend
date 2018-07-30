@@ -53,6 +53,8 @@ $(function(){
   <thead>
     <tr class="thead">
       <th><button class="btn btn-info" id="check-all">全選</button></th>
+      <th>試卷包ID&nbsp;
+      </th>      
       <th>試卷包名稱&nbsp;
         <a class="sorter" id="name-ASC" href="/paper_sets?orderParam=title&&order=ASC"><img src="/sort-up.png"></a>
         <a class="sorter" id='name-DESC' href="/paper_sets?orderParam=title&&order=DESC"><img src="/sort-down.png"></a>
@@ -86,6 +88,7 @@ $(function(){
     <% @paper_sets.each do |paper_set| %>
       <tr>
         <td><input type="checkbox" class="paper_set_id" value=<%= paper_set.id %>></td>
+        <td><span class="column-name"><%= paper_set.id %></span></td>
         <td><span class="column-name"><%= paper_set.title %></span></td>
         <td><span class="column-name"><%= paper_set.price %></span></td>
         <td><span class="column-name"><%= paper_set.public_date %></span></td>

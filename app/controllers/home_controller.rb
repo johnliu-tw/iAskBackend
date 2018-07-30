@@ -198,7 +198,8 @@ class HomeController < ApplicationController
 
     def answer_question_logs
         @log = StudentAnswerLog.new(:student_id => params[:studentId], :question_id => params[:questionId],
-                                :correct => params[:correct], :answer => params[:answer], :answer_count => params[:answerCount])
+                                :correct => params[:correct], :answer => params[:answer], :answer_count => params[:answerCount],
+                                :student_open_question_log_id => params[:studentOpenQuestionLogId])
         result = @log.save!
 
         if params[:correct]

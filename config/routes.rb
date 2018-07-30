@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   post 'paper_subjects/:id', :to => 'paper_subjects#update'
   post 'papers/:id', :to => 'papers#update'
   post 'papers/:id/questions/:id', :to => 'questions#update'
+  post 'paper_sets/:id', :to => 'paper_sets#update'
   get  'homes/management', :to => 'home#management'
   get  'papers/tools/select', :to => 'papers#select'
   get  'papers/tools/show_papers', :to => 'papers#show_papers'
