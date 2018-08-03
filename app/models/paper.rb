@@ -1,10 +1,10 @@
 class Paper < ApplicationRecord
 
     attr_accessor :subject_name
-    has_many :questions
-    has_many :student_paper_logs
-    has_many :student_open_paper_logs
-    has_many :paper_gradeships
+    has_many :questions, :dependent => :destroy
+    has_many :student_paper_logs, :dependent => :destroy
+    has_many :student_open_paper_logs, :dependent => :destroy
+    has_many :paper_gradeships, :dependent => :destroy
     belongs_to :paper_set
     has_many :grades, :through => :paper_gradeships
     has_many :students, :through => :student_paper_logs

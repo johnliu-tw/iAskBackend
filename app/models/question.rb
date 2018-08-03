@@ -1,6 +1,6 @@
 class Question < ApplicationRecord
     belongs_to :paper
-    has_many :student_answer_logs
+    has_many :student_answer_logs, :dependent => :destroy
     
     attr_accessor :answered 
     attr_accessor :corrected
