@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180713064704) do
+ActiveRecord::Schema.define(version: 20180801152441) do
 
   create_table "grades", force: :cascade do |t|
     t.string   "name"
@@ -81,40 +81,43 @@ ActiveRecord::Schema.define(version: 20180713064704) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.string   "title",               limit: 128
-    t.string   "title_attr",          limit: 128
-    t.string   "answer",              limit: 128
-    t.string   "analysis",            limit: 128
-    t.string   "analysis_att",        limit: 128
-    t.string   "analysis_url",        limit: 128
-    t.string   "question_type",       limit: 128
-    t.boolean  "active",              limit: 128
-    t.integer  "optionCount",         limit: 128
+    t.string   "title",                  limit: 128
+    t.string   "title_attr",             limit: 128
+    t.string   "answer",                 limit: 128
+    t.string   "analysis",               limit: 128
+    t.string   "analysis_att",           limit: 128
+    t.string   "analysis_url",           limit: 128
+    t.string   "question_type",          limit: 128
+    t.boolean  "active",                 limit: 128
+    t.integer  "optionCount",            limit: 128
     t.integer  "answer_count"
-    t.integer  "first_correct_count", limit: 128
-    t.string   "questionA",           limit: 128
-    t.string   "questionA_attr",      limit: 128
-    t.string   "questionB",           limit: 128
-    t.string   "questionB_attr",      limit: 128
-    t.string   "questionC",           limit: 128
-    t.string   "questionC_attr",      limit: 128
-    t.string   "questionD",           limit: 128
-    t.string   "questionD_attr",      limit: 128
-    t.string   "questionE",           limit: 128
-    t.string   "questionE_attr",      limit: 128
-    t.string   "questionF",           limit: 128
-    t.string   "questionF_attr",      limit: 128
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.integer  "paper_id",            limit: 128
-    t.integer  "position",            limit: 128
-    t.string   "questionG",           limit: 128
-    t.string   "questionG_attr",      limit: 128
-    t.string   "questionH",           limit: 128
-    t.string   "questionH_attr",      limit: 128
-    t.integer  "platform_type",       limit: 128
-    t.string   "difficulty_degree",   limit: 128
-    t.string   "knowledge_point",     limit: 128
+    t.integer  "first_correct_count",    limit: 128
+    t.string   "questionA",              limit: 128
+    t.string   "questionA_attr",         limit: 128
+    t.string   "questionB",              limit: 128
+    t.string   "questionB_attr",         limit: 128
+    t.string   "questionC",              limit: 128
+    t.string   "questionC_attr",         limit: 128
+    t.string   "questionD",              limit: 128
+    t.string   "questionD_attr",         limit: 128
+    t.string   "questionE",              limit: 128
+    t.string   "questionE_attr",         limit: 128
+    t.string   "questionF",              limit: 128
+    t.string   "questionF_attr",         limit: 128
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "paper_id",               limit: 128
+    t.integer  "position",               limit: 128
+    t.string   "questionG",              limit: 128
+    t.string   "questionG_attr",         limit: 128
+    t.string   "questionH",              limit: 128
+    t.string   "questionH_attr",         limit: 128
+    t.integer  "platform_type",          limit: 128
+    t.string   "difficulty_degree",      limit: 128
+    t.string   "knowledge_point",        limit: 128
+    t.string   "title_url"
+    t.string   "title_url_show_type"
+    t.string   "analysis_url_show_type"
   end
 
   create_table "roles", force: :cascade do |t|

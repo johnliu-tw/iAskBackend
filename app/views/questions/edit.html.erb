@@ -22,9 +22,13 @@
   <label for="question_remove_title_attr_true" style="font-weight:normal;">
     <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_title_attr]" id="question_remove_title_attr_true">&nbsp;刪除
   </label>
-  <%= f.input :question_type, collection: [ "單選", "複選", "非選"], :label => "題型", :include_blank => false %>
+  <%= f.input :title_url,label: '題幹影片URL' %>
+  <input type="button" class="btn btn-primary" id="title-preview" value="影片預覽">
+  <iframe id="title-video" src=""></iframe>
+  <%= f.input :title_url_show_type, collection: [ "連結按鈕", "顯示預覽"],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
+  <%= f.input :question_type, collection: [ "單選", "複選", "非選","題幹"], :label => "題型", :include_blank => false %>
   <div id="option-board">
-    <% if  @question.optionCount == 4 && @question.question_type !="非選"%>
+    <% if  @question.optionCount == 4 && @question.question_type !="非選" && @question.question_type !="題幹" %>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :string,wrapper_html: { id: 'qAString' },input_html:{id: 'qAString'}, label: '附檔A'%>
     <img class="imgA">
@@ -53,7 +57,7 @@
     <label for="question_remove_qD_attr_true" style="font-weight:normal;">
       <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionD_attr]" id="question_remove_qD_attr_true">&nbsp;刪除
     </label>
-    <% elsif @question.optionCount == 5 && @question.question_type !="非選"%>
+    <% elsif @question.optionCount == 5 && @question.question_type !="非選" && @question.question_type !="題幹"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :string,wrapper_html: { id: 'qAString' },input_html:{id: 'qAString'}, label: '附檔A'%>
     <img class="imgA">
@@ -89,7 +93,7 @@
     <label for="question_remove_title_attr_true" style="font-weight:normal;">
       <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionE_attr]" id="question_remove_qE_attr_true">&nbsp;刪除
     </label>
-    <% elsif @question.optionCount >= 6 && @question.question_type !="非選"%>
+    <% elsif @question.optionCount >= 6 && @question.question_type !="非選" && @question.question_type !="題幹"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :string,wrapper_html: { id: 'qAString' },input_html:{id: 'qAString'}, label: '附檔A'%>
     <img class="imgA">
@@ -142,19 +146,7 @@
   <br>
   <br>
   <div id="answer-board">
-    <% if  @question.question_type=="複選" && @question.optionCount == 4%>
-    <%= f.input :answer, collection: [ "A", "B", "C","D"],:item_wrapper_class => 'inline', as: :check_boxes,input_html:{class: "question_answer_checkbox"}, label: ' 答案 ' %>
-    <% elsif @question.question_type=="複選" && @question.optionCount == 5%>
-    <%= f.input :answer, collection: [ "A", "B", "C","D","E"],:item_wrapper_class => 'inline', as: :check_boxes,input_html:{class: "question_answer_checkbox"}, label: ' 答案 ' %>
-    <% elsif @question.question_type=="複選" && @question.optionCount == 6%>
-    <%= f.input :answer, collection: [ "A", "B", "C","D","E","F"],:item_wrapper_class => 'inline', as: :check_boxes,input_html:{class: "question_answer_checkbox"}, label: ' 答案 ' %>
-    <% elsif  @question.question_type=="單選" && @question.optionCount == 4%>
-    <%= f.input :answer, collection: [ "A", "B", "C","D"],:item_wrapper_class => 'inline', as: :radio_buttons,input_html:{class: "question_answer_radio"}, label: ' 答案 ' %>
-    <% elsif  @question.question_type=="單選" && @question.optionCount == 5%>
-    <%= f.input :answer, collection: [ "A", "B", "C","D","E"],:item_wrapper_class => 'inline', as: :radio_buttons,input_html:{class: "question_answer_radio"}, label: ' 答案 ' %>
-    <% elsif  @question.question_type=="單選" && @question.optionCount == 6%>
-    <%= f.input :answer, collection: [ "A", "B", "C","D","E","F"],:item_wrapper_class => 'inline', as: :radio_buttons,input_html:{class: "question_answer_radio"}, label: ' 答案 ' %>    
-    <% end %>
+    <%= render_question_answer_options(f, @question.question_type, @question.optionCount) %>
   </div>
   <%= f.input :analysis,as: :text,input_html:{rows: 3}, label: '詳解' %>  
   <%= f.input :analysis_att,as: :string,wrapper_html: { id: 'ansString' },input_html:{id: 'ansString'}, label: '附檔' %>
@@ -163,7 +155,10 @@
   <label for="question_remove_title_attr_true" style="font-weight:normal;">
     <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_analysis_att]" id="question_remove_ans_attr_true">&nbsp;刪除
   </label>  
-  <%= f.input :analysis_url, label: '影片URL' %>  
+  <%= f.input :analysis_url, label: '詳解影片URL' %>  
+  <input type="button" class="btn btn-primary" id="analysis-preview" value="影片預覽">
+  <iframe id="analysis-video" src=""></iframe>
+  <%= f.input :analysis_url_show_type, collection: [ "連結按鈕", "顯示預覽"],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
   <%= f.input :difficulty_degree, collection: [ "低", "中", "高"], :label => "難易度"%>
   <%= f.input :knowledge_point, label: '知識點' %>    
   <p>備註：請用「;」來分隔知識點</p>
@@ -175,4 +170,5 @@
   <a href='/papers/<%=@paper.id%>/questions'><button class="btn btn-primary">上一頁</button></a>
 <% end %>
 
-<script type="text/javascript" src="/js/previewImage.js"></script> 
+<script type="text/javascript" src="/js/preview.js"></script> 
+

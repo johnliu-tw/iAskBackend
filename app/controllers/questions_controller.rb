@@ -171,6 +171,6 @@ class QuestionsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
       params.require(:question).permit(:title, :title_attr, :answer, :analysis, :analysis_att, :analysis_url, :question_type, :active, :optionCount, :answer_count, :first_correct_count, :questionA, :questionA_attr, :questionB, :questionB_attr, :questionC, :questionC_attr, :questionD, :questionD_attr, :questionE, :questionE_attr, :questionF, :questionF_attr, :position,
-      :paper_id,:platform_type,:remove_title_attr,:remove_questionA_attr,:remove_questionB_attr,:remove_questionC_attr,:remove_questionD_attr,:remove_questionE_attr,:remove_questionF_attr,:remove_analysis_att, :difficulty_degree, :knowledge_point, :answered)
+      :paper_id,:platform_type,:remove_title_attr,:remove_questionA_attr,:remove_questionB_attr,:remove_questionC_attr,:remove_questionD_attr,:remove_questionE_attr,:remove_questionF_attr,:remove_analysis_att, :difficulty_degree, :knowledge_point, :answered, :title_url, :title_url_show_type, :analysis_url_show_type)
     end
 end

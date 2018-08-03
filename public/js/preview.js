@@ -3,9 +3,10 @@ $(function(){
     var attributeElementList = ["#question_title_attr","#question_questionA_attr","#question_questionB_attr",
                                 "#question_questionC_attr","#question_questionD_attr","#question_questionE_attr",
                                 "#question_questionF_attr","#question_analysis_att"]
-    addPreviewEvent(imageElementList,attributeElementList);
+    addImagePreviewEvent(imageElementList,attributeElementList);
+    addVideoPreview();
 });
-function addPreviewEvent(imageElementList,attributeElementList){
+function addImagePreviewEvent(imageElementList,attributeElementList){
     for(var i=0; i<imageElementList.length;i++){
         if(i==0){
             var preview0 = $(imageElementList[i]);
@@ -66,4 +67,20 @@ function addPreviewEvent(imageElementList,attributeElementList){
             reader.readAsDataURL(file);
         })
     }
+}
+function addVideoPreview(){
+    $("#analysis-preview").on("click", function(){
+        var url = $("#question_analysis_url").val()
+        if(url.includes("youtube")){
+            url = url.replace("watch?v=","embed/")
+        }
+        $("#analysis-video").attr("src", url)
+    })
+    $("#title-preview").on("click", function(){
+        var url = $("#question_title_url").val()
+        if(url.includes("youtube")){
+            url = url.replace("watch?v=","embed/")
+        }
+        $("#title-video").attr("src", url)
+    })
 }
