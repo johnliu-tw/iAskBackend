@@ -74,6 +74,10 @@ $(function(){
         <a class="sorter" id="name-ASC" href="/papers?orderParam=public_date&&order=ASC"><img src="/sort-up.png"></a>
         <a class="sorter" id='name-DESC' href="/papers?orderParam=public_date&&order=DESC"><img src="/sort-down.png"></a>      
       </th>
+      <th>來源&nbsp;
+        <a class="sorter" id="name-ASC" href="/papers?relation=paper_source&&order=ASC"><img src="/sort-up.png"></a>
+        <a class="sorter" id='name-DESC' href="/papers?relation=paper_source&&order=DESC"><img src="/sort-down.png"></a>        
+      </th>
       <th>備註&nbsp;
         <a class="sorter" id="name-ASC" href="/papers?orderParam=note&&order=ASC"><img src="/sort-up.png"></a>
         <a class="sorter" id='name-DESC' href="/papers?orderParam=note&&order=DESC"><img src="/sort-down.png"></a>        
@@ -82,7 +86,7 @@ $(function(){
         <a class="sorter" id="name-ASC" href="/papers?orderParam=active&&order=ASC"><img src="/sort-up.png"></a>
         <a class="sorter" id='name-DESC' href="/papers?orderParam=active&&order=DESC"><img src="/sort-down.png"></a>       
       </th>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
@@ -102,6 +106,7 @@ $(function(){
         <td class="column-name"><%= paper.title %></td>
         <td class="column-name"><%= paper.visible %></td>
         <td class="column-name"><%= paper.public_date %></td>
+        <td class="column-name"><%= paper.paper_source ? paper.paper_source.name : "" %></td>
         <td class="column-name"><%= paper.note %></td>
         <td>
         <% if paper.active == true%>
@@ -110,6 +115,7 @@ $(function(){
         <span class="inactive">未啟用</span>
         <% end %>
         </td>
+        <td><%= link_to '複製', ("/papers/tools/copy/" + paper.id.to_s) %></td>
         <td><%= link_to '編輯', edit_paper_path(paper) %></td>
         <td><%= link_to '刪除', paper, method: :delete, data: { confirm: '你確定?' } %></td>
         <td><%= link_to "題目管理", paper_questions_path(paper,:paper_id => paper.id) %></td>

@@ -1,6 +1,6 @@
 class PapersController < ApplicationController
   before_action :authenticate_user!, only: [:index, :show, :new, :edit, :create, :update, :destroy]
-  before_action :set_paper, only: [:show, :edit, :update, :destroy]
+  before_action :set_paper, only: [:show, :edit, :update, :destroy, :copy]
   protect_from_forgery except: :filter
 
   # GET /papers
@@ -31,6 +31,8 @@ class PapersController < ApplicationController
         @papers = Paper.includes(:paper_subject).where(platform_type: session[:platform_id]).order("paper_subjects.title  #{order}").paginate(:page => params[:page], :per_page => 10)
       elsif params[:relation] == "grades"
         @papers = Paper.includes(:grades).where(platform_type: session[:platform_id]).order("grades.name  #{order}").paginate(:page => params[:page], :per_page => 10)
+      elsif params[:relation] == "paper_source"
+        @papers = Paper.includes(:paper_source).where(platform_type: session[:platform_id]).order("paper_source.name  #{order}").paginate(:page => params[:page], :per_page => 10)
       else
         @papers = Paper.where(platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
       end
@@ -93,6 +95,17 @@ class PapersController < ApplicationController
     elsif current_user.has_role? :admin
       @paper_subjects = PaperSubject.where(platform_type: session[:platform_id])
     end
+
+    if current_user.has_role? :iAsk
+      @paper_sources = PaperSource.where(platform_type: 0)
+    elsif current_user.has_role? :udn
+      @paper_sources = PaperSource.where(platform_type: 1) 
+    elsif current_user.has_role? :reader
+      @paper_sources = PaperSource.where(platform_type: 2)
+    elsif current_user.has_role? :admin
+      @paper_sources = PaperSource.where(platform_type: session[:platform_id])
+    end
+
   end
 
   # POST /papers
@@ -143,13 +156,33 @@ class PapersController < ApplicationController
     end
   end
 
+  def copy
+    @paper.title = "複製_" + @paper.title
+  end
+
+  def copy_create
+    @paper = Paper.find(params[:id])
+    @new_paper = Paper.new(@paper.attributes)
+    @new_paper.id = Paper.last.id + 1
+    @new_paper.save
+    respond_to do |format|
+      if @new_paper.update(paper_params)
+        format.html { redirect_to papers_path, notice: '成功編輯試卷' }
+        format.json { render :show, status: :ok, location: @new_paper }
+      else
+        format.html { render :edit }
+        format.json { render json: @new_paper.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def get_public_date
     @papers = Paper.distinct(:public_date).where(:platform_type => params[:platformId])
     render @papers
   end
   
   def get_paper_by_platform
-    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,papers.visible, papers.paper_set_id, paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:active => true,:platform_type => params[:platformId])
+    @papers = Paper.select("papers.*, paper_subjects.title_view").joins(:paper_subject).where(:active => true,:platform_type => params[:platformId])
     paper_subject_ids = Paper.distinct(:paper_subject_id).where(:active => true, :platform_type => params[:platformId]).pluck(:paper_subject_id)
     @papers.each{
       |paper| 
@@ -182,7 +215,7 @@ class PapersController < ApplicationController
 
   def get_papers_by_subject
     paper_subject_ids = PapersubjectSubjectship.where(:subject_id => params[:subjectId]).pluck(:paper_subject_id)
-    @papers = Paper.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,papers.visible,papers.paper_set_id, paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:paper_subject_id => paper_subject_ids, :active => true)
+    @papers = Paper.select("papers.*, paper_subjects.title_view").joins(:paper_subject).where(:paper_subject_id => paper_subject_ids, :active => true)
     @papers.each{
       |paper| 
       subject_name_list = PaperSubject.find(paper.paper_subject_id).subjects.pluck(:name).join(",")
@@ -215,7 +248,7 @@ class PapersController < ApplicationController
   def get_papers_by_subject_and_grade
     @papers = Paper.joins(:grades).where("grades.id = #{params[:gradeId]}")
     paper_subject_ids = PapersubjectSubjectship.where(:subject_id => params[:subjectId]).pluck(:paper_subject_id)
-    @papers = @papers.select("papers.id,papers.title,papers.public_date,papers.paper_subject_id,papers.visible,papers.paper_set_id, paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:paper_subject_id => paper_subject_ids, :active => true)
+    @papers = @papers.select("papers.*, paper_subjects.title_view").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:paper_subject_id => paper_subject_ids, :active => true)
     @papers.each{
       |paper| 
       subject_name_list = PaperSubject.find(paper.paper_subject_id).subjects.pluck(:name).join(",")
@@ -246,7 +279,7 @@ class PapersController < ApplicationController
 
 
   def get_papers_by_paper_set
-    @papers = Paper.select("papers.*, paper_subjects.title_view, paper_subjects.id as paper_subject_id").joins(:paper_subject).where(:paper_set_id => params[:paperSetId], :active => true)
+    @papers = Paper.select("papers.*, paper_subjects.title_view").joins(:paper_subject).where(:paper_set_id => params[:paperSetId], :active => true)
     @papers.each{
       |paper|
       correct_rates = StudentCorrectRate.where(:paper_id => paper.id, :student_id => params[:studentId]).pluck(:correct_rate)
@@ -285,7 +318,7 @@ class PapersController < ApplicationController
     init_public_date = params[:filter][:init_public_date]
     end_public_date = params[:filter][:end_public_date]    
     active = params[:filter][:active]    
-
+    paper_source_name = params[:filter][:paper_source_name]  
 
     @filter_papers = Paper.all
     if subject_name.present?
@@ -297,6 +330,10 @@ class PapersController < ApplicationController
       grade_id = Grade.where(:name => grade_name, :platform_type => session[:platform_id]).pluck(:id)
       grade_paper_ids = PaperGradeship.where(:grade_id => grade_id).pluck(:paper_id)
       @filter_papers = @filter_papers.where(:id => grade_paper_ids)
+    end
+    if paper_source_name.present?
+      paper_source_id = PaperSource.where(:name => paper_source_name, :platform_type => session[:platform_id]).pluck(:id)
+      @filter_papers = @filter_papers.where(:paper_source_id => paper_source_id)
     end
     if init_public_date.present? && end_public_date.empty?
       @filter_papers = @filter_papers.where("public_date >= '#{init_public_date}'") 
@@ -403,7 +440,7 @@ class PapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_params
-      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,:subject_name,:correct_rate,grade_ids:[])
+      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,:subject_name,:correct_rate,:paper_source_id,grade_ids:[])
     end
 
     def true?(obj)

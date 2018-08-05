@@ -24,8 +24,15 @@
   <small>相關科目:<span id="relative-subjects"></span></small>
   <br>
   <br>
-  <%= f.input :visible, collection: [ "免費可見", "購點後可見", "付費可見"], :label => "可見性設定", :include_blank => false %>
+  <%= f.input :visible, collection: [ "免費可見", "購點後可見", "付費可見", "特定機構成員可見"], :label => "可見性設定", :include_blank => false %>
   <%= f.input :public_date,as: :string, input_html: {type: :date}, label: '上架日期' %>
+  <div class="form-group string optional paper_source">
+    <label class="control-label string optional" for="paper_source">試卷來源</label><br>
+      <% @paper_sources.each do |p| %>
+        <%= radio_button_tag :paper_source_id,p.id, f.object.paper_source.try(:id) == p.id, :name => "paper[paper_source_id]",class:"boolean optional" %>
+        <%= p.name %>
+      <% end %>
+  </div>
   <%= f.input :note, label: '備註' %>
   <% if paper.active != nil %>
   <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: '有效性' %>

@@ -53,6 +53,7 @@ a.sorter:hover{
       <% if current_user %>
       <li><a href="/papers">試卷管理</a></li>
       <% if (current_user.has_role? :leader)||(current_user.has_role? :admin)%>
+      <li><a href="/paper_sources">試卷來源管理</a></li>
       <li><a href="/paper_subjects">試卷科目管理</a></li>
       <li><a href="/subjects">科目管理</a></li>
       <li><a href="/grades">年級管理</a></li>

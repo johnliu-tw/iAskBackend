@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :paper_sources
   resources :paper_sets
   devise_for :users
   resources :paper_gradeships
@@ -20,9 +21,11 @@ Rails.application.routes.draw do
   post 'papers/:id', :to => 'papers#update'
   post 'papers/:id/questions/:id', :to => 'questions#update'
   post 'paper_sets/:id', :to => 'paper_sets#update'
+  post 'papers/tools/copy/:id', :to => 'papers#copy_create'
   get  'homes/management', :to => 'home#management'
   get  'papers/tools/select', :to => 'papers#select'
   get  'papers/tools/show_papers', :to => 'papers#show_papers'
+  get  'papers/tools/copy/:id', :to => 'papers#copy'
   get  'user_analytics', :to => 'user_analytics#index'
   get  'paper_analytics', :to => 'paper_analytics#index'
   get  'paper_set_buy_analytics', :to => 'paper_set_buy_analytics#index'

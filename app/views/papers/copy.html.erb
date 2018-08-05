@@ -1,0 +1,8 @@
+<h1>複製新試卷</h1>
+
+<%= simple_form_for(@paper,:url => "/papers/tools/copy/" + @paper.id.to_s, :method => :post) do |f| %>
+    <%= f.input :title, label: '試卷名稱' %>
+    <%= f.input :platform_type, collection: [["iAsk",0], ['聯合改作文',1], ['讀享',2]], :label => "所屬平台", :include_blank => false, selected: f.object.platform_type %>
+    <%= f.button :submit , "送出", class: "btn btn-primary" %>
+    <a href="/papers"><button class= "btn btn-primary">上一頁</button></a>
+<% end %>

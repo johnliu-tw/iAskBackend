@@ -18,6 +18,7 @@ $(function(){
 <%= collection_select(:filter, :init_public_date, Paper.select(:public_date).distinct.where(:platform_type => session[:platform_id]).order(:public_date), :public_date, :public_date, prompt: true) %>
 ~
 <%= collection_select(:filter, :end_public_date, Paper.select(:public_date).distinct.where(:platform_type => session[:platform_id]).order(:public_date), :public_date, :public_date, prompt: true) %>
+來源 : <%= collection_select(:filter, :paper_source_name, PaperSource.select(:name).distinct.where(:platform_type => session[:platform_id]).order(:name), :name, :name, prompt: true) %>
 有效性:
 <select name="filter[active]">
     <option value="">請選擇</option>
