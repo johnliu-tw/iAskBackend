@@ -248,7 +248,7 @@ class PapersController < ApplicationController
   def get_papers_by_subject_and_grade
     @papers = Paper.joins(:grades).where("grades.id = #{params[:gradeId]}")
     paper_subject_ids = PapersubjectSubjectship.where(:subject_id => params[:subjectId]).pluck(:paper_subject_id)
-    @papers = @papers.select("papers.*, paper_subjects.title_view").joins("LEFT JOIN paper_subjects ON papers.paper_subject_id = paper_subjects.id ").where(:paper_subject_id => paper_subject_ids, :active => true)
+    @papers = @papers.select("papers.*, paper_subjects.title_view").joins(:paper_subject).where(:paper_subject_id => paper_subject_ids, :active => true)
     @papers.each{
       |paper| 
       subject_name_list = PaperSubject.find(paper.paper_subject_id).subjects.pluck(:name).join(",")
