@@ -25,6 +25,7 @@
   <%= f.input :title_url,label: '題幹影片URL' %>
   <input type="button" class="btn btn-primary" id="title-preview" value="影片預覽">
   <iframe id="title-video" src=""></iframe>
+  <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#instruction" value="影片連結說明"> 
   <%= f.input :title_url_show_type, collection: [ "連結按鈕", "顯示預覽"],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
   <%= f.input :question_type, collection: [ "單選", "複選", "非選","題幹"], :label => "題型", :include_blank => false %>
   <div id="option-board">
@@ -148,6 +149,8 @@
   <div id="answer-board">
     <%= render_question_answer_options(f, @question.question_type, @question.optionCount) %>
   </div>
+  <% if @question.question_type !="題幹"%>
+  <div id="question-board">
   <%= f.input :analysis,as: :text,input_html:{rows: 3}, label: '詳解' %>  
   <%= f.input :analysis_att,as: :string,wrapper_html: { id: 'ansString' },input_html:{id: 'ansString'}, label: '附檔' %>
   <%= f.input :analysis_att,as: :file, label: false %>
@@ -158,7 +161,10 @@
   <%= f.input :analysis_url, label: '詳解影片URL' %>  
   <input type="button" class="btn btn-primary" id="analysis-preview" value="影片預覽">
   <iframe id="analysis-video" src=""></iframe>
+  <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#instruction" value="影片連結說明"> 
   <%= f.input :analysis_url_show_type, collection: [ "連結按鈕", "顯示預覽"],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
+  </div>
+  <% end %>
   <%= f.input :difficulty_degree, collection: [ "低", "中", "高"], :label => "難易度"%>
   <%= f.input :knowledge_point, label: '知識點' %>    
   <p>備註：請用「;」來分隔知識點</p>
@@ -169,6 +175,50 @@
   <%= f.button :submit , "送出", class: "btn btn-primary" %>
   <a href='/papers/<%=@paper.id%>/questions'><button class="btn btn-primary">上一頁</button></a>
 <% end %>
+
+
+<!-- Modal -->
+<div class="modal fade" id="instruction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">影片連結說明</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      影片連結說明 <br>
+
+      ● 只有來自Youtube、Google雲端硬碟的影片可以設為顯示預覽，網址格式範例如下：<br>
+      - Youtube<br>
+        <a target="_blank" href="https://www.youtube.com/embed/id_of_video">https://www.youtube.com/embed/id_of_video</a><br>
+        範例：<br>
+        <a target="_blank" href="https://www.youtube.com/embed/sQk4e7IbpZk">https://www.youtube.com/embed/sQk4e7IbpZk</a><br>
+
+      - Google雲端硬碟<br>
+        <a target="_blank" href="https://docs.google.com/file/d/id_of_video/preview">https://docs.google.com/file/d/id_of_video/preview</a><br>
+        範例：<br>
+        <a target="_blank" href="https://docs.google.com/file/d/1fhLgzIDFsqyxuYgm25O-LvCsauqe_V-f/preview">https://docs.google.com/file/d/1fhLgzIDFsqyxuYgm25O-LvCsauqe_V-f/preview</a><br>
+
+      ● 來自任何網址的影片均可設為用連結按鈕開啟影片，網址格式範例如下：<br>
+      - Youtube<br>
+        <a target="_blank" href="https://youtu.be/id_of_video">https://youtu.be/id_of_video</a><br>
+        範例：  <br>
+        <a target="_blank" href="https://youtu.be/sQk4e7IbpZk">https://youtu.be/sQk4e7IbpZk</a><br>
+
+      - Google雲端硬碟<br>
+        <a target="_blank" href="https://drive.google.com/open?id=id_of_video">https://drive.google.com/open?id=id_of_video</a><br>
+        範例：<br>
+        <a target="_blank" href="https://drive.google.com/open?id=1fhLgzIDFsqyxuYgm25O-LvCsauqe_V-f">https://drive.google.com/open?id=1fhLgzIDFsqyxuYgm25O-LvCsauqe_V-f</a><br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script type="text/javascript" src="/js/preview.js"></script> 
 

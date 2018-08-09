@@ -23,7 +23,11 @@
     <% end %>
   <% end %>
 </p>
-
+<p>
+  <strong>題幹Url:</strong>
+  <%= @question.title_url %>
+</p>
+<iframe id="title-video" src=<%= @question.title_url %>></iframe>
 <p>
   <strong>解析:</strong>
   <%= @question.analysis %>
@@ -42,7 +46,11 @@
     <% end %>
   <% end %>
 </p>
-
+<p>
+  <strong>解析Url:</strong>
+  <%= @question.analysis_url %>
+</p>
+<iframe id="analysis-video" src=<%= @question.analysis_url %>></iframe>
 <p>
   <strong>選項Ａ:</strong>
   <%= @question.questionA %>

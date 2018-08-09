@@ -112,6 +112,7 @@ $(function(){
             case "單選":
                 $("div#option-board").show();
                 $("div#option-buttons").show();
+                $("div#question-board").show();
                 content+="<div class='form-group radio_buttons optional question_answer'>"
                 content+="<label class='control-label radio_buttons optional'>答案</label>" 
                 for(var i=0;i<optionNum;i++){
@@ -131,6 +132,7 @@ $(function(){
             case "複選": 
             $("div#option-board").show()
             $("div#option-buttons").show();
+            $("div#question-board").show();
                 content+="<div class='form-group string optional question_answer'>"
                 content+="<label class='control-label string optional' for='question_answer'>答案</label>"
                 content+="<input type='hidden' name='question[answer]' id='question_answer'></input>"
@@ -150,6 +152,12 @@ $(function(){
             case "非選": 
             $("div#option-board").hide()
             $("div#option-buttons").hide();
+            $("div#question-board").show();
+                break;
+            case "題幹": 
+            $("div#option-board").hide()
+            $("div#option-buttons").hide();
+            $("div#question-board").hide();
                 break;
         }
         $("#answer-board").html(content)        
