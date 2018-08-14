@@ -105,7 +105,7 @@ class QuestionsController < ApplicationController
   end
 
   def get_questionList_by_paperId
-    @questions = Question.select(:id,:title,:position,:questionA,:questionB,:questionC,:questionD,:questionE,:questionF, :answer, :analysis, :analysis_url).select(get_question_file_attr).where(:active => true, :paper_id => params[:paperId])
+    @questions = Question.select(:id,:title,:title_url, :title_url_show_type, :position,:questionA,:questionB,:questionC,:questionD,:questionE,:questionF, :answer, :analysis, :analysis_url, :analysis_url_show_type).select(get_question_file_attr).where(:active => true, :paper_id => params[:paperId])
     @questions.each{
       |question|       
       @answer_logs = StudentAnswerLog.where(:question_id => question.id, :student_id => params[:studentId])

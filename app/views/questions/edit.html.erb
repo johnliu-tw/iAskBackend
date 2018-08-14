@@ -139,6 +139,7 @@
     </label>
     <% end %>
   </div>
+  <% if @question.question_type !="題幹"%>
     <div id="option-buttons">
       <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
       <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
@@ -149,7 +150,6 @@
   <div id="answer-board">
     <%= render_question_answer_options(f, @question.question_type, @question.optionCount) %>
   </div>
-  <% if @question.question_type !="題幹"%>
   <div id="question-board">
   <%= f.input :analysis,as: :text,input_html:{rows: 3}, label: '詳解' %>  
   <%= f.input :analysis_att,as: :string,wrapper_html: { id: 'ansString' },input_html:{id: 'ansString'}, label: '附檔' %>

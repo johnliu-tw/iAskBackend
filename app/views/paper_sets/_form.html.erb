@@ -15,7 +15,7 @@
   <div class="form-group string optional paper_set_title">
     <label class="control-label string optional" for="paper_set_title">包含試卷 (Id)</label></br>
     <input class="btn btn-default" id="select-paper" type="button" value="選擇試卷">
-    <input class="form-control string optional" type="text" name="paper_set[papers]" id="paper_set_paper_id">
+    <input class="form-control string optional" type="text" name="paper_set[paper_ids][]" id="paper_set_paper_id">
     <input id="delete-paper" class="btn btn-danger btn-sm" type="button" value="刪除試卷">
   </div>
   <%= f.input :price, label: '售價設定(點)' %>

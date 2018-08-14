@@ -95,7 +95,7 @@ $(function(){
   <tbody>
     <% @papers.each do |paper| %>
     <% if params[:id].present? %>
-      <% if (@paper_ids.include? paper.id) || (@public_date > paper.public_date) %>
+      <% if (@public_date > paper.public_date) %>
         <tr class="freeze">
       <% else %>
         <tr>

@@ -44,10 +44,10 @@
   <br>
   <br>
   <br>
+  <% if @question.question_type !="題幹"%>
   <div id="answer-board">
     <%= f.input :answer, collection: [ "A", "B", "C","D"],:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 答案 ' %>
   </div>
-  <% if @question.question_type !="題幹"%>
   <div id="question-board">
   <%= f.input :analysis,as: :text,input_html:{rows: 3}, label: '詳解' %>  
   <%= f.input :analysis_att,as: :file, label: '附檔' %>  
