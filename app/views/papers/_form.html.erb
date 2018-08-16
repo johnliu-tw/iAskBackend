@@ -24,7 +24,14 @@
   <small>相關科目:<span id="relative-subjects"></span></small>
   <br>
   <br>
-  <%= f.input :visible, collection: [ "免費可見", "購點後可見", "付費可見", "特定機構成員可見"], :label => "可見性設定", :include_blank => false %>
+  <%= f.input :visible, collection: [ "免費可見", "購點後可見", "付費可見"], :label => "可見性設定", :include_blank => false %>
+  <% if paper.specific_institution_visible != false %>
+    <%= f.input :specific_institution_visible,:item_wrapper_class => 'inline', as: :radio_buttons, label: '只限特定機構有效' %>
+    <%= f.input :specific_institution, label: '機構名稱'%>  
+  <% else %>
+    <%= f.input :specific_institution_visible,:item_wrapper_class => 'inline',:checked => ['無效', false], as: :radio_buttons, label: '只限特定機構有效' %>
+    <%= f.input :specific_institution,as: :hidden, label: '機構名稱'%>  
+  <% end %>
   <%= f.input :public_date,as: :string, input_html: {type: :date}, label: '上架日期' %>
   <div class="form-group string optional paper_source">
     <label class="control-label string optional" for="paper_source">試卷來源</label><br>
@@ -35,9 +42,9 @@
   </div>
   <%= f.input :note, label: '備註' %>
   <% if paper.active != nil %>
-  <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: '有效性' %>
+    <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: '有效性' %>
   <% else %>
-  <%= f.input :active,:item_wrapper_class => 'inline',:checked => ['無效', false], as: :radio_buttons, label: '有效性' %>
+    <%= f.input :active,:item_wrapper_class => 'inline',:checked => ['無效', false], as: :radio_buttons, label: '有效性' %>
   <% end %>
   <%= f.button :submit , "送出", class: "btn btn-primary" %>
   <a href="/papers"><button class= "btn btn-primary">上一頁</button></a>
@@ -46,3 +53,21 @@
   <% end %>
 <% end %>
 <script type="text/javascript" src="/js/getSubjects.js" defer></script>
+<script>
+  $("input[name='paper[specific_institution_visible]']").on('change', function(){
+    if($("input#paper_specific_institution_visible_true").prop("checked")){
+      $("div.paper_specific_institution").removeClass("hidden")
+      $("div.paper_specific_institution label").removeClass("hidden")
+      $("input#paper_specific_institution").removeClass("hidden")
+      $("input#paper_specific_institution").prop("type", "text")
+    }
+    else{
+      $("div.paper_specific_institution").addClass("hidden")
+      $("div.paper_specific_institution label").addClass("hidden")
+      $("input#paper_specific_institution").addClass("hidden")
+      $("input#paper_specific_institution").prop("type", "hidden")     
+      $("input#paper_specific_institution").val("")
+    }
+
+  })
+</script>

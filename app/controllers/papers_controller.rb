@@ -175,11 +175,6 @@ class PapersController < ApplicationController
       end
     end
   end
-
-  def get_public_date
-    @papers = Paper.distinct(:public_date).where(:platform_type => params[:platformId])
-    render @papers
-  end
   
   def get_paper_by_platform
     @papers = Paper.select("papers.*, paper_subjects.title_view").joins(:paper_subject).where(:active => true,:platform_type => params[:platformId])
@@ -440,7 +435,7 @@ class PapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_params
-      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,:subject_name,:correct_rate,:paper_source_id,grade_ids:[])
+      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,:subject_name,:correct_rate,:paper_source_id, :specific_institution_visible, :specific_institution, grade_ids:[])
     end
 
     def true?(obj)
