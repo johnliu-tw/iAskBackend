@@ -160,6 +160,6 @@ class PaperSetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_set_params
-      params.require(:paper_set).permit(:title, :price, :public_date, :description, :active, :platform_type, :id, paper_ids:[])
+      params.require(:paper_set).permit(:title, :price, :public_date, :description, :active, :platform_type, :id, :cash, paper_ids:[])
     end
 end

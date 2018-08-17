@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180806153234) do
+ActiveRecord::Schema.define(version: 20180817154522) do
 
   create_table "grades", force: :cascade do |t|
     t.string   "name"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20180806153234) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "platform_type"
+    t.integer  "cash"
   end
 
   create_table "paper_sources", force: :cascade do |t|
@@ -69,8 +70,8 @@ ActiveRecord::Schema.define(version: 20180806153234) do
     t.integer  "grade"
     t.integer  "open_count"
     t.integer  "correct_count"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.integer  "paper_subject_id"
     t.integer  "platform_type"
     t.string   "paper_set_id"
@@ -78,6 +79,8 @@ ActiveRecord::Schema.define(version: 20180806153234) do
     t.float    "finish_rate"
     t.datetime "answer_time"
     t.integer  "paper_source_id"
+    t.string   "specific_institution"
+    t.boolean  "specific_institution_visible"
   end
 
   create_table "papersubject_subjectships", force: :cascade do |t|

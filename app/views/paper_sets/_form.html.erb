@@ -19,6 +19,7 @@
     <input id="delete-paper" class="btn btn-danger btn-sm" type="button" value="刪除試卷">
   </div>
   <%= f.input :price, label: '售價設定(點)' %>
+  <%= f.input :cash, label: '售價設定(現金/元)' %>
   <%= f.input :public_date,as: :string, input_html: {type: :date}, label: '上架日期' %>
   <%= f.input :description, label: '描述' %>
   <% if paper_set.active != nil %>
@@ -79,6 +80,10 @@ $('#back').on("click",function() {
 $('#delete-paper').on("click", function(){
   var paperIds = $("#paper_set_paper_id").val().split(",");
   deletePapers(paperIds);
+})
+$('#paper_set_price').on('change', function(){
+  var priceValue = $(this).val()
+  $('#paper_set_cash').val(priceValue)
 })
 
 function loadPapers(){
