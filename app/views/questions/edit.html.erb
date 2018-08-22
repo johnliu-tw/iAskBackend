@@ -162,7 +162,7 @@
   <input type="button" class="btn btn-primary" id="analysis-preview" value="影片預覽">
   <iframe id="analysis-video" src=""></iframe>
   <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#instruction" value="影片連結說明"> 
-  <%= f.input :analysis_url_show_type, collection: [ "連結按鈕", "顯示預覽"],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
+  <%= f.input :analysis_url_show_type, collection: [ ["原始影片", 'raw'], ["顯示預覽","preview」"]], :item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
   </div>
   <% end %>
   <%= f.input :difficulty_degree, collection: [ "低", "中", "高"], :label => "難易度"%>

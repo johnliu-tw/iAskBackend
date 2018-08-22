@@ -19,6 +19,19 @@ class Question < ApplicationRecord
                             :questionE_attr, :questionF_attr, :analysis_att
     validate :image_size_validation
      
+   def translate_question_type
+      if self.question_type == "單選"
+        self.question_type = "single"
+      elsif self.question_type == "複選"
+        self.question_type = "multiple"
+      elsif self.question_type == "是非"
+        self.question_type = "boolean"
+      elsif self.question_type == "題幹"
+        self.question_type = "vignette"
+      end              
+   end
+
+
     private
       def image_size_validation
         errors[:image] << "Title should be less than 1MB" if title_attr.size > 1.megabytes

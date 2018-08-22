@@ -20,7 +20,7 @@
   <input type="button" class="btn btn-primary" id="title-preview" value="影片預覽">
   <iframe id="title-video" src=""></iframe>
     <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#instruction" value="影片連結說明"> 
-  <%= f.input :title_url_show_type, collection: [ "連結按鈕", "顯示預覽"],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
+  <%= f.input :title_url_show_type, collection: [ ["原始影片", 'raw'], ["顯示預覽","preview」"]],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
   <img class="imgTitle">
   <%= f.input :question_type, collection: [ "單選", "複選", "非選","題幹"], :label => "題型", :include_blank => false %>
   <div id="option-board">
