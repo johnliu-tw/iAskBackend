@@ -154,7 +154,7 @@ $(function(){
             $("div#option-buttons").hide();
             $("div#question-board").show();
                 break;
-            case "題幹": 
+            case "題幹(只有敘述)": 
             $("div#option-board").hide()
             $("div#option-buttons").hide();
             $("div#question-board").hide();

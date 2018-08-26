@@ -63,13 +63,7 @@ class PaperSetsController < ApplicationController
     end
     
     respond_to do |format|
-      if @paper_set.save   
-        paper_ids = params[:paper_set][:papers].split(",")
-        paper_ids.each{
-          |paper_id|
-          paper = Paper.find(paper_id)
-          paper.update(:paper_set_id => @paper_set.id)
-        }
+      if @paper_set.update(paper_set_params)
         format.html { redirect_to paper_sets_path, notice: '成功建立試卷包' }
         format.json { render :index, status: :created, location: @paper_set }
       else

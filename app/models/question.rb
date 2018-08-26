@@ -24,9 +24,9 @@ class Question < ApplicationRecord
         self.question_type = "single"
       elsif self.question_type == "複選"
         self.question_type = "multiple"
-      elsif self.question_type == "是非"
-        self.question_type = "boolean"
-      elsif self.question_type == "題幹"
+      elsif self.question_type == "非選"
+        self.question_type = "nonchoice"
+      elsif self.question_type == "題幹(只有敘述)"
         self.question_type = "vignette"
       end              
    end

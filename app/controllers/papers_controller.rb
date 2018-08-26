@@ -162,9 +162,17 @@ class PapersController < ApplicationController
 
   def copy_create
     @paper = Paper.find(params[:id])
+    @question = @paper.questions
     @new_paper = Paper.new(@paper.attributes)
     @new_paper.id = Paper.last.id + 1
     @new_paper.save
+    @question.each do |q|
+      new_question = Question.new(q.attributes)
+      new_question.id = Question.last.id + 1
+      new_question.paper_id = @new_paper.id
+      new_question.platform_type = paper_params[:platform_type]
+      new_question.save
+    end
     respond_to do |format|
       if @new_paper.update(paper_params)
         format.html { redirect_to papers_path, notice: '成功編輯試卷' }
@@ -239,11 +247,11 @@ class PapersController < ApplicationController
     render json: @papers, methods: [:subject_name, :correct_rate]
 
   end
-
+  
   def get_papers_by_subject_and_grade
     @papers = Paper.joins(:grades).where("grades.id = #{params[:gradeId]}")
     paper_subject_ids = PapersubjectSubjectship.where(:subject_id => params[:subjectId]).pluck(:paper_subject_id)
-    @papers = @papers.select("papers.*, paper_subjects.title_view, paper_sources.name as paper_source_name").joins(:paper_subject, :paper_source).where(:paper_subject_id => paper_subject_ids, :active => true)
+    @papers = @papers.select("papers.*, paper_subjects.title_view, paper_sources.name as paper_source_name").joins(:paper_subject).joins("LEFT JOIN paper_sources ON paper_sources.id = papers.paper_source_id").where(:paper_subject_id => paper_subject_ids, :active => true)
     @papers.each{
       |paper| 
       subject_name_list = PaperSubject.find(paper.paper_subject_id).subjects.pluck(:name).join(",")

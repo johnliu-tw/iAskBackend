@@ -68,6 +68,10 @@ class QuestionsController < ApplicationController
     elsif current_user.has_role? :admin
       @question.platform_type = session[:platform_id]
     end
+
+    if @question.question_type == "題幹(只有敘述)"
+      @question.answer = ""
+    end
     respond_to do |format|
       if @question.save
         format.html { redirect_to paper_questions_path, notice: '題目已被成功建立' }
@@ -83,8 +87,13 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1.json
   def update
 
+    qp = question_params
+    if qp[:question_type] == "題幹(只有敘述)"
+      qp[:answer] = ""
+    end
+
     respond_to do |format|
-      if @question.update(question_params)
+      if @question.update(qp)
         format.html { redirect_to paper_questions_path(question_params[:paper_id],question_params[:id]), notice: '題目已被成功編輯' }
         format.json { render :show, status: :ok, location: @question }
       else

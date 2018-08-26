@@ -26,10 +26,10 @@
   <input type="button" class="btn btn-primary" id="title-preview" value="影片預覽">
   <iframe id="title-video" src=""></iframe>
   <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#instruction" value="影片連結說明"> 
-  <%= f.input :title_url_show_type, collection: [ "連結按鈕", "顯示預覽"],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
-  <%= f.input :question_type, collection: [ "單選", "複選", "非選","題幹"], :label => "題型", :include_blank => false %>
+  <%= f.input :title_url_show_type, collection: [ ["原始影片", 'raw'], ["顯示預覽","preview"]],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
+  <%= f.input :question_type, collection: [ "單選", "複選", "非選","題幹(只有敘述)"], :label => "題型", :include_blank => false %>
   <div id="option-board">
-    <% if  @question.optionCount == 4 && @question.question_type !="非選" && @question.question_type !="題幹" %>
+    <% if  @question.optionCount == 4 && @question.question_type !="非選" && @question.question_type !="題幹(只有敘述)" %>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :string,wrapper_html: { id: 'qAString' },input_html:{id: 'qAString'}, label: '附檔A'%>
     <img class="imgA">
@@ -58,7 +58,7 @@
     <label for="question_remove_qD_attr_true" style="font-weight:normal;">
       <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionD_attr]" id="question_remove_qD_attr_true">&nbsp;刪除
     </label>
-    <% elsif @question.optionCount == 5 && @question.question_type !="非選" && @question.question_type !="題幹"%>
+    <% elsif @question.optionCount == 5 && @question.question_type !="非選" && @question.question_type !="題幹(只有敘述)"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :string,wrapper_html: { id: 'qAString' },input_html:{id: 'qAString'}, label: '附檔A'%>
     <img class="imgA">
@@ -94,7 +94,7 @@
     <label for="question_remove_title_attr_true" style="font-weight:normal;">
       <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionE_attr]" id="question_remove_qE_attr_true">&nbsp;刪除
     </label>
-    <% elsif @question.optionCount >= 6 && @question.question_type !="非選" && @question.question_type !="題幹"%>
+    <% elsif @question.optionCount >= 6 && @question.question_type !="非選" && @question.question_type !="題幹(只有敘述)"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :string,wrapper_html: { id: 'qAString' },input_html:{id: 'qAString'}, label: '附檔A'%>
     <img class="imgA">
@@ -139,7 +139,7 @@
     </label>
     <% end %>
   </div>
-  <% if @question.question_type !="題幹"%>
+  <% if @question.question_type !="題幹(只有敘述)"%>
     <div id="option-buttons">
       <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
       <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>
@@ -162,7 +162,7 @@
   <input type="button" class="btn btn-primary" id="analysis-preview" value="影片預覽">
   <iframe id="analysis-video" src=""></iframe>
   <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#instruction" value="影片連結說明"> 
-  <%= f.input :analysis_url_show_type, collection: [ ["原始影片", 'raw'], ["顯示預覽","preview」"]], :item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
+  <%= f.input :analysis_url_show_type, collection: [ ["原始影片", 'raw'], ["顯示預覽","preview"]], :item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
   </div>
   <% end %>
   <%= f.input :difficulty_degree, collection: [ "低", "中", "高"], :label => "難易度"%>
@@ -188,9 +188,9 @@
         </button>
       </div>
       <div class="modal-body">
-      影片連結說明 <br>
+      影片網址格式說明 <br>
 
-      ● 只有來自Youtube、Google雲端硬碟的影片可以設為顯示預覽，網址格式範例如下：<br>
+      ● 嵌入影片：目前「Youtube」、「Google雲端硬碟」的影片可以直接嵌入並顯示預覽，其他來源影片若要以「嵌入影片」方式呈現，也要採用「嵌入影片」類型的網址，來源請選擇「嵌入影片」，其格式範例如下：<br>
       - Youtube<br>
         <a target="_blank" href="https://www.youtube.com/embed/id_of_video">https://www.youtube.com/embed/id_of_video</a><br>
         範例：<br>
@@ -211,6 +211,8 @@
         <a target="_blank" href="https://drive.google.com/open?id=id_of_video">https://drive.google.com/open?id=id_of_video</a><br>
         範例：<br>
         <a target="_blank" href="https://drive.google.com/open?id=1fhLgzIDFsqyxuYgm25O-LvCsauqe_V-f">https://drive.google.com/open?id=1fhLgzIDFsqyxuYgm25O-LvCsauqe_V-f</a><br>
+      ● 原始影片：若有其他來源非「Youtube」、「Google 雲端硬碟」的影片，且非「嵌入影片」類型的網址，來源請選擇「原始影片」，其格式範例如下：<br>
+        <a target="_blank" href="http://30.13.42.111/public/demo.mp4">http://30.13.42.111/public/demo.mp4</a>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>

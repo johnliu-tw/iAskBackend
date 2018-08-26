@@ -91,7 +91,7 @@ $(function(){
         <td><%= question.title %></td>
         <td><%= question.question_type %></td>
         <td>
-        <% if question.question_type !="題幹"%>
+        <% if question.question_type !="題幹(只有敘述)"%>
           <%if question.optionCount == 3 && question.question_type!="非選"%>
           A:<%= question.questionA %><br>
           B:<%= question.questionB %><br>
