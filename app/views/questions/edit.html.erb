@@ -1,4 +1,4 @@
-<script type="text/javascript" src="/js/updateQuestionOptions.js"></script>
+<script type="text/javascript" src="/js/updateQuestionOptions.js?v=20180829"></script>
 <p id="notice"><%= notice %></p>
 <h1>編輯題目</h1>
 
@@ -27,9 +27,9 @@
   <iframe id="title-video" src=""></iframe>
   <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#instruction" value="影片連結說明"> 
   <%= f.input :title_url_show_type, collection: [ ["原始影片", 'raw'], ["顯示預覽","preview"]],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
-  <%= f.input :question_type, collection: [ "單選", "複選", "非選","題幹(只有敘述)"], :label => "題型", :include_blank => false %>
+  <%= f.input :question_type, collection: [ ["單選", "single"], ["複選","multiple"], ["非選","nonchoice"],["題幹(只有敘述)","vignette"]], :label => "題型", :include_blank => false %>
   <div id="option-board">
-    <% if  @question.optionCount == 4 && @question.question_type !="非選" && @question.question_type !="題幹(只有敘述)" %>
+    <% if  @question.optionCount == 4 && @question.question_type !="nonchoice" && @question.question_type !="vignette" %>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :string,wrapper_html: { id: 'qAString' },input_html:{id: 'qAString'}, label: '附檔A'%>
     <img class="imgA">
@@ -58,7 +58,7 @@
     <label for="question_remove_qD_attr_true" style="font-weight:normal;">
       <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionD_attr]" id="question_remove_qD_attr_true">&nbsp;刪除
     </label>
-    <% elsif @question.optionCount == 5 && @question.question_type !="非選" && @question.question_type !="題幹(只有敘述)"%>
+    <% elsif @question.optionCount == 5 && @question.question_type !="nonchoice" && @question.question_type !="vignette"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :string,wrapper_html: { id: 'qAString' },input_html:{id: 'qAString'}, label: '附檔A'%>
     <img class="imgA">
@@ -94,7 +94,7 @@
     <label for="question_remove_title_attr_true" style="font-weight:normal;">
       <input class="check_boxes optional" type="checkbox" value="true" name="question[remove_questionE_attr]" id="question_remove_qE_attr_true">&nbsp;刪除
     </label>
-    <% elsif @question.optionCount >= 6 && @question.question_type !="非選" && @question.question_type !="題幹(只有敘述)"%>
+    <% elsif @question.optionCount >= 6 && @question.question_type !="nonchoice" && @question.question_type !="vignette"%>
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :string,wrapper_html: { id: 'qAString' },input_html:{id: 'qAString'}, label: '附檔A'%>
     <img class="imgA">
@@ -139,7 +139,7 @@
     </label>
     <% end %>
   </div>
-  <% if @question.question_type !="題幹(只有敘述)"%>
+  <% if @question.question_type !="vignette"%>
     <div id="option-buttons">
       <span id="add-option"><img src="/plus.png" class="pixel-icon"> 新增選項</span>
       <span id="delete-option"><img src="/minus.png" class="pixel-icon"> 刪除選項</span>

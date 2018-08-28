@@ -81,17 +81,19 @@ $(function(){
         var content="";
         if(newOptionNum > oldOptionNum){
             switch(questionType){
-                case "單選":
+                case "single":
                     content+="<span class='radio inline'><label for='question_answer_"+ optionList[newOptionNum-1] +"'>"
                     content+="<input class='radio_buttons optional' type='radio' value='"+ optionList[newOptionNum-1] +"' name='question[answer]' id='question_answer_"+ optionList[newOptionNum-1] +"'>"+ optionList[newOptionNum-1] +"</label></span>"
                     break;
-                case "複選": 
+                case "multiple": 
                     content+="<span class='checkbox inline'><label for='question_answer_e'>"
                     content+="<input type='checkbox' value='"+ optionList[newOptionNum-1] +"' class='boolean optional question_answer_checkbox'>"+ optionList[newOptionNum-1] +""
                     content+="</label></span>"
                     break;
-                case "非選": 
-                    break;       
+                case "nonchoice": 
+                    break;   
+                case "vignette":
+                    break;
                 }
                 $("div.question_answer").append(content);
         }
@@ -109,7 +111,7 @@ $(function(){
         var content = "";
         $("#answer-board").text("")
         switch(questionType){
-            case "單選":
+            case "single":
                 $("div#option-board").show();
                 $("div#option-buttons").show();
                 $("div#question-board").show();
@@ -129,7 +131,7 @@ $(function(){
                 }
                 content+="</div>"
                 break;
-            case "複選": 
+            case "multiple": 
             $("div#option-board").show()
             $("div#option-buttons").show();
             $("div#question-board").show();
@@ -149,12 +151,12 @@ $(function(){
                 } 
                 content+="</div>"
                 break;
-            case "非選": 
+            case "nonchoice": 
             $("div#option-board").hide()
             $("div#option-buttons").hide();
             $("div#question-board").show();
                 break;
-            case "題幹(只有敘述)": 
+            case "vignette": 
             $("div#option-board").hide()
             $("div#option-buttons").hide();
             $("div#question-board").hide();
@@ -167,7 +169,7 @@ $(function(){
         if($("#question_answer").val()){
             var answers=$("#question_answer").val().split("")
         }
-        if($("#question_question_type").val()=="複選"){
+        if($("#question_question_type").val()=="multiple"){
             var checkboxs = $(".question_answer_checkbox")
             for(var i=0;i<checkboxs.length;i++){
                 for(var j=0;j<answers.length;j++){

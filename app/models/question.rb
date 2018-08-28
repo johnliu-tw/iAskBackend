@@ -20,14 +20,14 @@ class Question < ApplicationRecord
     validate :image_size_validation
      
    def translate_question_type
-      if self.question_type == "單選"
-        self.question_type = "single"
-      elsif self.question_type == "複選"
-        self.question_type = "multiple"
-      elsif self.question_type == "非選"
-        self.question_type = "nonchoice"
-      elsif self.question_type == "題幹(只有敘述)"
-        self.question_type = "vignette"
+      if self.question_type == "single"
+        self.question_type = "單選"
+      elsif self.question_type == "multiple"
+        self.question_type = "複選"
+      elsif self.question_type == "nonchoice"
+        self.question_type = "非選"
+      elsif self.question_type == "vignette"
+        self.question_type = "題幹(只有敘述)"
       end              
    end
 

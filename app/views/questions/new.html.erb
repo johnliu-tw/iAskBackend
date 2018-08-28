@@ -1,4 +1,4 @@
-<script type="text/javascript" src="/js/updateQuestionOptions.js"></script>
+<script type="text/javascript" src="/js/updateQuestionOptions.js?v=20180829"></script>
 <h1>建立題目</h1>
 
 <%= simple_form_for @question, url: paper_questions_path do |f| %>
@@ -22,7 +22,7 @@
     <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#instruction" value="影片連結說明"> 
   <%= f.input :title_url_show_type, collection: [ ["原始影片", 'raw'], ["顯示預覽","preview"]],:item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
   <img class="imgTitle">
-  <%= f.input :question_type, collection: [ "單選", "複選", "非選","題幹(只有敘述)"], :label => "題型", :include_blank => false %>
+  <%= f.input :question_type, collection: [ ["單選", "single"], ["複選","multiple"], ["非選","nonchoice"],["題幹(只有敘述)","vignette"]], :label => "題型", :include_blank => false %>
   <div id="option-board">
     <%= f.input :questionA, :input_html => { :class => "question_option" },label: '選項A' %>
     <%= f.input :questionA_attr,as: :file, label: '附檔' %>
@@ -44,7 +44,7 @@
   <br>
   <br>
   <br>
-  <% if @question.question_type !="題幹(只有敘述)"%>
+  <% if @question.question_type !="vignette"%>
   <div id="answer-board">
     <%= f.input :answer, collection: [ "A", "B", "C","D"],:item_wrapper_class => 'inline', as: :radio_buttons, label: ' 答案 ' %>
   </div>

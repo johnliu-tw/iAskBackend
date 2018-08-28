@@ -25,6 +25,10 @@ class QuestionsController < ApplicationController
       @questions = Question.where(paper_id: params[:paper_id],platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     end
     
+    @questions.each do |q|
+      q.translate_question_type
+    end
+
     @paper = Paper.find(params[:paper_id])
   end
 
@@ -69,7 +73,7 @@ class QuestionsController < ApplicationController
       @question.platform_type = session[:platform_id]
     end
 
-    if @question.question_type == "題幹(只有敘述)" or @question.question_type == "非選"
+    if @question.question_type == "vignette" or @question.question_type == "nonchoice"
       @question.answer = ""
     end
     respond_to do |format|
@@ -88,7 +92,7 @@ class QuestionsController < ApplicationController
   def update
 
     qp = question_params
-    if qp[:question_type] == "題幹(只有敘述)" or qp[:question_type] == "非選"
+    if qp[:question_type] == "vignette" or qp[:question_type] == "nonchoice"
       qp[:answer] = ""
     end
 
@@ -131,8 +135,6 @@ class QuestionsController < ApplicationController
       else
         answered = true
       end
-
-      question.translate_question_type
 
       question.assign_attributes({ :answered => answered})
       question.assign_attributes({ :corrected => corrected})

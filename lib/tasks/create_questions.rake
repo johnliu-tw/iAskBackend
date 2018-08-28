@@ -119,7 +119,7 @@ namespace :csv do
                     q.optionCount = 4
                     q.paper_id = paper_id
                     q.platform_type = 0
-                    q.question_type = "單選"
+                    q.question_type = "single"
                     q.answer_count = 0
                     q.first_correct_count = 0
                 end

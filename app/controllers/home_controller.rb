@@ -210,7 +210,7 @@ class HomeController < ApplicationController
                 @question.answer_count = @question.answer_count + 1
             end
             @question.save!
-            question_ids = Question.where(:paper_id => @question.paper_id).where.not(:question_type => "非選").pluck(:id)
+            question_ids = Question.where(:paper_id => @question.paper_id).where.not(:question_type => ["nonchoice","vignette"]).pluck(:id)
             correct_q_size = StudentAnswerLog.where(:student_id => params[:studentId], :correct => true, :question_id => question_ids ).count
             total_q_size = question_ids.size
             correct_rate = (correct_q_size.to_f/total_q_size.to_f)*100
