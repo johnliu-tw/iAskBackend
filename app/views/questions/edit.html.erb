@@ -161,7 +161,7 @@
   <%= f.input :analysis_url, label: '詳解影片URL' %>  
   <input type="button" class="btn btn-primary" id="analysis-preview" value="影片預覽">
   <iframe id="analysis-video" src=""></iframe>
-  <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#instruction" value="影片連結說明"> 
+  <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#instruction" value="影片網址格式說明"> 
   <%= f.input :analysis_url_show_type, collection: [ ["原始影片", 'raw'], ["顯示預覽","preview"]], :item_wrapper_class => 'inline', as: :radio_buttons, label: '顯示方式' %> 
   </div>
   <% end %>
@@ -182,7 +182,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">影片連結說明</h5>
+        <h5 class="modal-title" id="exampleModalLabel">影片網址格式說明</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -201,16 +201,6 @@
         範例：<br>
         <a target="_blank" href="https://docs.google.com/file/d/1fhLgzIDFsqyxuYgm25O-LvCsauqe_V-f/preview">https://docs.google.com/file/d/1fhLgzIDFsqyxuYgm25O-LvCsauqe_V-f/preview</a><br>
 
-      ● 來自任何網址的影片均可設為用連結按鈕開啟影片，網址格式範例如下：<br>
-      - Youtube<br>
-        <a target="_blank" href="https://youtu.be/id_of_video">https://youtu.be/id_of_video</a><br>
-        範例：  <br>
-        <a target="_blank" href="https://youtu.be/sQk4e7IbpZk">https://youtu.be/sQk4e7IbpZk</a><br>
-
-      - Google雲端硬碟<br>
-        <a target="_blank" href="https://drive.google.com/open?id=id_of_video">https://drive.google.com/open?id=id_of_video</a><br>
-        範例：<br>
-        <a target="_blank" href="https://drive.google.com/open?id=1fhLgzIDFsqyxuYgm25O-LvCsauqe_V-f">https://drive.google.com/open?id=1fhLgzIDFsqyxuYgm25O-LvCsauqe_V-f</a><br>
       ● 原始影片：若有其他來源非「Youtube」、「Google 雲端硬碟」的影片，且非「嵌入影片」類型的網址，來源請選擇「原始影片」，其格式範例如下：<br>
         <a target="_blank" href="http://30.13.42.111/public/demo.mp4">http://30.13.42.111/public/demo.mp4</a>
       </div>

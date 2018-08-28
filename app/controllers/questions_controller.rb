@@ -69,7 +69,7 @@ class QuestionsController < ApplicationController
       @question.platform_type = session[:platform_id]
     end
 
-    if @question.question_type == "題幹(只有敘述)"
+    if @question.question_type == "題幹(只有敘述)" or @question.question_type == "非選"
       @question.answer = ""
     end
     respond_to do |format|
@@ -88,7 +88,7 @@ class QuestionsController < ApplicationController
   def update
 
     qp = question_params
-    if qp[:question_type] == "題幹(只有敘述)"
+    if qp[:question_type] == "題幹(只有敘述)" or qp[:question_type] == "非選"
       qp[:answer] = ""
     end
 

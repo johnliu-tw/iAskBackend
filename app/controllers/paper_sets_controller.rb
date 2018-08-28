@@ -51,7 +51,11 @@ class PaperSetsController < ApplicationController
   # POST /paper_sets
   # POST /paper_sets.json
   def create
-    @paper_set = PaperSet.new(paper_set_params)
+
+    new_params = paper_set_params
+    new_params[:paper_ids] = params[:paper_set][:paper_ids].split(",")
+
+    @paper_set = PaperSet.new(new_params)
     if current_user.has_role? :iAsk
       @paper_set.platform_type = 0
     elsif current_user.has_role? :udn
@@ -61,9 +65,9 @@ class PaperSetsController < ApplicationController
     elsif current_user.has_role? :admin
       @paper_set.platform_type = session[:platform_id]
     end
-    
+  
     respond_to do |format|
-      if @paper_set.update(paper_set_params)
+      if @paper_set.save
         format.html { redirect_to paper_sets_path, notice: '成功建立試卷包' }
         format.json { render :index, status: :created, location: @paper_set }
       else
@@ -76,8 +80,10 @@ class PaperSetsController < ApplicationController
   # PATCH/PUT /paper_sets/1
   # PATCH/PUT /paper_sets/1.json
   def update
+    new_params = paper_set_params
+    new_params[:paper_ids] = params[:paper_set][:paper_ids].split(",")
     respond_to do |format|
-      if @paper_set.update(paper_set_params)
+      if @paper_set.update(new_params)
         format.html { redirect_to paper_sets_path, notice: '成功編輯試卷包' }
         format.json { render :index, status: :ok, location: @paper_set }
       else
@@ -111,7 +117,7 @@ class PaperSetsController < ApplicationController
 
   def get_paper_sets_by_id
     @paper_set = PaperSet.find(params[:Id])
-    paper_ids = Paper.where(:paper_set_id => @paper_set.id).pluck(:id)
+    paper_ids = @paper_set.papers.pluck(:id)
     @paper_set.assign_attributes({ :paper_ids => paper_ids})
 
     render json: @paper_set, methods: [:paper_ids]
@@ -154,6 +160,6 @@ class PaperSetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_set_params
-      params.require(:paper_set).permit(:title, :price, :public_date, :description, :active, :platform_type, :id, :cash, paper_ids:[])
+      params.require(:paper_set).permit(:title, :price, :public_date, :description, :active, :platform_type, :id, :cash, :paper_ids)
     end
 end

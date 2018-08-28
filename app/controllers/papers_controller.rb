@@ -71,6 +71,17 @@ class PapersController < ApplicationController
       @paper_subjects = PaperSubject.where(platform_type: session[:platform_id])
     end
 
+    if current_user.has_role? :iAsk
+      @paper_sources = PaperSource.where(platform_type: 0)
+    elsif current_user.has_role? :udn
+      @paper_sources = PaperSource.where(platform_type: 1) 
+    elsif current_user.has_role? :reader
+      @paper_sources = PaperSource.where(platform_type: 2)
+    elsif current_user.has_role? :admin
+      @paper_sources = PaperSource.where(platform_type: session[:platform_id])
+    end
+
+
     @visibles = [{name: "免費可見"},{name: "購點後可見"},{name: "付費可見"}]
   end
 
