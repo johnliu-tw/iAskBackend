@@ -293,7 +293,8 @@ class PapersController < ApplicationController
 
 
   def get_papers_by_paper_set
-    @papers = Paper.select("papers.*, paper_subjects.title_view").joins(:paper_subject).where(:paper_set_id => params[:paperSetId], :active => true)
+    @papers = PaperSet.find(params[:paperSetId]).papers
+    @papers = @papers.select("papers.*, paper_subjects.title_view").joins(:paper_subject).where(:active => true)
     @papers.each{
       |paper|
       correct_rates = StudentCorrectRate.where(:paper_id => paper.id, :student_id => params[:studentId]).pluck(:correct_rate)

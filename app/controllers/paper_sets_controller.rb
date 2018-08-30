@@ -81,7 +81,9 @@ class PaperSetsController < ApplicationController
   # PATCH/PUT /paper_sets/1.json
   def update
     new_params = paper_set_params
-    new_params[:paper_ids] = params[:paper_set][:paper_ids].split(",")
+    if params[:paper_set][:paper_ids]
+      new_params[:paper_ids] = params[:paper_set][:paper_ids].split(",")
+    end
     respond_to do |format|
       if @paper_set.update(new_params)
         format.html { redirect_to paper_sets_path, notice: '成功編輯試卷包' }
@@ -107,7 +109,7 @@ class PaperSetsController < ApplicationController
     @paper_sets = PaperSet.where(:platform_type => params[:platformId], :active => true)
     @paper_sets.each{
       |paper_set| 
-      paper_ids = Paper.where(:paper_set_id => paper_set.id).pluck(:id)
+      paper_ids = paper_set.papers.pluck(:id)
       paper_set.assign_attributes({ :paper_ids => paper_ids})
     }
 
@@ -117,7 +119,7 @@ class PaperSetsController < ApplicationController
 
   def get_paper_sets_by_id
     @paper_set = PaperSet.find(params[:Id])
-    paper_ids = @paper_set.papers.pluck(:id)
+    paper_ids = @paper_sets.papers.pluck(:id)
     @paper_set.assign_attributes({ :paper_ids => paper_ids})
 
     render json: @paper_set, methods: [:paper_ids]
@@ -125,12 +127,9 @@ class PaperSetsController < ApplicationController
 
   def clear_paper_paper_set_id
     paper_ids =  params[:paperIds]
-    @papers = Paper.where(:id => paper_ids)
-    @papers.each{
-      |paper|
-      paper.paper_set_id = nil
-      paper.save!
-    }
+    paper_set_id = params[:paperSetId]
+    paper_relations = PaperSetPapersship.where(:paper_id => paper_ids, :paper_set_id => paper_set_id)
+    paper_relations.destroy_all
 
     render json: { result: true}
   end

@@ -79,7 +79,7 @@ $('#back').on("click",function() {
 });
 $('#delete-paper').on("click", function(){
   var paperIds = $("#paper_set_paper_id").val().split(",");
-  deletePapers(paperIds);
+  deletePapers(paperIds, paperSetId);
 })
 $('#paper_set_price').on('change', function(){
   var priceValue = $(this).val()
@@ -100,11 +100,11 @@ function loadPapers(){
     });
 }
 
-function deletePapers( paperIds ){
+function deletePapers( paperIds, paperSetId ){
   $.ajax({
       type: "post",
       url: "/paper_sets/api/clear_paper_paper_set_id",
-      data: {paperIds : paperIds}
+      data: {paperIds : paperIds, paperSetId: paperSetId}
     })
     .complete(function(data){
       window.location.reload();

@@ -4,7 +4,7 @@ $(function(){
     var attributeElementList = ["#question_title_attr","#question_questionA_attr","#question_questionB_attr",
                                 "#question_questionC_attr","#question_questionD_attr","#question_questionE_attr",
                                 "#question_questionF_attr","#question_analysis_att"]
-    activeMutipleAnswer();
+    activeMultipleAnswer();
 
     $("#add-option").click(function(){
         var oldOptionNum = $(".question_option").length;
@@ -164,7 +164,7 @@ $(function(){
         }
         $("#answer-board").html(content)        
     }
-    function activeMutipleAnswer(){
+    function activeMultipleAnswer(){
         answers = $("#question_answer").val()
         if($("#question_answer").val()){
             var answers=$("#question_answer").val().split("")
