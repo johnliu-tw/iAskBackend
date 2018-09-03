@@ -16,7 +16,11 @@
         <td><span ><%= user.email %></span></td>
         <td>
         <% user.roles.each do |r| %>
-        <%= @role_array[r.id-1] %>,
+          <% if r.id < 6 %>
+            <%= @role_array[r.id-1] %>,
+          <% else %>
+            <%= r.name  %>,
+          <% end %>
         <% end %>
         </td>
         <td><a href='/home/<%= user.id %>/edit'>編輯</a></td>

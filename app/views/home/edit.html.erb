@@ -1,3 +1,8 @@
+<style>
+a:visited {
+    color: white;
+}
+</style>
 <h2>修改使用者資料</h2>
 <p id="notice"><%= notice %></p>
 <%= simple_form_for @user ,url: home_path, html: { method: :put } do |f| %>
@@ -8,16 +13,15 @@
     <%= f.input :email, required: false %>
     <%= f.input :password, autocomplete: "off" %>
     <%= f.input :password_confirmation %>
-    <div class="form-group string optional subjects">
-      <label class="control-label string optional" for="subjects">角色選擇</label>
-      <% Role.all.order(:id).each do |r| %>
-        <%= check_box_tag :role_ids,r.name, f.object.roles.include?(r), :name => "user[role_ids][]" %>
-        <%= @role_array[r.id-1] %>
-      <% end %>
-    </div>
+    <%= render 'role_select', role: @admin_role, role_array: @role_array_admin,label: @label[0], f: f %>
+    <%= render 'role_select', role: @platform_role, role_array: @role_array_platform,label: @label[1] , f: f%>
+    <%= render 'role_select', role: @team_role, role_array: @role_array_team,label: @label[2] , f: f%>
   </div>
 
+  <a class="btn btn-primary" href="/home/function/team/">團隊管理</a>
+  <br>
+  <br>
   <div class="form-actions">
-    <%= f.button :submit, "送出" %>
+    <%= f.button :submit, "送出", :class => "btn btn-primary" %>
   </div>
 <% end %>

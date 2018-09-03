@@ -1,0 +1,14 @@
+<h1>新增團隊</h1>
+
+<%= simple_form_for(@team,:url => home_function_team_path, :method => :post) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name, label: "團隊名稱" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "送出", class: "btn btn-primary" %>
+    <a href="/home/function/team"><button class= "btn btn-primary">上一頁</button></a>
+  </div>
+<% end %>

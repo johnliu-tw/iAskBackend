@@ -13,27 +13,27 @@ class PaperSubjectsController < ApplicationController
     if order == nil
       order = "DESC"
     end
+
+    if current_user.has_role? :iAsk
+      session[:platform_id] = 0
+    elsif current_user.has_role? :udn
+      session[:platform_id] = 1
+    elsif current_user.has_role? :reader
+      session[:platform_id] = 2
+    end
     
     if params[:relation] == "subjects"
-      if current_user.has_role? :iAsk
-        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: 0).order("subjects.name #{order}").paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :udn
-        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: 1).order("subjects.name #{order}").paginate(:page => params[:page], :per_page => 10)    
-      elsif current_user.has_role? :reader
-        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: 2).order("subjects.name #{order}").paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :admin
-        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: session[:platform_id]).order("subjects.name  #{order}").paginate(:page => params[:page], :per_page => 10)
+      if current_user.has_role? :iAsk and !current_user.has_role? :leader
+        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: session[:platform_id], role_id:current_user.roles.last.id).order("subjects.name #{order}").paginate(:page => params[:page], :per_page => 10)
+      else
+        @paper_subjects = PaperSubject.includes(:subjects).where(platform_type: session[:platform_id]).order("subjects.name #{order}").paginate(:page => params[:page], :per_page => 10)
       end
     else  
-      if current_user.has_role? :iAsk
-        @paper_subjects = PaperSubject.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :udn
-        @paper_subjects = PaperSubject.where(platform_type: 1).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
-      elsif current_user.has_role? :reader
-        @paper_subjects = PaperSubject.where(platform_type: 2).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-      elsif current_user.has_role? :admin
+      if current_user.has_role? :iAsk and !current_user.has_role? :leader
+        @paper_subjects = PaperSubject.where(platform_type: session[:platform_id], role_id:current_user.roles.last.id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+      else
         @paper_subjects = PaperSubject.where(platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
-      end
+      end     
     end
   end
   # GET /paper_subjects/1
@@ -45,7 +45,11 @@ class PaperSubjectsController < ApplicationController
   def new
     @paper_subject = PaperSubject.new
     if current_user.has_role? :iAsk
-      @subjects = Subject.where(platform_type: 0)
+      if current_user.has_role? :leader
+        @subjects = Subject.where(platform_type: 0) 
+      else
+        @subjects = Subject.where(platform_type: 0, role_id: current_user.roles.last.id) 
+      end
     elsif current_user.has_role? :udn
       @subjects = Subject.where(platform_type: 1) 
     elsif current_user.has_role? :reader
@@ -58,7 +62,11 @@ class PaperSubjectsController < ApplicationController
   # GET /paper_subjects/1/edit
   def edit
     if current_user.has_role? :iAsk
-      @subjects = Subject.where(platform_type: 0)
+      if current_user.has_role? :leader
+        @subjects = Subject.where(platform_type: 0) 
+      else
+        @subjects = Subject.where(platform_type: 0, role_id: current_user.roles.last.id) 
+      end
     elsif current_user.has_role? :udn
       @subjects = Subject.where(platform_type: 1) 
     elsif current_user.has_role? :reader
@@ -74,6 +82,7 @@ class PaperSubjectsController < ApplicationController
     @paper_subject = PaperSubject.new(paper_subject_params)
     if current_user.has_role? :iAsk
       @paper_subject.platform_type = 0
+      @paper_subject.role_id = current_user.roles.last.id
     elsif current_user.has_role? :udn
       @paper_subject.platform_type = 1  
     elsif current_user.has_role? :reader

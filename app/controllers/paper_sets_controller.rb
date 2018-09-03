@@ -29,6 +29,8 @@ class PaperSetsController < ApplicationController
 
     if params[:relation] == "buy_logs"
       @paper_sets = PaperSet.left_joins(:student_buy_logs, :papers).group(:id).where("papers.platform_type = #{platform_type}").order("COUNT(student_buy_logs.id) #{order}")
+    elsif current_user.has_role? :iAsk and !current_user.has_role? :leader
+      @paper_sets = PaperSet.where(platform_type: platform_type, role_id:current_user.roles.last.id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     else
       @paper_sets = PaperSet.where(platform_type: platform_type).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
     end
@@ -58,6 +60,7 @@ class PaperSetsController < ApplicationController
     @paper_set = PaperSet.new(new_params)
     if current_user.has_role? :iAsk
       @paper_set.platform_type = 0
+      @paper_set.role_id = current_user.roles.last.id
     elsif current_user.has_role? :udn
       @paper_set.platform_type = 1  
     elsif current_user.has_role? :reader

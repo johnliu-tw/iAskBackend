@@ -7,14 +7,9 @@
     <%= f.input :email, required: true, autofocus: true %>
     <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
     <%= f.input :password_confirmation, required: true %>
-    <div class="form-group string optional subjects">
-      <label class="control-label string optional" for="subjects">角色選擇</label>
-      <input type="checkbox" name="user[role_ids][]" value="iAsk" class="boolean optional">&nbsp;&nbsp;iAsk
-      <input type="checkbox" name="user[role_ids][]" value="reader" class="boolean optional">&nbsp;&nbsp;讀享
-      <input type="checkbox" name="user[role_ids][]" value="udn" class="boolean optional">&nbsp;&nbsp;udn
-      <input type="checkbox" name="user[role_ids][]" value="leader" class="boolean optional">&nbsp;&nbsp;admin
-      <input type="checkbox" name="user[role_ids][]" value="admin" class="boolean optional">&nbsp;&nbsp;super admin
-    </div>
+    <%= render 'role_select', role: @admin_role, role_array: @role_array_admin,label: @label[0], f: f %>
+    <%= render 'role_select', role: @platform_role, role_array: @role_array_platform,label: @label[1] , f: f%>
+    <%= render 'role_select', role: @team_role, role_array: @role_array_team,label: @label[2] , f: f%>
   </div>
 
   <div class="form-actions">

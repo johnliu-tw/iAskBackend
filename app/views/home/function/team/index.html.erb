@@ -1,0 +1,23 @@
+<h1>團隊管理</h1>
+<button class="btn btn-primary"><a href="/home/function/team/new">建立新團隊</a></button>
+<table class="table">
+  <thead>
+    <tr class="thead">
+      <th>團隊</th>
+      <th colspan="2">
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @roles.each do |role| %>
+      <tr>
+        <td>
+        <%= role.name %>
+        </td>
+        <td><a href="/home/function/team/<%= role.id %>/edit">編輯</a></td>
+        <td><a href='/home/function/team/<%= role.id %>' data-method="delete" data-confirm="你確定？">刪除</a></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

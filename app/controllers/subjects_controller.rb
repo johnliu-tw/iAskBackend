@@ -16,7 +16,11 @@ class SubjectsController < ApplicationController
     end
 
     if current_user.has_role? :iAsk
-      @subjects = Subject.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+      if current_user.has_role? :leader
+        @subjects = Subject.where(platform_type: 0).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+      else
+        @subjects = Subject.where(platform_type: 0,role_id:current_user.roles.last.id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+      end
     elsif current_user.has_role? :udn
       @subjects = Subject.where(platform_type: 1).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)    
     elsif current_user.has_role? :reader
@@ -46,6 +50,7 @@ class SubjectsController < ApplicationController
     @subject = Subject.new(subject_params)
     if current_user.has_role? :iAsk
       @subject.platform_type = 0
+      @subject.role_id = current_user.roles.last.id
     elsif current_user.has_role? :udn
       @subject.platform_type = 1  
     elsif current_user.has_role? :reader
@@ -99,7 +104,7 @@ class SubjectsController < ApplicationController
     end
     subject_ids.uniq!
     subject_ids.flatten!
-    @subjects = Subject.select(:id,:name).where(:id => subject_ids)
+    @subjects = Subject.where(:id => subject_ids)
     render json: @subjects
   end
 

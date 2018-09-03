@@ -26,7 +26,7 @@ class HomeController < ApplicationController
             session[:platform_id] = 3
         end
         @users = User.all.order(:id)
-        @role_array = ["SuperAdmin", "Admin", "iAsk", "讀享", "聯合改作文"]
+        @role_array = ["SuperAdmin", "PlatfromAdmin", "iAsk", "讀享", "聯合改作文"]
         if !current_user.has_role? :admin
             redirect_to papers_path
         end
@@ -34,6 +34,13 @@ class HomeController < ApplicationController
 
     def new
         @user = User.new
+        @label = ["管理身份","平台","團隊"]
+        @admin_role = Role.where("name LIKE '%admin%' or name = 'leader'")
+        @platform_role = Role.where("(name = 'iAsk') OR (name = 'udn') OR (name = 'reader')")
+        @team_role = Role.where('id > 6') 
+        @role_array_admin = ["SuperAdmin", "PlatformAdmin", "TeamAdmin"]
+        @role_array_platform = ["iAsk好問","reader讀享","udn聯合改作文"]
+        @role_array_team = Role.where('id > 6').pluck(:name)
     end
 
     def create
@@ -78,7 +85,9 @@ class HomeController < ApplicationController
                         @user.add_role :admin
                     else
                         if params[:user][:role_ids].include?("iAsk")
-                            @user.add_role :iAsk
+                            params[:user][:role_ids].each do |role|
+                                @user.add_role Role.where(name: role).last.name
+                            end
                         end
                         if params[:user][:role_ids].include?("reader")
                             @user.add_role :reader
@@ -101,7 +110,13 @@ class HomeController < ApplicationController
     end
 
     def edit
-        @role_array = ["SuperAdmin", "Admin", "iAsk", "讀享", "聯合改作文"]
+        @label = ["管理身份","平台","團隊"]
+        @admin_role = Role.where("name LIKE '%admin%' or name = 'leader'")
+        @platform_role = Role.where("(name = 'iAsk') OR (name = 'udn') OR (name = 'reader')")
+        @team_role = Role.where('id > 6') 
+        @role_array_admin = ["SuperAdmin", "PlatformAdmin", "TeamAdmin"]
+        @role_array_platform = ["iAsk好問","reader讀享","udn聯合改作文"]
+        @role_array_team = Role.where('id > 6').pluck(:name)
     end
 
     def update
@@ -166,7 +181,9 @@ class HomeController < ApplicationController
                         @user.add_role :admin
                     else
                         if params[:user][:role_ids].include?("iAsk")
-                            @user.add_role :iAsk
+                            params[:user][:role_ids].each do |role|
+                                @user.add_role Role.where(name: role).last.name
+                            end
                         end
                         if params[:user][:role_ids].include?("reader")
                             @user.add_role :reader

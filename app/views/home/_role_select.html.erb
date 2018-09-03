@@ -1,0 +1,7 @@
+    <div class="form-group string optional subjects">
+      <label class="control-label string optional" for="subjects" style="width:10%"><%= label %></label>
+      <% role.each_with_index do |r, idx| %>
+        <%= check_box_tag :role_ids,r.name, f.object.roles.include?(r), :name => "user[role_ids][]" %>
+        <%= role_array[idx] %>
+      <% end %>
+    </div>

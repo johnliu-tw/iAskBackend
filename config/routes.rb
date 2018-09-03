@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :paper_subjects
   resources :home
   resources :student_answer_logs
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root "home#management"
   post 'paper_subjects/:id', :to => 'paper_subjects#update'
@@ -30,6 +31,13 @@ Rails.application.routes.draw do
   get  'paper_analytics', :to => 'paper_analytics#index'
   get  'paper_set_buy_analytics', :to => 'paper_set_buy_analytics#index'
 
+  # Team management
+  get  'home/function/team', :to => 'teams#index'
+  get  'home/function/team/new', :to => 'teams#new'
+  get  'home/function/team/:id/edit', :to => 'teams#edit'
+  post 'home/function/team', :to => 'teams#create'
+  post 'home/function/team/:id/edit', :to => 'teams#update'
+
   # APIS
   get  'papers/api/get_paper_by_platform', :to => 'papers#get_paper_by_platform' 
   get  'papers/api/get_papers_by_subject', :to => 'papers#get_papers_by_subject' 
@@ -39,9 +47,11 @@ Rails.application.routes.draw do
   get  'questions/api/get_question_by_questionId', :to => 'questions#get_question_by_questionId'
   get  'grades/api/get_grades_by_platform', :to => 'grades#get_grades_by_platform'
   get  'subjects/api/get_subjects_by_grade', :to => 'subjects#get_subjects_by_grade' 
+  get  'subjects/api/paper_subject_get_subjects', :to => 'subjects#paper_subject_get_subjects'
   get  'paper_sets/api/get_paper_sets_by_platform', :to => 'paper_sets#get_paper_sets_by_platform' 
   get  'paper_sets/api/get_paper_sets_by_id', :to => 'paper_sets#get_paper_sets_by_id' 
   get  'paper_sets/api/check_paper_bought', :to => 'paper_sets#check_paper_bought' 
+  get  'homes/api/get_team_by_team_id', :to => 'teams#get_team_by_team_id'
 
   post 'homes/api/answer_question_logs', :to => 'home#answer_question_logs' 
   post 'homes/api/answer_question_correct', :to => 'home#answer_question_correct' 
