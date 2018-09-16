@@ -35,7 +35,7 @@ class HomeController < ApplicationController
     def new
         @user = User.new
         @label = ["管理身份","平台","團隊"]
-        @admin_role = Role.where("name LIKE '%admin%' or name = 'leader'")
+        @admin_role = Role.where("name LIKE '%admin%' or name = 'leader' or name Like '%Admin%'")
         @platform_role = Role.where("(name = 'iAsk') OR (name = 'udn') OR (name = 'reader')")
         @team_role = Role.where('id > 6') 
         @role_array_admin = ["SuperAdmin", "PlatformAdmin", "TeamAdmin"]
@@ -44,6 +44,10 @@ class HomeController < ApplicationController
     end
 
     def create
+
+        if params[:user][:role_ids].length > 1
+            redirect_to request.referer, notice: '請勿一次設定兩個團隊' and return
+        end
         @user = User.new(user_params)
         if params[:user][:role_ids].include?("leader")
             if (params[:user][:role_ids].include?("iAsk"))||(params[:user][:role_ids].include?("reader"))||(params[:user][:role_ids].include?("udn"))
@@ -111,7 +115,7 @@ class HomeController < ApplicationController
 
     def edit
         @label = ["管理身份","平台","團隊"]
-        @admin_role = Role.where("name LIKE '%admin%' or name = 'leader'")
+        @admin_role = Role.where("name LIKE '%admin%' or name = 'leader' or name Like '%Admin%'")
         @platform_role = Role.where("(name = 'iAsk') OR (name = 'udn') OR (name = 'reader')")
         @team_role = Role.where('id > 6') 
         @role_array_admin = ["SuperAdmin", "PlatformAdmin", "TeamAdmin"]
@@ -121,87 +125,42 @@ class HomeController < ApplicationController
 
     def update
         @role_array = ["SuperAdmin", "Admin", "iAsk", "讀享", "聯合改作文"] 
-        if params[:user][:role_ids].include?("leader")
-            if (params[:user][:role_ids].include?("iAsk"))||(params[:user][:role_ids].include?("reader"))||(params[:user][:role_ids].include?("udn"))
-                @user.roles.each do |role|
-                    if role.name == "iAsk"
-                    @user.remove_role :iAsk
-                    end      
-                    if role.name == "reader"
-                        @user.remove_role :reader
-                    end      
-                    if role.name == "udn"
-                        @user.remove_role :udn
-                    end      
-                    if role.name == "leader"
-                        @user.remove_role :leader
-                    end      
-                    if role.name == "admin"
-                        @user.remove_role :admin
-                    end    
-                end    
 
-                params[:user][:role_ids].each do |role|  
-                    if role == "admin"
-                        @user.add_role :admin
-                        break
-                    end   
-                    if role == "iAsk"
-                        @user.add_role :iAsk
-                    end      
-                    if role == "reader"
-                        @user.add_role :reader
-                    end      
-                    if role == "udn"
-                        @user.add_role :udn
-                    end      
-                    if role == "leader"
-                        @user.add_role :leader
-                    end             
-                end
-                respond_to do |format|
-                    if @user.update(user_params)
-                    format.html { redirect_to homes_management_path, notice: '成功編輯使用者' }
-                    format.json { render :show, status: :ok, location: @paper }
-                    else
-                    format.html { render :edit }
-                    format.json { render json: @user.errors, status: :unprocessable_entity }
-                    end
-                end
-            else
-                respond_to do |format|
-                    format.html { redirect_to edit_home_path(@user), :notice => '未選擇三個平台其中之一' }
-                    format.json { render json: @user.errors, status: :unprocessable_entity}   
-                end  
-            end
-        else
-            respond_to do |format|
+        if params[:user][:role_ids].length > 1
+            redirect_to request.referer, notice: '請勿一次設定兩個團隊' and return
+        end
+
+        respond_to do |format|
+            if user_params[:password].present?
                 if @user.update(user_params)
-                    if params[:user][:role_ids].include?("admin")
-                        @user.add_role :admin
-                    else
-                        if params[:user][:role_ids].include?("iAsk")
-                            params[:user][:role_ids].each do |role|
-                                @user.add_role Role.where(name: role).last.name
-                            end
-                        end
-                        if params[:user][:role_ids].include?("reader")
-                            @user.add_role :reader
-                        end
-                        if params[:user][:role_ids].include?("udn")
-                            @user.add_role :udn
-                        end
-                        if params[:user][:role_ids].include?("leader")
-                            @user.add_role :leader
-                        end 
+                    roles = @user.roles.pluck(:name)
+                    roles.each do |role|
+                        @user.remove_role Role.where(name: role).last.name
                     end
-                    format.html { redirect_to homes_management_path, notice: '成功建立使用者' }
+
+                    params[:user][:role_ids].each do |role|
+                        @user.add_role Role.where(name: role).last.name
+                    end
+                    format.html { redirect_to homes_management_path, notice: '成功編輯使用者' }
                     format.json { render :show, status: :created, location: @user }
                 else
-                    format.html { redirect_to edit_home_path(@user) }
+                    format.html { redirect_to edit_home_path(@user), notice: '更新失敗' }
                     format.json { render json: @user.errors, status: :unprocessable_entity }
+                end   
+            else
+                @user.email = user_params[:email]
+                @user.save
+                roles = @user.roles.pluck(:name)
+                roles.each do |role|
+                    @user.remove_role Role.where(name: role).last.name
                 end
-            end            
+
+                params[:user][:role_ids].each do |role|
+                    @user.add_role Role.where(name: role).last.name
+                end
+                format.html { redirect_to homes_management_path, notice: '成功編輯使用者' }
+                format.json { render :show, status: :created, location: @user }                
+            end                   
         end
     end
 

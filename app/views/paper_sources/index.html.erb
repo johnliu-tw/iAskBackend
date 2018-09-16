@@ -18,8 +18,10 @@
     <% @paper_sources.each do |paper_source| %>
       <tr>
         <td class="column-name"><%= paper_source.name %></td>
+        <% if current_user.roles.order(:id).first.id < 3 %>
         <td><%= link_to '編輯', edit_paper_source_path(paper_source) %></td>
         <td><%= link_to '刪除', paper_source, method: :delete, data: { confirm: '你確定嗎？' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

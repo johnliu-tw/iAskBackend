@@ -10,4 +10,9 @@ class Role < ApplicationRecord
             :allow_nil => true
 
   scopify
+
+  # role's id = 1 SuperAdmin (admin)
+  # role's id = 2 PlatformAdin (leader)
+  # role's id = 3 - 5 iAsk, Reader, Udn editor (iAsk, reader, udn)
+  # role's id >=6 team
 end

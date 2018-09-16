@@ -122,7 +122,7 @@ class PaperSetsController < ApplicationController
 
   def get_paper_sets_by_id
     @paper_set = PaperSet.find(params[:Id])
-    paper_ids = @paper_sets.papers.pluck(:id)
+    paper_ids = @paper_set.papers.pluck(:id)
     @paper_set.assign_attributes({ :paper_ids => paper_ids})
 
     render json: @paper_set, methods: [:paper_ids]

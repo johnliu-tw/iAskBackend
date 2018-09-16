@@ -92,8 +92,10 @@ $(function(){
         <span class="inactive">未啟用</span>
         <% end %>
         </td>
+        <% if current_user.roles.order(:id).first.id < 3 %>
         <td><%= link_to '編輯', edit_paper_subject_path(paper_subject) %></td>
         <td><%= link_to '刪除', paper_subject, method: :delete, data: { confirm: '您確定嗎?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

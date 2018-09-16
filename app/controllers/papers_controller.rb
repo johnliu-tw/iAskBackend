@@ -10,6 +10,8 @@ class PapersController < ApplicationController
     if current_user.has_role? :iAsk
       session[:platform_id] = 0
       current_role_id = current_user.roles.last.id
+      role_array = [0]
+      role_array.push(current_role_id)
     elsif current_user.has_role? :udn
       session[:platform_id] = 1
     elsif current_user.has_role? :reader
@@ -34,8 +36,10 @@ class PapersController < ApplicationController
           @papers = Paper.includes(:grades).where(platform_type: session[:platform_id], role_id: current_role_id).order("grades.name  #{order}").paginate(:page => params[:page], :per_page => 10)
         elsif params[:relation] == "paper_source"
           @papers = Paper.includes(:paper_source).where(platform_type: session[:platform_id], role_id: current_role_id).order("paper_source.name  #{order}").paginate(:page => params[:page], :per_page => 10)
+        elsif current_user.roles.last.id > 5
+          @papers = Paper.where(platform_type: session[:platform_id],team_id: role_array).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
         else
-          @papers = Paper.where(platform_type: session[:platform_id],role_id: current_role_id).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
+          @papers = Paper.where(platform_type: session[:platform_id]).order("#{orderParam}  #{order}").paginate(:page => params[:page], :per_page => 10)
         end
       else
         @papers = Paper.where(:id => session[:filter_papers_id], :platform_type => session[:platform_id],role_id: current_role_id).paginate(:page => params[:page], :per_page => 10)
@@ -78,11 +82,7 @@ class PapersController < ApplicationController
     @paper = Paper.new
 
     if current_user.has_role? :iAsk
-      if current_user.has_role? :leader
-        @grades = Grade.where(platform_type: 0)
-      else
-        @grades = Grade.where(platform_type: 0, role_id: current_user.roles.last.id)
-      end
+      @grades = Grade.where(platform_type: 0)
     elsif current_user.has_role? :udn
       @grades = Grade.where(platform_type: 1) 
     elsif current_user.has_role? :reader
@@ -92,11 +92,7 @@ class PapersController < ApplicationController
     end
 
     if current_user.has_role? :iAsk
-      if current_user.has_role? :leader
-        @paper_subjects = PaperSubject.where(platform_type: 0)
-      else
-        @paper_subjects = PaperSubject.where(platform_type: 0, role_id: current_user.roles.last.id) 
-      end
+      @paper_subjects = PaperSubject.where(platform_type: 0)
     elsif current_user.has_role? :udn
       @paper_subjects = PaperSubject.where(platform_type: 1) 
     elsif current_user.has_role? :reader
@@ -106,11 +102,7 @@ class PapersController < ApplicationController
     end
 
     if current_user.has_role? :iAsk
-      if current_user.has_role? :leader
-        @paper_sources = PaperSource.where(platform_type: 0)
-      else
-        @paper_sources = PaperSource.where(platform_type: 0, role_id: current_user.roles.last.id)
-      end
+      @paper_sources = PaperSource.where(platform_type: 0)
     elsif current_user.has_role? :udn
       @paper_sources = PaperSource.where(platform_type: 1) 
     elsif current_user.has_role? :reader
@@ -119,6 +111,7 @@ class PapersController < ApplicationController
       @paper_sources = PaperSource.where(platform_type: session[:platform_id])
     end
 
+    @teams = Role.where('id > 6')
 
     @visibles = [{name: "免費可見"},{name: "購點後可見"},{name: "付費可見"}]
   end
@@ -126,11 +119,7 @@ class PapersController < ApplicationController
   # GET /papers/1/edit
   def edit
     if current_user.has_role? :iAsk
-      if current_user.has_role? :leader
-        @grades = Grade.where(platform_type: 0)
-      else
-        @grades = Grade.where(platform_type: 0, role_id: current_user.roles.last.id)
-      end
+      @grades = Grade.where(platform_type: 0)
     elsif current_user.has_role? :udn
       @grades = Grade.where(platform_type: 1) 
     elsif current_user.has_role? :reader
@@ -140,11 +129,7 @@ class PapersController < ApplicationController
     end
 
     if current_user.has_role? :iAsk
-      if current_user.has_role? :leader
-        @paper_subjects = PaperSubject.where(platform_type: 0)
-      else
-        @paper_subjects = PaperSubject.where(platform_type: 0, role_id: current_user.roles.last.id) 
-      end
+      @paper_subjects = PaperSubject.where(platform_type: 0)
     elsif current_user.has_role? :udn
       @paper_subjects = PaperSubject.where(platform_type: 1) 
     elsif current_user.has_role? :reader
@@ -154,11 +139,7 @@ class PapersController < ApplicationController
     end
 
     if current_user.has_role? :iAsk
-      if current_user.has_role? :leader
-        @paper_sources = PaperSource.where(platform_type: 0)
-      else
-        @paper_sources = PaperSource.where(platform_type: 0, role_id: current_user.roles.last.id)
-      end
+      @paper_sources = PaperSource.where(platform_type: 0)
     elsif current_user.has_role? :udn
       @paper_sources = PaperSource.where(platform_type: 1) 
     elsif current_user.has_role? :reader
@@ -166,6 +147,8 @@ class PapersController < ApplicationController
     elsif current_user.has_role? :admin
       @paper_sources = PaperSource.where(platform_type: session[:platform_id])
     end
+
+    @teams = Role.where('id > 6')
 
   end
 
@@ -182,7 +165,13 @@ class PapersController < ApplicationController
       @paper.platform_type = 2
     elsif current_user.has_role? :admin
       @paper.platform_type = session[:platform_id]
+      @paper.role_id = current_user.roles.last.id
     end
+
+    if current_user.roles.last.id > 5
+      @paper.team_id = current_user.roles.last.id
+    end
+
     respond_to do |format|
       if @paper.save
         format.html { redirect_to papers_path, notice: '成功建立試卷' }
@@ -386,7 +375,15 @@ class PapersController < ApplicationController
     active = params[:filter][:active]    
     paper_source_name = params[:filter][:paper_source_name]  
 
-    @filter_papers = Paper.all
+    if current_user.roles.last.id > 5
+      roles_array = [0]
+      roles_array.push(current_user.roles.last.id)
+      @filter_papers = Paper.where(team_id: roles_array)
+    else
+      @filter_papers = Paper.all
+    end
+
+
     if subject_name.present?
       subject_id = Subject.where(:name => subject_name, :platform_type => session[:platform_id]).pluck(:id)
       subject_paper_subject_ids = PapersubjectSubjectship.where(:subject_id => subject_id).pluck(:paper_subject_id)
@@ -443,13 +440,15 @@ class PapersController < ApplicationController
       end
 
       current_role_id = current_user.roles.last.id
+      role_array = [0]
+      role_array.push(current_role_id)
 
       if params[:relation] == "paper_subjects"
         if current_user.has_role? :iAsk
-          if current_user.has_role? :leader
+          if current_user.has_role? :leader or current_user.roles.last.id < 6
             @papers = Paper.includes(:paper_subject).where(platform_type: 0).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 30)
           else
-            @papers = Paper.includes(:paper_subject).where(platform_type: 0, role_id: current_role_id).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 30)
+            @papers = Paper.includes(:paper_subject).where(platform_type: 0, team_id: role_array).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 30)
           end
         elsif current_user.has_role? :udn
           @papers = Paper.includes(:paper_subject).where(platform_type: 1).order("paper_subjects.title #{order}").paginate(:page => params[:page], :per_page => 30)    
@@ -524,7 +523,7 @@ class PapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paper_params
-      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,:subject_name,:correct_rate,:paper_source_id, :specific_institution_visible, :specific_institution, grade_ids:[])
+      params.require(:paper).permit(:title, :active, :visible, :public_date, :note, :grade, :open_count, :correct_count,:paper_subject_id,:platform_type,:subject_name,:correct_rate,:paper_source_id, :specific_institution_visible, :specific_institution,:team_id, grade_ids:[])
     end
 
     def true?(obj)

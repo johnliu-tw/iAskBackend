@@ -115,10 +115,14 @@ $(function(){
         <span class="inactive">未啟用</span>
         <% end %>
         </td>
+        <% if p1_clause_1(paper, current_user) %>
         <td><%= link_to '複製', ("/papers/tools/copy/" + paper.id.to_s) %></td>
         <td><%= link_to '編輯', edit_paper_path(paper) %></td>
-        <td><%= link_to '刪除', paper, method: :delete, data: { confirm: '你確定?' } %></td>
+          <% if p1_clause_2(current_user) or p2_clause(paper, current_user) or p3_clause(paper, current_user)%>
+          <td><%= link_to '刪除', paper, method: :delete, data: { confirm: '你確定?' } %></td>
+          <% end %>
         <td><%= link_to "題目管理", paper_questions_path(paper,:paper_id => paper.id) %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

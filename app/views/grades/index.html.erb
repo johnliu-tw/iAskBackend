@@ -18,8 +18,10 @@
     <% @grades.each do |grade| %>
       <tr>
         <td class="column-name"><%= grade.name %></td>
+        <% if current_user.roles.order(:id).first.id < 3 %>
         <td ><%= link_to '編輯', edit_grade_path(grade) %></td>
         <td><%= link_to '刪除', grade, method: :delete, data: { confirm: '你確定嗎？' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

@@ -46,7 +46,7 @@ namespace :create do
                   Student.find(response["id"]).update(:id => response["id"],:name => response["name"],:register_time => Time.at(response["createdAt"]/1000), :account => response["email"])  
                 end  
               when 1 #udn
-                url = "http://52.69.167.52:3001/listStudentsByUids/"+buy_log.student_id
+                url = "http://69.90.132.97:3001/listStudentsByUids/"+buy_log.student_id
                 response = RestClient.get(url, headers={'Content-Type' => 'application/json', 'apiKey' => 'testApiKey'})
                 response = JSON.parse(response.to_s.tr('$', ''))[0]  
                 if response["name"].present? && !response["tutorType"].present?
@@ -113,7 +113,7 @@ namespace :create do
                     Student.find(response["id"]).update(:id => response["id"],:name => response["name"],:register_time => Time.at(response["createdAt"]/1000), :account => response["email"])  
                   end  
                 when 1
-                  url = "http://52.69.167.52:3001/listStudentsByUids/"+buy_log.student_id
+                  url = "http://69.90.132.97:3001/listStudentsByUids/"+buy_log.student_id
                   response = RestClient.get(url, headers={'Content-Type' => 'application/json', 'apiKey' => 'testApiKey'})
                   response = JSON.parse(response.to_s.tr('$', ''))[0]  
                   if response["name"].present? && !response["tutorType"].present?

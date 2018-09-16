@@ -40,6 +40,18 @@
         <%= p.name %>
       <% end %>
   </div>
+  <% if current_user.has_role? :admin or current_user.has_role? :leader %>
+  <div class="form-group string optional team_id">
+  <% else %>
+  <div class="form-group string optional team_id" style="display:none;">  
+  <% end %>
+    <label class="control-label string optional" for="team_id">可編輯此試卷的團隊</label><br>
+      <input type="radio" name="paper[team_id]" id="team_id_0" value="0" class="boolean optional" checked="checked"> 不分
+      <% @teams.each do |t| %>
+        <%= radio_button_tag :team_id,t.id, f.object.team_id == t.id, :name => "paper[team_id]",class:"boolean optional" %>
+        <%= t.name %>
+      <% end %>
+  </div>
   <%= f.input :note, label: '備註' %>
   <% if paper.active != nil %>
     <%= f.input :active,:item_wrapper_class => 'inline', as: :radio_buttons, label: '有效性' %>

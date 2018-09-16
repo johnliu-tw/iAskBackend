@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180817154522) do
+ActiveRecord::Schema.define(version: 20180913134249) do
 
   create_table "grades", force: :cascade do |t|
     t.string   "name"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20180817154522) do
     t.datetime "updated_at",    null: false
     t.integer  "platform_type"
     t.integer  "cash"
+    t.integer  "role_id"
   end
 
   create_table "paper_sources", force: :cascade do |t|
@@ -50,6 +51,7 @@ ActiveRecord::Schema.define(version: 20180817154522) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "platform_type"
+    t.integer  "role_id"
   end
 
   create_table "paper_subjects", force: :cascade do |t|
@@ -81,6 +83,8 @@ ActiveRecord::Schema.define(version: 20180817154522) do
     t.integer  "paper_source_id"
     t.string   "specific_institution"
     t.boolean  "specific_institution_visible"
+    t.integer  "role_id"
+    t.integer  "team_id"
   end
 
   create_table "papersubject_subjectships", force: :cascade do |t|
